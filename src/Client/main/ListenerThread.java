@@ -1,4 +1,4 @@
-package sample;
+package Client.main;
 
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
