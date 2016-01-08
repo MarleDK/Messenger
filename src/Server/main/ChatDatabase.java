@@ -76,7 +76,7 @@ public class ChatDatabase {
         try {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
-            out.println("[" + message.time.toString() + "]" + message.afsenderID + ": " + message.text);
+            out.println(message.toString());
             out.close();
         }
         catch (Exception ex) {

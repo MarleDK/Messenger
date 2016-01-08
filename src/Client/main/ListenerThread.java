@@ -3,6 +3,7 @@ package Client.main;
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
 import universalClasses.Message;
+import universalClasses.TimeStamp;
 
 import java.io.*;
 import java.net.Socket;
@@ -65,10 +66,15 @@ public class ListenerThread extends Thread {
             }
             if (!ChatID.equals("§")) {
                 // Kør modtagelse af beskeder
+                File chatFile = new File("serverdatabase/chat/" + ChatID + ".txt");
+                try {
+                    chatFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 while (!done) {
                     try {
                         done = false;
-                        File chatFile = new File("clientdatabase/log/" + ChatID + ".txt");
                         FileWriter outFile = new FileWriter(chatFile, true);
                         PrintWriter out = new PrintWriter(outFile);
                         while (!done) {
@@ -77,6 +83,7 @@ public class ListenerThread extends Thread {
                                 done = true;
                             } else {
                                 // Write into file
+                                out.println(message);
                             }
                         }
                         out.close();

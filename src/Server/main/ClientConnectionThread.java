@@ -123,8 +123,9 @@ public class ClientConnectionThread extends Thread{
                     //ClientDatabase.logMessage(message);
 
                     ArrayList<String> Clients;
-                    Clients = ChatDatabase.getClients(Inputs.get(2));
+                    Clients = ChatDatabase.getClients(message.samtaleID);
                     ArrayList<Socket> Sockets = new ArrayList<>();
+                    Clients.remove(message.afsenderID);
                     if (Clients != null) {
                         for (String Client : Clients) {
                             Sockets.add(ActiveClient.getSocket(Client));
