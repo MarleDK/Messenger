@@ -5,10 +5,11 @@ import javafx.fxml.FXML;
 
 public class Controller {
 
-    @FXML
-    protected void handleChatSubmitButtonAction(ActionEvent event) {
-        //
+
+    public void chatSubmitButtonAction(ActionEvent actionEvent) {
     }
 
 
+    public void newChatButtonAction(ActionEvent actionEvent) {
+    }
 }

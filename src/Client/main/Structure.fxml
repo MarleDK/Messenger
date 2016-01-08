@@ -13,6 +13,10 @@
               xmlns:fx="http://javafx.com/fxml" alignment="top_left"
               fx:id="sidebar"
               GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Button text="New Chat"
+                onAction="#newChatButtonAction"
+                alignment="CENTER"
+                />
 
 
     </VBox>
@@ -34,7 +38,7 @@
                     GridPane.columnIndex="0" GridPane.rowIndex="0"
             />
             <Button text="Send"
-                    onAction="#handleChatSubmitButtonAction"
+                    onAction="#chatSubmitButtonAction"
                     GridPane.columnIndex="1" GridPane.rowIndex="0"
             />
 

@@ -8,10 +8,10 @@ public class Message {
     public final String AfsenderID;
 
 
-    public Message(TimeStamp time, String samtaleID, String Afsender, String text){
+    //public Message(TimeStamp time, String samtaleID, String Afsender, String text){
 
 
-    }
+   // }
 
     public Message(String samtaleID, String Afsender, String text){
         this.text = text;

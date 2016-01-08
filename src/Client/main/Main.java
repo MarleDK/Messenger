@@ -6,9 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import universalClasses.TimeStamp;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -38,7 +41,7 @@ public class Main extends Application {
     }
 
     private static void deleteLog(){
-        File folder = new File("Client.database.log");
+        File folder = new File("src.Client");
         for(int i=0; i<folder.listFiles().length; i++) {
             folder.listFiles()[i].delete();
         }
