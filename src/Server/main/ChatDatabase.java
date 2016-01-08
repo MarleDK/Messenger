@@ -52,7 +52,7 @@ public class ChatDatabase {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
 
-            out.print(toString(clients));
+            out.println(toString(clients));
 
             out.close();
 
@@ -73,30 +73,42 @@ public class ChatDatabase {
     }
 
     public static void logMessage(Message message){
-
+        String ID = message.samtaleID;
+        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
+        try {
+            FileWriter outFile = new FileWriter(chatFile, true);
+            PrintWriter out = new PrintWriter(outFile);
+            out.println("[" + message.time.toString() + "]" + message.afsenderID + ": " + message.text);
+            out.close();
+        }
+        catch (Exception ex) {
+            System.out.println("Failed logging file:" + "Server/database/chat/" + ID + ".txt");
+        }
     }
 
     public static String GetChatIDs(String Client) {
         // Listen af samtaler i en form for String
-        try {
-            Files.walk(Paths.get("/serverdatabase/chat")).forEach(filePath -> {
-                if (Files.isRegularFile(filePath)) {
-                    File file = new File(filePath.toString());
-                    try {
-                        Scanner sc = new Scanner(file);
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+        File folder = new File("serverdatabase/chat/");
+        File[] listOfFiles = folder.listFiles();
+        String ChatIds = "";
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                //System.out.println(file.getName());
+                String path = "serverdatabase/chat/";
+                //File checkfile = new File(path);
+                try {
+                    Scanner sc = new Scanner(file);
+                    if (sc.nextLine().contains(Client)) {
+                        // add file to client (String)
+                        ChatIds = ChatIds + file.getName() + "§";
                     }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
+            }
         }
-
-
-
-        return null;
+        return ChatIds;
     }
 
 
