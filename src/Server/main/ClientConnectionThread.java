@@ -2,6 +2,8 @@ package Server.main;
 
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
+import universalClasses.Message;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -16,6 +18,7 @@ public class ClientConnectionThread extends Thread{
     private String ID;
     private int CurrentLine;
     private boolean done;
+    private ArrayList<String> Inputs;
 
     public ClientConnectionThread(Socket socket, String ID) {
         try {
@@ -34,12 +37,12 @@ public class ClientConnectionThread extends Thread{
     public void run() {
         while (true) {
             try {
-                ArrayList<String> Input = new ArrayList<>();
+                Inputs = new ArrayList<>();
                 done = false;
                 CurrentLine = 0;
                 while (!done) {
-                    Input.add(br.readLine());
-                    if (Input.get(CurrentLine).equals("§")) {
+                    Inputs.add(br.readLine());
+                    if (Inputs.get(CurrentLine).equals("§")) {
                         done = true;
                     } else {
                         CurrentLine++;
@@ -54,6 +57,20 @@ public class ClientConnectionThread extends Thread{
                     return;
                 }
             }
+            switch (Inputs.get(0)) {
+                case "NEW":
+
+                    break;
+                case "Message":
+                    // TYPE
+                    // TimeStamp
+                    // AfsenderID
+                    // Beskeden
+                    // END
+                    Message message = new Message(Inputs.get(1), Inputs.get(2), Inputs.get(3));
+                    break;
+            }
+            //Message Message = new Message();
             // Construct message
 
             // Udnyt Input efter modtagelse

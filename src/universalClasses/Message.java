@@ -2,29 +2,38 @@ package universalClasses;
 
 
 public class Message {
-    private String text;
-    private TimeStamp time;
-    private String samtaleID;
-    private String AfsenderID;
+    public final String text;
+    public final TimeStamp time;
+    public final String samtaleID;
+    public final String AfsenderID;
 
 
-    public Message(TimeStamp time, String text, String samtaleID, String Afsender){
+    public Message(TimeStamp time, String samtaleID, String Afsender, String text){
 
 
     }
 
-    public Message(String text, String samtaleID, String Afsender){
+    public Message(String samtaleID, String Afsender, String text){
         this.text = text;
         this.samtaleID = samtaleID;
         this.AfsenderID = Afsender;
+        this.time = new TimeStamp();
 
     }
 
     public String toString() {
         String s = this.text;
 
-        for()
-        return("Message\n" + this.samtaleID + "\n" + this.AfsenderID + "\n" + time);
+        for(int i = 0; i< text.length(); i++){
+            if(s.charAt(i) == '§' ){
+                
+
+
+            }
+
+        }
+
+        return("Message\n" + this.time + "\n" + this.samtaleID + "\n" + this.AfsenderID + "\n" + this.text);
 
         // Den returnere flere linjer med brug af \n
         // Starte med en linje kaldt §
@@ -35,6 +44,8 @@ public class Message {
     public String getText(){
         return null;
     }
+    
+    
 
 
 }
