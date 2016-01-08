@@ -2,9 +2,12 @@ package Client.main;
 
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
+import universalClasses.Message;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ListenerThread extends Thread {
     public boolean threadOK;
@@ -12,7 +15,8 @@ public class ListenerThread extends Thread {
     //private PrintWriter pw;
     private BufferedReader br;
     private String ID;
-    private String Input;
+    private int CurrentLine;
+    private boolean done;
 
     public ListenerThread(Socket socket, String ID){
         try {
@@ -29,22 +33,40 @@ public class ListenerThread extends Thread {
     }
 
     public void run(){
-        //Håndtering af motagelse af besked
-        try {
-            Input = br.readLine();
-        }
-        catch (Exception ex) {
+        while (true) {
+            //Håndtering af motagelse af besked
             try {
-                socket.shutdownOutput();
-                socket.shutdownInput();
-                socket.close();
+                ArrayList<String> Input = new ArrayList<>();
+                done = false;
+                CurrentLine = 0;
+                while (!done) {
+                    Input.add(br.readLine());
+                    if (Input.get(CurrentLine).equals("§")) {
+                        done = true;
+                    }
+                    else {
+                        CurrentLine++;
+                    }
+                }
             }
-            catch (Exception ex1) {
-                return;
+            catch (Exception ex) {
+                try {
+                    socket.shutdownOutput();
+                    socket.shutdownInput();
+                    socket.close();
+                }
+                catch (Exception ex1) {
+                    return;
+                }
             }
-        }
+            // Udnyt Arrayet af beskeder
+            //Message New = new Message(Input);
 
-        System.out.println(Input);
-        // Udnyt Input efter modtagelse
+            // get besked og samtale ID
+            // brug samtale ID til at få fat i sockets
+            // brug sockets til at konfigurer OutputStream og send
+
+
+        }
     }
 }
