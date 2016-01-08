@@ -2,6 +2,8 @@ package Server.main;
 
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
+import jdk.net.Sockets;
+import org.omg.PortableInterceptor.ACTIVE;
 import universalClasses.Message;
 
 import java.io.BufferedReader;
@@ -62,12 +64,38 @@ public class ClientConnectionThread extends Thread{
 
                     break;
                 case "Message":
+
                     // TYPE
                     // TimeStamp
+                    // SamtaleID
                     // AfsenderID
                     // Beskeden
                     // END
-                    Message message = new Message(Inputs.get(1), Inputs.get(2), Inputs.get(3));
+
+                    //Message message = new Message(Inputs.get(1), Inputs.get(2), Inputs.get(3));
+                    //ClientDatabase.logMessage(message);
+
+                    ArrayList<String> Clients = new ArrayList<>();
+                    Clients = ChatDatabase.getClients(Inputs.get(2));
+                    ArrayList<Socket> Sockets = new ArrayList<>();
+                    for (int i = 0; Clients.size() > i;i++) {
+                        Sockets.add(ActiveClient.getSocket(Clients.get(i)));
+                    }
+
+                    for (int i = Sockets.size(); 0 < i;i--) {
+                        if (Sockets.get(i) == null) {
+                            Sockets.remove(i);
+                        }
+                        try {
+                            pw = new PrintWriter(Sockets.get(i).getOutputStream());
+
+                        }
+                        catch (Exception ex) {
+
+                        }
+                    }
+
+
                     break;
             }
             //Message Message = new Message();
