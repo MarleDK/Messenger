@@ -7,20 +7,20 @@ import java.util.ArrayList;
 
 public class ClientDatabase {
 
-    public boolean hasClient(String ID){
+    public static boolean hasClient(String ID){
         return false;
     }
 
-    public ArrayList<Message> getLog(String ID){
+    public static ArrayList<Message> getLog(String ID){
 
         return null;
     }
 
-    public void deleteLog(){
+    public static void deleteLog(){
 
     }
 
-    public void logMessage(Message message){
+    public static void logMessage(Message message){
 
     }
 }
