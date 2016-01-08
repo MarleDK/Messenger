@@ -1,6 +1,8 @@
 package Server.main;
 
 
+import universalClasses.Message;
+
 import java.util.ArrayList;
 
 public class ChatDatabase {
@@ -21,7 +23,7 @@ public class ChatDatabase {
         return null;
     }
 
-    public static void logMessage(String message){
+    public static void logMessage(Message message){
 
     }
 

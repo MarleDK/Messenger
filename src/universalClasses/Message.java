@@ -7,14 +7,34 @@ public class Message {
     private String samtaleID;
     private String AfsenderID;
 
-    public Message(String text, String samtaleID, String Afsender){
+
+    public Message(TimeStamp time, String text, String samtaleID, String Afsender){
+
 
     }
 
-    public String toString(String text, TimeStamp time, String Samtale, String AfsenderID) {
+    public Message(String text, String samtaleID, String Afsender){
+        this.text = text;
+        this.samtaleID = samtaleID;
+        this.AfsenderID = Afsender;
+
+    }
+
+    public String toString() {
+        String s = this.text;
+
+        for()
+        return("Message\n" + this.samtaleID + "\n" + this.AfsenderID + "\n" + time);
+
         // Den returnere flere linjer med brug af \n
-        // Starte med en linje kaldt "Message"
+        // Starte med en linje kaldt §
+
+
+    }
+
+    public String getText(){
         return null;
     }
+
 
 }
