@@ -15,12 +15,12 @@ public class ClientConnectionThread extends Thread{
     private String ID;
     private String Input;
 
-    public ClientConnectionThread(Socket s, String ID) {
+    public ClientConnectionThread(Socket socket, String ID) {
         try {
-            this.socket = s;
-            socket.setSoTimeout(5000);
+            this.socket = socket;
+            this.socket.setSoTimeout(5000);
             //pw = new PrintWriter(s.getOutputStream());
-            br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.ID = ID;
 
             threadOK = true;
