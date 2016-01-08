@@ -9,4 +9,6 @@ public class Controller {
     protected void handleChatSubmitButtonAction(ActionEvent event) {
         //
     }
+
+
 }

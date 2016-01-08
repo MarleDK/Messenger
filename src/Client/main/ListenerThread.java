@@ -14,17 +14,16 @@ public class ListenerThread extends Thread {
     private Socket socket;
     //private PrintWriter pw;
     private BufferedReader br;
-    private String ID;
     private int CurrentLine;
     private boolean done;
 
-    public ListenerThread(Socket socket, String ID){
+    public ListenerThread(Socket socket){
         try {
             this.socket = socket;
             this.socket.setSoTimeout(50000);
             //pw = new PrintWriter(s.getOutputStream());
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            this.ID = ID;
+
 
             this.threadOK = true;
         } catch (Exception ex) {
