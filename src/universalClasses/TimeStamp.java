@@ -37,6 +37,17 @@ public class TimeStamp implements Comparable{
         this.formatted = F.format(calobj.getTime());
     }
 
+    public TimeStamp(String time){
+        this.sec = Integer.parseInt(time.substring(0,2));
+        this.min = Integer.parseInt(time.substring(3,5));
+        this.hour = Integer.parseInt(time.substring(6,10));
+        this.day = Integer.parseInt(time.substring(11,13));
+        this.month = Integer.parseInt(time.substring(14,16));
+        this.year = Integer.parseInt(time.substring(17,19));
+        this.formatted = time;
+
+    }
+
     public String toString() {
         return this.formatted;
     }

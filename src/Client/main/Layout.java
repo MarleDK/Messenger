@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 public class Layout {
 
-    public void ShowMessage(Message s) {
+    public static void ShowMessage(Message s) {
         // Vis besked på TextArea
         // Kræver "message" objekt!!
     }
 
-    public void ShowOnline(ArrayList<String> Clients) {
+    public static void ShowOnline(ArrayList<String> Clients) {
 
     }
 }
