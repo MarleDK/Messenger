@@ -2,7 +2,11 @@ package Server.main;
 
 
 import universalClasses.Message;
+import universalClasses.TimeStamp;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class ChatDatabase {
@@ -20,15 +24,37 @@ public class ChatDatabase {
 
         // Lave ny fil med ChatID som filnavn
         // Navn: TimeStamp + ClientID
+        for (int i = clients.size(); i < 0; i--) {
+            if (!ClientDatabase.hasClient(clients.get(i))) {
+                clients.remove(i);
+            }
+        }
+        String ID = new TimeStamp().toString() + clients.toString();
 
+        try {
+            File chatFile = new File("Server/database/chat/" + ID + ".txt");
+            FileWriter outFile = new FileWriter(chatFile, true);
+            PrintWriter out = new PrintWriter(outFile);
 
+            for (String client : clients) {
+                out.print(client + "§");
+            }
+            out.close();
+
+        }
+        catch (Exception ex) {
+            System.out.println("Failed creating file:" + "Server/database/chat/" + ID + ".txt");
+            return null;
+        }
         // Filen indeholde Navne på Clienter
         // Bob§James§Kagemand
 
         //Lav ny chat, med unikt chatID og returner
         //HUSK at at fortælle de forbundet klienter (både aktive og inaktive), at de er med i en ny chat.
+
+
         //HUSK!! Check om det er oprettede clienter
-        return null;
+        return ID;
     }
 
     public static void logMessage(Message message){

@@ -69,14 +69,24 @@ public class ClientConnectionThread extends Thread{
             }
             switch (Inputs.get(0)) {
                 case "NewChat":
+                    // En client vil gerne oprette en ny chat
 
                     // TYPE
                     // Clients
                     // END
 
-                    //ChatDatabase.makeChat(Clients);
+                    ArrayList<String> clients = new ArrayList<>();
+                    int lastindex = 0;
+                    for (int i = 0; i < Inputs.get(1).length(); i++) {
+                        if (Inputs.get(1).charAt(i) == '§') {
+                            clients.add(Inputs.get(1).substring(lastindex, i));
+                            lastindex = i + 1;
+                        }
+                    }
+                    ChatDatabase.makeChat(clients);
                     break;
                 case "Message":
+                    // En besked er kommet, videresend det!
 
                     // TYPE
                     // TimeStamp
@@ -85,14 +95,14 @@ public class ClientConnectionThread extends Thread{
                     // Beskeden
                     // END
 
-                    //Message message = new Message(Inputs.get(1), Inputs.get(2), Inputs.get(3));
+                    Message message = new Message(Inputs.get(1), Inputs.get(2), Inputs.get(3));
                     //ClientDatabase.logMessage(message);
 
-                    ArrayList<String> Clients = new ArrayList<>();
+                    ArrayList<String> Clients;
                     Clients = ChatDatabase.getClients(Inputs.get(2));
                     ArrayList<Socket> Sockets = new ArrayList<>();
-                    for (int i = 0; Clients.size() > i;i++) {
-                        Sockets.add(ActiveClient.getSocket(Clients.get(i)));
+                    for (String Client : Clients) {
+                        Sockets.add(ActiveClient.getSocket(Client));
                     }
 
                     for (int i = Sockets.size(); 0 < i;i--) {
@@ -101,11 +111,12 @@ public class ClientConnectionThread extends Thread{
                         }
                         try {
                             PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                            pw.write(Inputs.get(4));
+                            pw.write(message.toString());
                             pw.flush();
                             pw.close();
                         }
                         catch (Exception ex) {
+                            System.out.println("Error in forwarding message!");
                         }
                     }
 
