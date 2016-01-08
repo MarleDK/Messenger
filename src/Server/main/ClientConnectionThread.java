@@ -87,11 +87,12 @@ public class ClientConnectionThread extends Thread{
                             Sockets.remove(i);
                         }
                         try {
-                            pw = new PrintWriter(Sockets.get(i).getOutputStream());
-
+                            PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                            pw.write(Inputs.get(4));
+                            pw.flush();
+                            pw.close();
                         }
                         catch (Exception ex) {
-
                         }
                     }
 

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class ActiveClient {
     public static ArrayList<ActiveClient> ActiveClients = new ArrayList<>();
-    private String ID;
+    private String ClientID;
     private Socket socket;
 
     public ActiveClient(String ID, Socket socket){
-        this.ID = ID;
+        this.ClientID = ID;
         this.socket = socket;
     }
 
@@ -28,7 +28,7 @@ public class ActiveClient {
     }
 
     public String getID(){
-        return this.ID;
+        return this.ClientID;
     }
 
 }
