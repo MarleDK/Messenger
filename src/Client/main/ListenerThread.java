@@ -4,8 +4,7 @@ package Client.main;
 
 import universalClasses.Message;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -33,6 +32,74 @@ public class ListenerThread extends Thread {
     }
 
     public void run() {
+
+        // Modtagelse af listen
+        try {
+            String list =  br.readLine();
+        } catch (Exception ex) {
+            try {
+                socket.shutdownOutput();
+                socket.shutdownInput();
+                socket.close();
+            } catch (Exception ex1) {
+                return;
+            }
+            return;
+        }
+        // Check om § eller ny samtale ID
+        String ChatID;
+        String message;
+        boolean allmessages = false;
+        while (!allmessages) {
+            try {
+                ChatID = br.readLine();
+            } catch (Exception ex) {
+                try {
+                    socket.shutdownOutput();
+                    socket.shutdownInput();
+                    socket.close();
+                } catch (Exception ex1) {
+                    return;
+                }
+                return;
+            }
+            if (!ChatID.equals("§")) {
+                // Kør modtagelse af beskeder
+                while (!done) {
+                    try {
+                        done = false;
+                        File chatFile = new File("clientdatabase/log/" + ChatID + ".txt");
+                        FileWriter outFile = new FileWriter(chatFile, true);
+                        PrintWriter out = new PrintWriter(outFile);
+                        while (!done) {
+                            message = br.readLine();
+                            if (message.equals("§")) {
+                                done = true;
+                            } else {
+                                // Write into file
+                            }
+                        }
+                        out.close();
+                    } catch (Exception ex) {
+                        try {
+                            socket.shutdownOutput();
+                            socket.shutdownInput();
+                            socket.close();
+                        } catch (Exception ex1) {
+                            return;
+                        }
+                        return;
+                    }
+                }
+                // Færdig modtagelse af beskeder
+            }
+            else {
+                allmessages = true;
+            }
+        }
+
+
+        // Setup done, start main listener
         while (true) {
             //Håndtering af motagelse af besked
             try {
@@ -55,6 +122,7 @@ public class ListenerThread extends Thread {
                 } catch (Exception ex1) {
                     return;
                 }
+                return;
             }
             // Udnyt Arrayet af beskeder
             //Message New = new Message(Input);

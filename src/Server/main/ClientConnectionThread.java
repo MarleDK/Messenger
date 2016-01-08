@@ -89,6 +89,7 @@ public class ClientConnectionThread extends Thread{
                 } catch (Exception ex1) {
                     return;
                 }
+                return;
             }
             switch (Inputs.get(0)) {
                 case "NewChat":
@@ -146,6 +147,7 @@ public class ClientConnectionThread extends Thread{
                                 } catch (Exception ex1) {
                                     return;
                                 }
+                                return;
                             }
                         }
                     }
