@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ClientConnectionThread extends Thread{
-    boolean threadOK;
+    public boolean threadOK;
     private Socket socket;
     //private PrintWriter pw;
     private BufferedReader br;
@@ -18,7 +18,7 @@ public class ClientConnectionThread extends Thread{
     public ClientConnectionThread(Socket socket, String ID) {
         try {
             this.socket = socket;
-            this.socket.setSoTimeout(5000);
+            this.socket.setSoTimeout(50000);
             //pw = new PrintWriter(s.getOutputStream());
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.ID = ID;
