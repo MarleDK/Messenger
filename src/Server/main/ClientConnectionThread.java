@@ -23,9 +23,9 @@ public class ClientConnectionThread extends Thread{
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.ID = ID;
 
-            threadOK = true;
+            this.threadOK = true;
         } catch (Exception ex) {
-            threadOK = false;
+            this.threadOK = false;
         }
     }
 
