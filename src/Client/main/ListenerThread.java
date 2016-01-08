@@ -62,11 +62,9 @@ public class ListenerThread extends Thread {
             // Udnyt Arrayet af beskeder
             //Message New = new Message(Input);
 
-            // get besked og samtale ID
-            // brug samtale ID til at få fat i sockets
-            // brug sockets til at konfigurer OutputStream og send
+            //Send besked til Layout
 
-
+            //Gem i log?
         }
     }
 }

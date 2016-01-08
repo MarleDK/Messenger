@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ClientConnectionThread extends Thread{
     public boolean threadOK;
@@ -13,7 +14,8 @@ public class ClientConnectionThread extends Thread{
     //private PrintWriter pw;
     private BufferedReader br;
     private String ID;
-    private String Input;
+    private int CurrentLine;
+    private boolean done;
 
     public ClientConnectionThread(Socket socket, String ID) {
         try {
@@ -29,24 +31,42 @@ public class ClientConnectionThread extends Thread{
         }
     }
 
-    public void run(){
-
-        try {
-            Input = br.readLine();
-        }
-        catch (Exception ex) {
+    public void run() {
+        while (true) {
             try {
-                socket.shutdownOutput();
-                socket.shutdownInput();
-                socket.close();
+                ArrayList<String> Input = new ArrayList<>();
+                done = false;
+                CurrentLine = 0;
+                while (!done) {
+                    Input.add(br.readLine());
+                    if (Input.get(CurrentLine).equals("§")) {
+                        done = true;
+                    } else {
+                        CurrentLine++;
+                    }
+                }
+            } catch (Exception ex) {
+                try {
+                    socket.shutdownOutput();
+                    socket.shutdownInput();
+                    socket.close();
+                } catch (Exception ex1) {
+                    return;
+                }
             }
-            catch (Exception ex1) {
-                return;
-            }
-        }
+            // Construct message
 
-        System.out.println(Input);
-        // Udnyt Input efter modtagelse
+            // Udnyt Input efter modtagelse
+
+            //ChatDatabase.getClients();
+
+            //Get sockets from Clients
+
+            //Create pw from sockets
+
+            //toString message and send to pw
+
+        }
     }
 
 }
