@@ -2,6 +2,7 @@ package Server.main;
 
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
+import com.sun.deploy.util.SessionState;
 import jdk.net.Sockets;
 import org.omg.PortableInterceptor.ACTIVE;
 import universalClasses.Message;
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 public class ClientConnectionThread extends Thread{
     public boolean threadOK;
     private Socket socket;
-    //private PrintWriter pw;
+    private PrintWriter pw;
     private BufferedReader br;
-    private String ID;
+    private String ClientID;
     private int CurrentLine;
     private boolean done;
     private ArrayList<String> Inputs;
@@ -26,9 +27,9 @@ public class ClientConnectionThread extends Thread{
         try {
             this.socket = socket;
             this.socket.setSoTimeout(50000);
-            //pw = new PrintWriter(s.getOutputStream());
+            pw = new PrintWriter(s.getOutputStream());
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            this.ID = ID;
+            this.ClientID = ID;
 
             this.threadOK = true;
         } catch (Exception ex) {
@@ -37,6 +38,13 @@ public class ClientConnectionThread extends Thread{
     }
 
     public void run() {
+
+        // Setup
+
+        pw.write("Bob§James§Kagemand");
+        pw.write(ChatDatabase.GetChatIDs(this.ClientID));
+        pw.flush();
+
         while (true) {
             try {
                 Inputs = new ArrayList<>();
@@ -60,8 +68,13 @@ public class ClientConnectionThread extends Thread{
                 }
             }
             switch (Inputs.get(0)) {
-                case "NEW":
+                case "NewChat":
 
+                    // TYPE
+                    // Clients
+                    // END
+
+                    //ChatDatabase.makeChat(Clients);
                     break;
                 case "Message":
 
@@ -99,18 +112,6 @@ public class ClientConnectionThread extends Thread{
 
                     break;
             }
-            //Message Message = new Message();
-            // Construct message
-
-            // Udnyt Input efter modtagelse
-
-            //ChatDatabase.getClients();
-
-            //Get sockets from Clients
-
-            //Create pw from sockets
-
-            //toString message and send to pw
 
         }
     }
