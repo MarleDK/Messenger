@@ -7,10 +7,7 @@ import universalClasses.TimeStamp;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class ChatDatabase {
 
@@ -39,13 +36,8 @@ public class ChatDatabase {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
 
-            for (int i = 0; i < clients.size();i++) {
-                if (clients.size() == i-1) {
-                    out.print(clients.get(i));
-                }
-                else {
-                    out.print(clients.get(i) + "§");
-                }
+            for (String client : clients) {
+                out.print(client + "§");
             }
             out.close();
 

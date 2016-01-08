@@ -75,9 +75,15 @@ public class ClientConnectionThread extends Thread{
                     // Clients
                     // END
 
-                    // Find clienter
-
-                    //ChatDatabase.makeChat(Inputs.get(2));
+                    ArrayList<String> clients = new ArrayList<>();
+                    int lastindex = 0;
+                    for (int i = 0; i < Inputs.get(1).length(); i++) {
+                        if (Inputs.get(1).charAt(i) == '§') {
+                            clients.add(Inputs.get(1).substring(lastindex, i));
+                            lastindex = i + 1;
+                        }
+                    }
+                    ChatDatabase.makeChat(clients);
                     break;
                 case "Message":
                     // En besked er kommet, videresend det!
@@ -89,7 +95,7 @@ public class ClientConnectionThread extends Thread{
                     // Beskeden
                     // END
 
-                    //Message message = new Message(Inputs.get(1), Inputs.get(2), Inputs.get(3));
+                    Message message = new Message(Inputs.get(1), Inputs.get(2), Inputs.get(3));
                     //ClientDatabase.logMessage(message);
 
                     ArrayList<String> Clients;
@@ -105,7 +111,7 @@ public class ClientConnectionThread extends Thread{
                         }
                         try {
                             PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                            pw.write(Inputs.get(4));
+                            pw.write(message.toString());
                             pw.flush();
                             pw.close();
                         }
