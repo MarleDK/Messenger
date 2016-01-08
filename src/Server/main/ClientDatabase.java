@@ -11,16 +11,9 @@ public class ClientDatabase {
         return false;
     }
 
-    public static ArrayList<Message> getLog(String ID){
 
-        return null;
-    }
 
-    public static void deleteLog(){
 
-    }
 
-    public static void logMessage(Message message){
 
-    }
 }
