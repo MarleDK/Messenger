@@ -16,6 +16,8 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Main extends Application {
+    private static String currentChat;
+    public static String userID;
 
     @Override
     public void start(Stage primaryWindow) throws Exception{
@@ -25,13 +27,18 @@ public class Main extends Application {
         //Først skal der oprettes forbindelse til serveren
         //åben ListenerThread
 
+
         Socket socket = new Socket();
 
 
+
+
         primaryWindow.setOnCloseRequest(e ->{
-            deleteLog();
+            //deleteLog();
+
         });
         primaryWindow.setScene(new Scene(root, 600, 475));
+        root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryWindow.show();
     }
 
@@ -41,11 +48,21 @@ public class Main extends Application {
     }
 
     private static void deleteLog(){
-        File folder = new File("src.Client");
+        File folder = new File("clientdatabase/log");
         for(int i=0; i<folder.listFiles().length; i++) {
             folder.listFiles()[i].delete();
         }
     }
 
+    private static void getLog(Socket s){
 
+    }
+
+    public static String getCurrentChat(){
+        return currentChat;
+    }
+
+    public static String getUserID() {
+        return userID;
+    }
 }

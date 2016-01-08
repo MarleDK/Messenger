@@ -7,16 +7,19 @@
 <?import javafx.scene.layout.VBox?>
 <GridPane fx:controller="Client.main.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="0" vgap="0"
+          styleClass="root"
           fx:id="root">
 
     <VBox
               xmlns:fx="http://javafx.com/fxml" alignment="top_left"
+              prefHeight="600"
+              minWidth="80"
               fx:id="sidebar"
               GridPane.columnIndex="0" GridPane.rowIndex="0">
         <Button text="New Chat"
+                fx:id="newChat"
                 onAction="#newChatButtonAction"
-                alignment="CENTER"
-                />
+                alignment="CENTER"/>
 
 
     </VBox>
@@ -36,6 +39,8 @@
                 GridPane.columnIndex="0" GridPane.rowIndex="1">
             <TextField
                     GridPane.columnIndex="0" GridPane.rowIndex="0"
+                    fx:id="chatInputText"
+                    prefWidth="600"
             />
             <Button text="Send"
                     onAction="#chatSubmitButtonAction"
