@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main extends Application {
@@ -16,12 +18,14 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("Structure.fxml"));
         primaryWindow.setTitle("Messenger+++");
 
-        //Først laver vi en scanner til at finde de samtaler
+        //Først skal der oprettes forbindelse til serveren
+        //åben ListenerThread
 
 
 
         primaryWindow.setOnCloseRequest(e ->{
 
+            deleteLog();
         });
         primaryWindow.setScene(new Scene(root, 600, 475));
         primaryWindow.show();
@@ -33,6 +37,11 @@ public class Main extends Application {
     }
 
     private static void deleteLog(){
-        //Scanner log = new Scanner(Client.database.log);
+        File folder = new File("Client.database.log");
+        for(int i=0; i<folder.listFiles().length; i++) {
+            folder.listFiles()[i].delete();
+        }
     }
+
+
 }
