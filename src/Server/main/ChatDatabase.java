@@ -4,10 +4,11 @@ package Server.main;
 import universalClasses.Message;
 import universalClasses.TimeStamp;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ChatDatabase {
 
@@ -19,6 +20,13 @@ public class ChatDatabase {
         return null;
     }
 
+    public static String toString(ArrayList<String> clients){
+        String TheString = "";
+        for (String client : clients) {
+            TheString = TheString + client + "§";
+        }
+        return null;
+    }
 
     public static String makeChat(ArrayList<String> clients){
 
@@ -29,16 +37,23 @@ public class ChatDatabase {
                 clients.remove(i);
             }
         }
-        String ID = new TimeStamp().toString() + clients.toString();
 
+        //String ID = new TimeStamp().toString() + toString(clients);
+        // Dette gør så man kun kan lave en unik gruppe hvert sekundt.
+        // det for at undgå § symbolet når man bruger GetChatIDs
+        String ID = new TimeStamp().toString();
+        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
         try {
-            File chatFile = new File("Server/database/chat/" + ID + ".txt");
+            chatFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
 
-            for (String client : clients) {
-                out.print(client + "§");
-            }
+            out.print(toString(clients));
+
             out.close();
 
         }
@@ -63,6 +78,24 @@ public class ChatDatabase {
 
     public static String GetChatIDs(String Client) {
         // Listen af samtaler i en form for String
+        try {
+            Files.walk(Paths.get("/serverdatabase/chat")).forEach(filePath -> {
+                if (Files.isRegularFile(filePath)) {
+                    File file = new File(filePath.toString());
+                    try {
+                        Scanner sc = new Scanner(file);
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
         return null;
     }
 

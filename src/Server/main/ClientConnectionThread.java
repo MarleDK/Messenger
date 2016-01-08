@@ -41,9 +41,9 @@ public class ClientConnectionThread extends Thread{
 
         // Setup
 
-        pw.write("Bob§James§Kagemand");
-        pw.write(ChatDatabase.GetChatIDs(this.ClientID));
-        pw.flush();
+        // pw.write("Bob§James§Kagemand");
+        // pw.write(ChatDatabase.GetChatIDs(this.ClientID));
+        // pw.flush();
 
         while (true) {
             try {
