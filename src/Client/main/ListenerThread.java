@@ -16,8 +16,9 @@ public class ListenerThread extends Thread {
     private BufferedReader br;
     private int CurrentLine;
     private boolean done;
+    private ArrayList<String> Inputs;
 
-    public ListenerThread(Socket socket){
+    public ListenerThread(Socket socket) {
         try {
             this.socket = socket;
             this.socket.setSoTimeout(50000);
@@ -31,39 +32,50 @@ public class ListenerThread extends Thread {
         }
     }
 
-    public void run(){
+    public void run() {
         while (true) {
             //Håndtering af motagelse af besked
             try {
-                ArrayList<String> Input = new ArrayList<>();
+                Inputs = new ArrayList<>();
                 done = false;
                 CurrentLine = 0;
                 while (!done) {
-                    Input.add(br.readLine());
-                    if (Input.get(CurrentLine).equals("§")) {
+                    Inputs.add(br.readLine());
+                    if (Inputs.get(CurrentLine).equals("§")) {
                         done = true;
-                    }
-                    else {
+                    } else {
                         CurrentLine++;
                     }
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 try {
                     socket.shutdownOutput();
                     socket.shutdownInput();
                     socket.close();
-                }
-                catch (Exception ex1) {
+                } catch (Exception ex1) {
                     return;
                 }
             }
             // Udnyt Arrayet af beskeder
             //Message New = new Message(Input);
+            switch (Inputs.get(0)) {
+                case "NewChat":
+                    // Informere om der er kommet en ny chat.
 
-            //Send besked til Layout
+                    // TYPE
+                    // Clients
+                    // END
 
-            //Gem i log?
+                    // Vis i layout, om den nye chat
+
+                    break;
+                case "Message":
+                    //Modtagelse af besked
+
+                    //Send besked til Layout
+
+                    //Gem i log?
+            }
         }
     }
 }
