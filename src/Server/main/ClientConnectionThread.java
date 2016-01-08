@@ -101,26 +101,28 @@ public class ClientConnectionThread extends Thread{
                     ArrayList<String> Clients;
                     Clients = ChatDatabase.getClients(Inputs.get(2));
                     ArrayList<Socket> Sockets = new ArrayList<>();
-                    for (String Client : Clients) {
-                        Sockets.add(ActiveClient.getSocket(Client));
+                    if (Clients != null) {
+                        for (String Client : Clients) {
+                            Sockets.add(ActiveClient.getSocket(Client));
+                        }
+                        for (int i = Sockets.size(); 0 < i;i--) {
+                            if (Sockets.get(i) == null) {
+                                Sockets.remove(i);
+                            }
+                            try {
+                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                                pw.write(message.toString());
+                                pw.flush();
+                                pw.close();
+                            }
+                            catch (Exception ex) {
+                                System.out.println("Error in forwarding message!");
+                            }
+                        }
                     }
-
-                    for (int i = Sockets.size(); 0 < i;i--) {
-                        if (Sockets.get(i) == null) {
-                            Sockets.remove(i);
-                        }
-                        try {
-                            PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                            pw.write(message.toString());
-                            pw.flush();
-                            pw.close();
-                        }
-                        catch (Exception ex) {
-                            System.out.println("Error in forwarding message!");
-                        }
+                    else {
+                        System.out.println("No clients available to forward to!");
                     }
-
-
                     break;
             }
 
