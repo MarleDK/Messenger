@@ -84,11 +84,11 @@ public class ChatDatabase {
         }
     }
 
-    public static String GetChatIDs(String Client) {
+    public static ArrayList<String> GetChatIDs(String Client) {
         // Listen af samtaler i en form for String
         File folder = new File("serverdatabase/chat/");
         File[] listOfFiles = folder.listFiles();
-        String ChatIds = "";
+        ArrayList<String> ChatIds = new ArrayList<>();
         for (File file : listOfFiles) {
             if (file.isFile()) {
                 //System.out.println(file.getName());
@@ -98,7 +98,7 @@ public class ChatDatabase {
                     Scanner sc = new Scanner(file);
                     if (sc.nextLine().contains(Client)) {
                         // add file to client (String)
-                        ChatIds = ChatIds + file.getName() + "§";
+                        ChatIds.add(file.getName());
                     }
 
                 } catch (FileNotFoundException e) {

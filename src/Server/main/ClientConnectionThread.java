@@ -7,11 +7,10 @@ import jdk.net.Sockets;
 import org.omg.PortableInterceptor.ACTIVE;
 import universalClasses.Message;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ClientConnectionThread extends Thread{
     public boolean threadOK;
@@ -40,10 +39,34 @@ public class ClientConnectionThread extends Thread{
     public void run() {
 
         // Setup
+        // Show Online
+        //pw.write("Bob§James§Kagemand");
+        
+        // Show History (chat messsages)
+        pw.write(ChatDatabase.toString(ChatDatabase.GetChatIDs(this.ClientID)));
+        pw.flush();
 
-        // pw.write("Bob§James§Kagemand");
-        // pw.write(ChatDatabase.GetChatIDs(this.ClientID));
-        // pw.flush();
+        for (String s : ChatDatabase.GetChatIDs(this.ClientID)) {
+            File chatFile = new File("serverdatabase/chat/" + s + ".txt");
+            pw.write(s);
+            pw.flush();
+            try {
+                Scanner sc = new Scanner(chatFile);
+                while (sc.hasNextLine()){
+                    pw.println(sc.nextLine());
+                    pw.flush();
+                }
+                sc.close();
+            }
+            catch (Exception ex) {
+                System.out.println("Failed logging file:" + "Server/database/chat/" + s + ".txt");
+            }
+            pw.write("§");
+            pw.flush();
+        }
+
+        pw.write("§");
+        pw.flush();
 
         while (true) {
             try {
