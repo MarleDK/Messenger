@@ -5,8 +5,6 @@ import universalClasses.Message;
 import universalClasses.TimeStamp;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,7 +23,7 @@ public class ChatDatabase {
         for (String client : clients) {
             TheString = TheString + client + "§";
         }
-        return null;
+        return TheString;
     }
 
     public static String makeChat(ArrayList<String> clients){
@@ -74,7 +72,7 @@ public class ChatDatabase {
 
     public static void logMessage(Message message){
         String ID = message.samtaleID;
-        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
+        File chatFile = new File("serverdatabase/chat/" +  ID+ ".txt");
         try {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);

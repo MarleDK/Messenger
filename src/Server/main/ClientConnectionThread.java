@@ -116,7 +116,13 @@ public class ClientConnectionThread extends Thread{
                                 pw.close();
                             }
                             catch (Exception ex) {
-                                System.out.println("Error in forwarding message!");
+                                try {
+                                    socket.shutdownOutput();
+                                    socket.shutdownInput();
+                                    socket.close();
+                                } catch (Exception ex1) {
+                                    return;
+                                }
                             }
                         }
                     }
