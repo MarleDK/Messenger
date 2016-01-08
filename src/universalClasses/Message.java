@@ -23,7 +23,13 @@ public class Message {
     public String toString() {
         String s = this.text;
 
-        for()
+        for(int i = 0; i< text.length(); i++){
+            if(this.text ){
+
+            }
+
+        }
+
         return("Message\n" + this.samtaleID + "\n" + this.AfsenderID + "\n" + time);
 
         // Den returnere flere linjer med brug af \n
