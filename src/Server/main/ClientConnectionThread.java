@@ -27,7 +27,7 @@ public class ClientConnectionThread extends Thread{
         try {
             this.socket = socket;
             this.socket.setSoTimeout(50000);
-            pw = new PrintWriter(s.getOutputStream());
+            pw = new PrintWriter(this.socket.getOutputStream());
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.ClientID = ID;
 
