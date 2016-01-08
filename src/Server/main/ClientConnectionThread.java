@@ -2,6 +2,8 @@ package Server.main;
 
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
+import universalClasses.Message;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -54,6 +56,7 @@ public class ClientConnectionThread extends Thread{
                     return;
                 }
             }
+            //Message Message = new Message();
             // Construct message
 
             // Udnyt Input efter modtagelse
