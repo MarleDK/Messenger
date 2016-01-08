@@ -7,6 +7,7 @@ import universalClasses.Message;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ListenerThread extends Thread {
     public boolean threadOK;
@@ -14,7 +15,6 @@ public class ListenerThread extends Thread {
     //private PrintWriter pw;
     private BufferedReader br;
     private String ID;
-    private String[] Input;
     private int CurrentLine;
     private boolean done;
 
@@ -36,11 +36,12 @@ public class ListenerThread extends Thread {
         while (true) {
             //Håndtering af motagelse af besked
             try {
+                ArrayList<String> Input = new ArrayList<>();
                 done = false;
                 CurrentLine = 0;
                 while (!done) {
-                    Input[CurrentLine] = br.readLine();
-                    if (Input[CurrentLine].equals("§")) {
+                    Input.add(br.readLine());
+                    if (Input.get(CurrentLine).equals("§")) {
                         done = true;
                     }
                     else {
@@ -60,6 +61,11 @@ public class ListenerThread extends Thread {
             }
             // Udnyt Arrayet af beskeder
             //Message New = new Message(Input);
+
+            // get besked og samtale ID
+            // brug samtale ID til at få fat i sockets
+            // brug sockets til at konfigurer OutputStream og send
+
 
         }
     }
