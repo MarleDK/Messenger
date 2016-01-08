@@ -28,9 +28,12 @@ public class Message {
     public String toString() {
         String s = this.text;
 
-        for(int i = 0; i< text.length(); i++){
+        for(int i = 0; i< s.length(); i++){
             if(s.charAt(i) == '§' ){
-                
+                String x;
+                x = s.substring(0, i) + "§" + s.substring(i);
+                s = x;
+                i++;
 
 
             }
@@ -45,9 +48,6 @@ public class Message {
 
     }
 
-    public String getText(){
-        return null;
-    }
     
     
 
