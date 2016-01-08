@@ -17,7 +17,8 @@ import java.util.Scanner;
 
 public class Main extends Application {
     private static String currentChat;
-    public static String userID;
+    private static String userID;
+    private static Socket socket;
 
     @Override
     public void start(Stage primaryWindow) throws Exception{
@@ -28,7 +29,7 @@ public class Main extends Application {
         //åben ListenerThread
 
 
-        Socket socket = new Socket();
+        socket = new Socket();
 
 
 
@@ -64,5 +65,9 @@ public class Main extends Application {
 
     public static String getUserID() {
         return userID;
+    }
+
+    public static Socket getSocket() {
+        return socket;
     }
 }

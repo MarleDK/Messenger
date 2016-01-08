@@ -17,6 +17,11 @@ public class Message {
 
     }
 
+    public Message(String s){
+        //lav en konstruktør, der tager message.toString teksten, og laver det til en Message
+        while ()
+    }
+
     public Message(String samtaleID, String Afsender, String text){
         this.text = text;
         this.samtaleID = samtaleID;
@@ -40,7 +45,7 @@ public class Message {
 
         }
 
-        return("Message\n" + this.time + "\n" + this.samtaleID + "\n" + this.afsenderID + "\n" + this.text);
+        return("Message§" + this.time + "§" + this.samtaleID + "§" + this.afsenderID + "§" + this.text);
 
         // Den returnere flere linjer med brug af \n
         // Starte med en linje kaldt §
