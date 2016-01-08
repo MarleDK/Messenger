@@ -45,5 +45,6 @@ public class ListenerThread extends Thread {
         }
 
         System.out.println(Input);
+        // Udnyt Input efter modtagelse
     }
 }

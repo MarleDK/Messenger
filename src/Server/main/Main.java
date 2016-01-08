@@ -22,7 +22,7 @@ public class Main {
                 System.out.println("Error accepting from socket");
                 System.exit(0);
             }
-            ClientConnectionThread g = new ClientConnectionThread();
+            ClientConnectionThread g = new ClientConnectionThread(s, "Insert ID here");
             if (g.threadOK)
                 g.start();
         }

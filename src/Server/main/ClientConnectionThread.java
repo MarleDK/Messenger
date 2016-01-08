@@ -46,6 +46,7 @@ public class ClientConnectionThread extends Thread{
         }
 
         System.out.println(Input);
+        // Udnyt Input efter modtagelse
     }
 
 }
