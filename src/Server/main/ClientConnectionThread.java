@@ -113,13 +113,10 @@ public class ClientConnectionThread extends Thread{
                     // En besked er kommet, videresend det!
 
                     // TYPE
-                    // TimeStamp
-                    // SamtaleID
-                    // AfsenderID
                     // Beskeden
                     // END
 
-                    Message message = new Message(Inputs.get(1), Inputs.get(2), Inputs.get(3));
+                    Message message = Message.toMessage(Inputs.get(1));
                     //ClientDatabase.logMessage(message);
 
                     ArrayList<String> Clients;
