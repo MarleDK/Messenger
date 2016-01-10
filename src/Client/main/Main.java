@@ -76,7 +76,6 @@ public class Main extends Application {
             } else {
                 Boolean hasMoreMessages = true;
                 while(hasMoreMessages){
-
                     if (br.readLine().equals("§")) {
                         hasMoreMessages = false;
                     } else {

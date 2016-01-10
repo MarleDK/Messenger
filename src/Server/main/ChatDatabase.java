@@ -26,10 +26,23 @@ public class ChatDatabase {
         return TheString;
     }
 
-    public static String makeChat(ArrayList<String> clients){
+    public static String makeChat(String s){
 
         // Lave ny fil med ChatID som filnavn
         // Navn: TimeStamp + ClientID
+        if(!s.startsWith("NewChat§")){
+            return null;
+        }
+        ArrayList<String> clients = new ArrayList<>();
+        int lastToken = 7;
+        for(int i=8; i<s.length(); i++){
+            if(s.charAt(i) == '§'){
+                clients.add(s.substring(lastToken+1, i));
+                lastToken = i;
+            }
+        }
+        clients.add(s.substring(lastToken+1));
+
         for (int i = clients.size(); i < 0; i--) {
             if (!ClientDatabase.hasClient(clients.get(i))) {
                 clients.remove(i);

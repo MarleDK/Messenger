@@ -18,9 +18,7 @@ public class ClientConnectionThread extends Thread{
     private PrintWriter pw;
     private BufferedReader br;
     private String ClientID;
-    private int CurrentLine;
-    private boolean done;
-    private ArrayList<String> Inputs;
+
 
     public ClientConnectionThread(Socket socket, String ID) {
         try {
@@ -69,18 +67,10 @@ public class ClientConnectionThread extends Thread{
         pw.flush();
 
         while (true) {
+            String input;
             try {
-                Inputs = new ArrayList<>();
-                done = false;
-                CurrentLine = 0;
-                while (!done) {
-                    Inputs.add(br.readLine());
-                    if (Inputs.get(CurrentLine).equals("§")) {
-                        done = true;
-                    } else {
-                        CurrentLine++;
-                    }
-                }
+                input = br.readLine();
+
             } catch (Exception ex) {
                 try {
                     socket.shutdownOutput();
@@ -91,25 +81,18 @@ public class ClientConnectionThread extends Thread{
                 }
                 return;
             }
-            switch (Inputs.get(0)) {
-                case "NewChat":
+
+                if(input.startsWith("NewChat")) {
                     // En client vil gerne oprette en ny chat
 
                     // TYPE
                     // Clients
                     // END
 
-                    ArrayList<String> clients = new ArrayList<>();
-                    int lastindex = 0;
-                    for (int i = 0; i < Inputs.get(1).length(); i++) {
-                        if (Inputs.get(1).charAt(i) == '§') {
-                            clients.add(Inputs.get(1).substring(lastindex, i));
-                            lastindex = i + 1;
-                        }
-                    }
-                    ChatDatabase.makeChat(clients);
-                    break;
-                case "Message":
+                    pw.println(ChatDatabase.makeChat(input));
+                    pw.flush();
+
+                } else if(input.startsWith("Message")) {
                     // En besked er kommet, videresend det!
 
                     // TYPE
@@ -127,7 +110,7 @@ public class ClientConnectionThread extends Thread{
                         for (String Client : Clients) {
                             Sockets.add(ActiveClient.getSocket(Client));
                         }
-                        for (int i = Sockets.size(); 0 < i;i--) {
+                        for (int i = Sockets.size(); 0 < i; i--) {
                             if (Sockets.get(i) == null) {
                                 Sockets.remove(i);
                             }
@@ -136,8 +119,7 @@ public class ClientConnectionThread extends Thread{
                                 pw.write(message.toString());
                                 pw.flush();
                                 pw.close();
-                            }
-                            catch (Exception ex) {
+                            } catch (Exception ex) {
                                 try {
                                     socket.shutdownOutput();
                                     socket.shutdownInput();
@@ -148,11 +130,10 @@ public class ClientConnectionThread extends Thread{
                                 return;
                             }
                         }
-                    }
-                    else {
+                    } else {
                         System.out.println("No clients available to forward to!");
                     }
-                    break;
+                }
             }
 
         }

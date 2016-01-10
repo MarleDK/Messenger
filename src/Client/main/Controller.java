@@ -27,7 +27,6 @@ public class Controller {
                     pwL.println(message.toString());
 
                     PrintWriter pwS = new PrintWriter(Client.main.Main.getSocket().getOutputStream());
-                    pwS.println("message");
                     pwS.println(message.toString());
                     pwS.flush();
 
@@ -45,5 +44,6 @@ public class Controller {
 
     @FXML
     protected void newChatButtonAction(ActionEvent actionEvent) {
+        
     }
 }
