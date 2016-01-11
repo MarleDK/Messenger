@@ -42,6 +42,12 @@ public class Controller {
 
     }
 
+    @FXML
+    public void loginSubmitButtonAction(ActionEvent actionEvent) {
+        // Login metode her
+
+    }
+
 
     @FXML
     protected void newChatButtonAction(ActionEvent actionEvent) throws IOException {
