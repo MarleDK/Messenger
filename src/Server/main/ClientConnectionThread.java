@@ -99,7 +99,7 @@ public class ClientConnectionThread extends Thread{
                     // Beskeden
                     // END
 
-                    Message message = Message.toMessage(Inputs.get(1));
+                    Message message = Message.toMessage(input);
                     //ClientDatabase.logMessage(message);
 
                     ArrayList<String> Clients;
@@ -139,4 +139,4 @@ public class ClientConnectionThread extends Thread{
         }
     }
 
-}
+
