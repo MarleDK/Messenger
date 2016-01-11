@@ -16,10 +16,13 @@ import java.util.Scanner;
 
 public class Main extends Application {
     private static String currentChat;
-    private static String userID;
+    private static String userID = "Jakob";
+    private static String password = "RydhofKage";
     private static Socket socket;
     private static ArrayList<String> chatIDs;
     private static ArrayList<ArrayList<Message>> chatlogs;
+    private static String serverAdr = "127.0.0.1";
+    private static int serverPort = 9797;
 
     @Override
     public void start(Stage primaryWindow) throws Exception{
@@ -31,7 +34,11 @@ public class Main extends Application {
 
 
         socket = new Socket();
-
+        PrintWriter pw = new PrintWriter(socket.getOutputStream());
+        pw.println("ExistingUser");
+        pw.println(userID);
+        pw.println(password);
+        pw.flush();
 
 
 
@@ -49,6 +56,7 @@ public class Main extends Application {
         launch(args);
     }
 
+    //Denne metode bør ikke være nødvendig mere.
     private static void deleteLog(){
         File folder = new File("clientdatabase/log");
         for(int i=0; i<folder.listFiles().length; i++) {
