@@ -2,6 +2,7 @@ package Client.main;
 
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
+import javafx.application.Platform;
 import universalClasses.Message;
 import universalClasses.TimeStamp;
 
@@ -16,7 +17,10 @@ public class ListenerThread extends Thread {
     private BufferedReader br;
     private int CurrentLine;
     private boolean done;
-    private ArrayList<String> Inputs;
+    private String input;
+    private String ChatID;
+    private String Clients;
+    private String message;
 
     public ListenerThread(Socket socket) {
         try {
@@ -48,8 +52,6 @@ public class ListenerThread extends Thread {
             return;
         }
         // Check om § eller ny samtale ID
-        String ChatID;
-        String message;
         boolean allmessages = false;
         while (!allmessages) {
             try {
@@ -65,28 +67,45 @@ public class ListenerThread extends Thread {
                 return;
             }
             if (!ChatID.equals("§")) {
-                // Kør modtagelse af beskeder
-                File chatFile = new File("serverdatabase/chat/" + ChatID + ".txt");
+                // Ny chat
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        Main.newChat(ChatID);
+                    }
+                });
+                // Første linje indeholder clienter i denne chat
                 try {
-                    chatFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Clients = br.readLine();
+                } catch (Exception ex) {
+                    try {
+                        socket.shutdownOutput();
+                        socket.shutdownInput();
+                        socket.close();
+                    } catch (Exception ex1) {
+                        return;
+                    }
+                    return;
                 }
+                // Vise hvilke clienter du skriver til
+
+                // Kør modtagelse af beskeder
                 while (!done) {
                     try {
                         done = false;
-                        FileWriter outFile = new FileWriter(chatFile, true);
-                        PrintWriter out = new PrintWriter(outFile);
                         while (!done) {
                             message = br.readLine();
                             if (message.equals("§")) {
                                 done = true;
                             } else {
-                                // Write into file
-                                out.println(message);
+                                // Write into client/layout
+                                Platform.runLater(new Runnable() {
+                                    @Override public void run() {
+                                        Main.addMessage(Message.toMessage(message));
+                                    }
+                                });
+
                             }
                         }
-                        out.close();
                     } catch (Exception ex) {
                         try {
                             socket.shutdownOutput();
@@ -110,17 +129,8 @@ public class ListenerThread extends Thread {
         while (true) {
             //Håndtering af motagelse af besked
             try {
-                Inputs = new ArrayList<>();
-                done = false;
-                CurrentLine = 0;
-                while (!done) {
-                    Inputs.add(br.readLine());
-                    if (Inputs.get(CurrentLine).equals("§")) {
-                        done = true;
-                    } else {
-                        CurrentLine++;
-                    }
-                }
+                input = br.readLine();
+
             } catch (Exception ex) {
                 try {
                     socket.shutdownOutput();
@@ -133,22 +143,30 @@ public class ListenerThread extends Thread {
             }
             // Udnyt Arrayet af beskeder
             //Message New = new Message(Input);
-            switch (Inputs.get(0)) {
-                case "NewChat":
-                    // Informere om der er kommet en ny chat.
+            if(input.startsWith("NewChat")) {
+                // Informere om der er kommet en ny chat.
 
-                    // TYPE
-                    // Clients
-                    // END
+                // TYPE
+                // Clients
+                // END
 
-                    // Vis i layout, om den nye chat
+                // Vis i layout, om den nye chat
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        // kald metoden her
 
-                    break;
-                case "Message":
+                    }
+                });
+
+            }
+            else if(input.startsWith("Message")) {
                     //Modtagelse af besked
-
                     //Send besked til Layout
-
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        Main.addMessage(Message.toMessage(input));
+                    }
+                });
                     //Gem i log?
             }
         }

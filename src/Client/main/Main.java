@@ -111,4 +111,10 @@ public class Main extends Application {
     public static Socket getSocket() {
         return socket;
     }
+
+    public static void newChat (String IDs) {
+        chatIDs.add(IDs);
+        chatlogs.add(new ArrayList<Message>());
+        //
+    }
 }
