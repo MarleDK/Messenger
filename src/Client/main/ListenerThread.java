@@ -154,7 +154,7 @@ public class ListenerThread extends Thread {
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
                         // kald metoden her
-                        Main.newChat(Message.toMessage(input).samtaleID);
+                        Main.newChat(Message.toMessage(input.substring(8)).samtaleID);
                     }
                 });
 
