@@ -50,8 +50,8 @@ public class Main extends Application {
         }
 
         getLogFromServer();
-
-
+        Thread listener = new ListenerThread(socket);
+        listener.start();
 
         primaryWindow.setOnCloseRequest(e ->{
             //deleteLog();
@@ -63,8 +63,7 @@ public class Main extends Application {
 
         // Listener Thread
 
-        //Thread listener = new ListenerThread(socket);
-        //listener.start();
+
 
     }
 

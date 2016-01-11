@@ -15,15 +15,15 @@ public class ClientDatabase {
         return false;
     }
 
-    public static String getClientsOnline() {
-        BuildClients = "GetUsers";
+    public static String getClients() {
+        BuildClients = "GetUsers§";
         File folder = new File("serverdatabase/client/");
         File[] listOfFiles = folder.listFiles();
         ArrayList<String> ChatIds = new ArrayList<>();
         for (File file : listOfFiles) {
             if (file.isFile()) {
                 //System.out.println(file.getName());
-                BuildClients += "$" + file.toString();
+                BuildClients += file.toString() + "$";
 
             }
         }

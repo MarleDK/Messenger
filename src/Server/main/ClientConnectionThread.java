@@ -222,14 +222,13 @@ public class ClientConnectionThread extends Thread{
                 }
             }
             else if(input.startsWith("getUsers")) {
-                pw.println(ClientDatabase.getClientsOnline());
+                pw.println(ClientDatabase.getClients());
                 pw.flush();
             }
         }
-
+        System.out.println("Removing client..." + this.ClientID);
+        ActiveClient.removeActiveClient(this.ClientID);
     }
-
-    // Fjern active client
 }
 
 
