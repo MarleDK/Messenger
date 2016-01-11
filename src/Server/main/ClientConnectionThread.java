@@ -57,7 +57,7 @@ public class ClientConnectionThread extends Thread{
                 sc.close();
             }
             catch (Exception ex) {
-                System.out.println("Failed logging file:" + "Server/database/chat/" + s + ".txt");
+                System.out.println("Failed reading file:" + "Server/database/chat/" + s + ".txt");
             }
             pw.write("§");
             pw.flush();
@@ -77,9 +77,9 @@ public class ClientConnectionThread extends Thread{
                     socket.shutdownInput();
                     socket.close();
                 } catch (Exception ex1) {
-                    return;
+                    break;
                 }
-                return;
+                break;
             }
             if(input.startsWith("NewChat")) {
                 // En client vil gerne oprette en ny chat
@@ -88,8 +88,6 @@ public class ClientConnectionThread extends Thread{
                 // Clients
                 // END
                 String clientInput = ChatDatabase.makeChat(input);
-
-                //ClientDatabase.logMessage(message);
 
                 ArrayList<String> Clients;
                 Clients = ChatDatabase.getClients(clientInput);
@@ -113,9 +111,9 @@ public class ClientConnectionThread extends Thread{
                                 socket.shutdownInput();
                                 socket.close();
                             } catch (Exception ex1) {
-                                return;
+                                break;
                             }
-                            return;
+                            break;
                         }
                     }
                 } else {
@@ -130,7 +128,7 @@ public class ClientConnectionThread extends Thread{
                 // END
 
                 Message message = Message.toMessage(input);
-                //ClientDatabase.logMessage(message);
+                ChatDatabase.logMessage(message);
 
                 ArrayList<String> Clients;
                 Clients = ChatDatabase.getClients(message.samtaleID);
@@ -155,9 +153,9 @@ public class ClientConnectionThread extends Thread{
                                 socket.shutdownInput();
                                 socket.close();
                             } catch (Exception ex1) {
-                                return;
+                                break;
                             }
-                            return;
+                            break;
                         }
                     }
                 } else {
@@ -167,6 +165,7 @@ public class ClientConnectionThread extends Thread{
         }
 
     }
+    // Fjern active client
 }
 
 

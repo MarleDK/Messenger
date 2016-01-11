@@ -15,7 +15,6 @@ public class ListenerThread extends Thread {
     private Socket socket;
     //private PrintWriter pw;
     private BufferedReader br;
-    private int CurrentLine;
     private boolean done;
     private String input;
     private String ChatID;
@@ -88,6 +87,7 @@ public class ListenerThread extends Thread {
                 }
                 // Vise hvilke clienter du skriver til
                 // TODO
+
                 // Kør modtagelse af beskeder
                 while (!done) {
                     try {
@@ -157,7 +157,6 @@ public class ListenerThread extends Thread {
                         Main.newChat(Message.toMessage(input.substring(8)).samtaleID);
                     }
                 });
-
             }
             else if(input.startsWith("Message")) {
                     //Modtagelse af besked
@@ -167,8 +166,8 @@ public class ListenerThread extends Thread {
                         Main.addMessage(Message.toMessage(input));
                     }
                 });
-                    //Gem i log?
             }
         }
     }
+
 }
