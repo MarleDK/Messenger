@@ -1,5 +1,6 @@
 package Client.main;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -9,54 +10,62 @@ import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
-/**
- * Created by jakob on 11-01-2016.
- */
 public class newChat {
     @FXML
     private static VBox userListVBox;
-    private static ArrayList<String> chatUsers = null;
 
+    @FXML
+    private static ListView<String> users;
+    @FXML
+    private static ListView<String> chatUsers;
 
+    @FXML
     public static void makeChat(String clients){
 
-        System.out.printf("Starter makeChat i newChat...");
-        ListView<Button> users = new ListView<Button>();
+        System.out.println("Starter makeChat i newChat...");
 
         String client ="";
         ArrayList<String> chatUsers = null;
-        for(int i=0; i<clients.length(); i++){
-            if(clients.charAt(i) != '§'){
+        int indexChatUser = 0;
+        for(int i=0; i < clients.length(); i++) {
+            if (clients.charAt(i) != '§') {
                 client += clients.charAt(i);
-            } else if(clients.charAt(i) == '§'){
-                users.getItems().add(new Button(client));
-                users.getItems().get(i).setStyle("-fx-background-color: white; -fx-text-fill: white");
-                users.getItems().get(i).setOnAction(e -> {
-                    if (chatUsers == null){
+            } else {
+                System.out.println(client);
+                users.getItems().add(client);
+                users.getItems().get(indexChatUser);
+                users.setOnMouseClicked(e -> {
+                    if (chatUsers == null) {
                         chatUsers.add(e.getSource().toString());
-                        users.getItems().get(users.getItems().indexOf(e.getSource().toString())).setStyle("-fx-background-color: deepskyblue; -fx-text-fill: white");
-                    } else if(chatUsers.contains(e.getSource().toString())){
+                        users.getItems().remove(e.getSource().toString());
+                    } else if (chatUsers.contains(e.getSource().toString())) {
                         chatUsers.remove(e.getSource().toString());
-                        users.getItems().get(users.getItems().indexOf(e.getSource().toString())).setStyle("-fx-background-color: white; -fx-text-fill: black");
+                        users.getItems().add(e.getSource().toString());
                     } else {
                         chatUsers.add(e.getSource().toString());
-                        users.getItems().get(users.getItems().indexOf(e.getSource().toString())).setStyle("-fx-background-color: deepskyblue; -fx-text-fill: white");
+                        users.getItems().remove(e.getSource().toString());
                     }
 
                 });
-                client ="";
+                client = "";
+                indexChatUser ++;
             }
         }
-        userListVBox.getChildren().add(users);
-        Main.getPrimaryWindow().setScene(new Scene(Main.getNewChatScene()));
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                // kald metoden her
+                Main.getPrimaryWindow().setScene(new Scene(Main.getNewChatScene()));
+            }
+        });
+
 
     }
 
     @FXML
     public void makeNewChat(ActionEvent actionEvent) {
         Main.getPw().print("NewChat§");
-        for(String user: chatUsers){
-            Main.getPw().print(user+"§");
+        for(int i=0; i<chatUsers.getItems().size(); i++){
+            Main.getPw().print(chatUsers.getItems().get(i)+"§");
         }
         Main.getPw().println();
         Main.getPw().flush();
