@@ -20,13 +20,13 @@ public class ClientConnectionThread extends Thread{
     private String ClientID;
 
 
-    public ClientConnectionThread(Socket socket, String ID) {
+    public ClientConnectionThread(Socket socket) {
         try {
             this.socket = socket;
             this.socket.setSoTimeout(50000);
             pw = new PrintWriter(this.socket.getOutputStream());
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            this.ClientID = ID;
+            this.ClientID = br.readLine();
 
             this.threadOK = true;
         } catch (Exception ex) {
