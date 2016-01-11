@@ -79,29 +79,33 @@ public class Main extends Application {
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 
-        br.readLine();
-        chatlogs = new ArrayList<>();
-        int chatLogIndex = 0;
+        if (br.readLine() == "ChatLogs") {
+            chatlogs = new ArrayList<>();
+            int chatLogIndex = 0;
 
-        Boolean hasMoreChats = true;
-        while(hasMoreChats){
-            String chatID = br.readLine();
-            chatIDs.add(chatID);
-            chatlogs.add(new ArrayList<Message>());
+            Boolean hasMoreChats = true;
+            while (hasMoreChats) {
+                String chatID = br.readLine();
+                chatIDs.add(chatID);
+                chatlogs.add(new ArrayList<Message>());
 
-            if (chatID.equals("§")) {
-                hasMoreChats = false;
-            } else {
-                Boolean hasMoreMessages = true;
-                while(hasMoreMessages){
-                    if (br.readLine().equals("§")) {
-                        hasMoreMessages = false;
-                    } else {
-                        chatlogs.get(chatLogIndex).add(Message.toMessage(br.readLine()));
+                if (chatID.equals("§")) {
+                    hasMoreChats = false;
+                } else {
+                    Boolean hasMoreMessages = true;
+                    while (hasMoreMessages) {
+                        if (br.readLine().equals("§")) {
+                            hasMoreMessages = false;
+                        } else {
+                            chatlogs.get(chatLogIndex).add(Message.toMessage(br.readLine()));
+                        }
                     }
                 }
+                chatLogIndex++;
             }
-            chatLogIndex++;
+        }
+        else {
+            System.out.println("Should have gotten ChatLogs... but got something else...");
         }
 
     }

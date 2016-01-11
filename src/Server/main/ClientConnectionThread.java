@@ -88,7 +88,7 @@ public class ClientConnectionThread extends Thread{
 
         System.out.println("Run Setup! Sender liste...");
         // Show History (chat messsages)
-        pw.write(ChatDatabase.toString(ChatDatabase.GetChatIDs(this.ClientID)));
+        pw.write("ChatLogs");
         pw.flush();
 
         System.out.println("Indlæser chat history...");
