@@ -44,7 +44,8 @@ public class Main extends Application {
             pw.println(userID);
             pw.println(password);
             pw.flush();
-            if(br.readLine().equals("LoginFailed")){
+            String login = br.readLine();
+            if(login.equals("LoginFailed") || login.equals("LoginAlready")){
                 Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
                 loginFail.setHeaderText("Log ind Fejlede programmet lukker");
                 loginFail.showAndWait();
