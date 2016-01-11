@@ -24,7 +24,7 @@ public class ClientConnectionThread extends Thread{
     public ClientConnectionThread(Socket socket) {
         try {
             this.socket = socket;
-            this.socket.setSoTimeout(50000);
+            this.socket.setSoTimeout(100000);
             pw = new PrintWriter(this.socket.getOutputStream());
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
@@ -84,18 +84,18 @@ public class ClientConnectionThread extends Thread{
 
         // Setup
         // Show Online
-        //pw.write("Bob§James§Kagemand");
+        //pw.println("Bob§James§Kagemand");
 
         System.out.println("Run Setup! Sender liste...");
         // Show History (chat messsages)
-        pw.write("ChatLogs");
+        pw.println("ChatLogs");
         pw.flush();
 
         System.out.println("Indlæser chat history...");
         for (String s : ChatDatabase.GetChatIDs(this.ClientID)) {
             File chatFile = new File("serverdatabase/chat/" + s + ".txt");
             System.out.println("Sender ChatID!");
-            pw.write(s);
+            pw.println(s);
             pw.flush();
             try {
                 Scanner sc = new Scanner(chatFile);
@@ -111,11 +111,11 @@ public class ClientConnectionThread extends Thread{
                 System.out.println("Failed reading file:" + "Server/database/chat/" + s + ".txt");
             }
             System.out.println("Færdig sende beskeder!");
-            pw.write("§");
+            pw.println("§");
             pw.flush();
         }
 
-        pw.write("§");
+        pw.println("§");
         pw.flush();
 
         System.out.println("Setup færdiggjort! Venter på client...");
@@ -200,7 +200,7 @@ public class ClientConnectionThread extends Thread{
                         }
                         try {
                             PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                            pw.write(message.toString());
+                            pw.println(message.toString());
                             pw.flush();
                             pw.close();
                         } catch (Exception ex) {
@@ -220,7 +220,7 @@ public class ClientConnectionThread extends Thread{
                 }
             }
             else if(input.startsWith("getUsers")) {
-                pw.write(ClientDatabase.getClientsOnline());
+                pw.println(ClientDatabase.getClientsOnline());
                 pw.flush();
             }
         }

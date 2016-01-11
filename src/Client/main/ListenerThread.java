@@ -24,7 +24,7 @@ public class ListenerThread extends Thread {
     public ListenerThread(Socket socket) {
         try {
             this.socket = socket;
-            this.socket.setSoTimeout(50000);
+            this.socket.setSoTimeout(100000);
             //pw = new PrintWriter(s.getOutputStream());
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 

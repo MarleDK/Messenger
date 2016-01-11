@@ -18,6 +18,7 @@ public class ServerMain {
             System.out.println("Error creating server socket");
             System.exit(0);
         }
+        System.out.println("Server Socket Established.");
         while (true) {
             Socket s = null;
             try {
