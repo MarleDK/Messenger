@@ -56,7 +56,7 @@ public class ListenerThread extends Thread {
             }
             // Udnyt Arrayet af beskeder
             //Message New = new Message(Input);
-            if(input.startsWith("NewChat")) {
+            if(input.startsWith("NewChat§")) {
                 // Informere om der er kommet en ny chat.
 
                 // TYPE
@@ -71,7 +71,7 @@ public class ListenerThread extends Thread {
                     }
                 });
             }
-            else if(input.startsWith("Message")) {
+            else if(input.startsWith("Message§")) {
                     //Modtagelse af besked
                     //Send besked til Layout
                 Platform.runLater(new Runnable() {
@@ -80,7 +80,14 @@ public class ListenerThread extends Thread {
                     }
                 });
             }
+            else if(input.startsWith("GetUsers§")){
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        // kald metoden her
+                        Main.makeChat(input.substring(9));
+                    }
+                });
+            }
         }
     }
-
 }
