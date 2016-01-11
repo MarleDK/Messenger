@@ -28,8 +28,6 @@ public class ServerMain {
                 System.exit(0);
             }
 
-            //Følgende er for at chekcke om brugeren, er en oprettet bruger
-
             ClientConnectionThread g = new ClientConnectionThread(s);
             if (g.threadOK) {
                 g.start();
