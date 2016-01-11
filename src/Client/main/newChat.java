@@ -20,6 +20,7 @@ public class newChat {
 
     public static void makeChat(String clients){
 
+        System.out.printf("Starter makeChat i newChat...");
         ListView<Button> users = new ListView<Button>();
 
         String client ="";

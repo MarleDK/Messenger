@@ -68,7 +68,6 @@ public class Main extends Application {
         newChatScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryWindow.show();
 
-
     }
 
 
