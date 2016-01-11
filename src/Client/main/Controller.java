@@ -21,7 +21,9 @@ import javafx.scene.control.TextField;
 public class Controller {
     @FXML
     private TextField loginUserInputText;
+    @FXML
     private TextField loginPassInputText;
+    @FXML
     private TextField chatInputText;
 
 
