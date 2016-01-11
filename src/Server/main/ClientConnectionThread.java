@@ -164,6 +164,7 @@ public class ClientConnectionThread extends Thread{
                 break;
             }
             if(input.startsWith("NewChat§")) {
+                System.out.println("Making new chat");
                 // En client vil gerne oprette en ny chat
 
                 // TYPE
@@ -245,8 +246,9 @@ public class ClientConnectionThread extends Thread{
                 } else {
                     System.out.println("No clients available to forward to!");
                 }
-            }
-            else if(input.startsWith("getUsers")) {
+            } else if(input.startsWith("GetUsers§")) {
+                System.out.println("Sending users");
+                System.out.println(ClientDatabase.getClients());
                 pw.println(ClientDatabase.getClients());
                 pw.flush();
             }

@@ -76,7 +76,8 @@ public class Controller {
 
     @FXML
     protected void newChatButtonAction(ActionEvent actionEvent) throws IOException {
-        Main.getPw().println("GetUsers");
+        System.out.println("Sender new chat request");
+        Main.getPw().println("GetUsers§");
         Main.getPw().flush();
     }
 }
