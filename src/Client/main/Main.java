@@ -1,24 +1,29 @@
 package Client.main;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+
 import universalClasses.Message;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Main extends Application {
+public class Main extends Application implements EventHandler<ActionEvent> {
     private static String currentChat;
     private static String userID = "Jakob";
-    private static String password = "RydhofKage";
     private static Socket socket;
     private static ArrayList<String> chatIDs;
     private static ArrayList<ArrayList<Message>> chatlogs;
@@ -27,14 +32,18 @@ public class Main extends Application {
     private static PrintWriter pw;
     private static BufferedReader br;
     private static Parent root;
+    private static Parent loginScene;
+    private static Parent newChatScene;
     private static Stage primaryWindow;
     @FXML
-    private static GridPane chatArea;
+    private static VBox userListVBox;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryWindow = primaryStage;
         root = FXMLLoader.load(getClass().getResource("StructureRoot.fxml"));
+        loginScene = FXMLLoader.load(getClass().getResource("StructureLogin.fxml"));
+        newChatScene = FXMLLoader.load(getClass().getResource("StructureNCS.fxml"));
         primaryWindow.setTitle("Messenger+++");
 
         //Først skal der oprettes forbindelse til serveren
@@ -113,17 +122,27 @@ public class Main extends Application {
 
     public static void makeChat(String clients){
 
-        ListView users = new ListView();
+        ListView<Button> users = new ListView<Button>();
+
         String client ="";
         for(int i=0; i<clients.length(); i++){
             if(clients.charAt(i) != '§'){
                 client += clients.charAt(i);
             } else if(clients.charAt(i) == '§'){
-                users.getItems().add(client);
+                users.getItems().add(new Button(client));
                 client ="";
             }
         }
 
+        userListVBox.getChildren().add(users);
+        primaryWindow.setScene(new Scene(newChatScene));
+
+    }
+
+
+    @Override
+    public void handle(ActionEvent event) {
+        //Brug helst ikke!!! Den bruger eventet i makeChat
 
     }
 
@@ -159,6 +178,10 @@ public class Main extends Application {
 
     public static PrintWriter getPw() {
         return pw;
+    }
+
+    public static void setUserID(String userID) {
+        Main.userID = userID;
     }
 }
 
