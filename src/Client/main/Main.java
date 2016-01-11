@@ -1,20 +1,19 @@
 package Client.main;
 
-import com.sun.deploy.util.SessionState;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import universalClasses.Message;
-import universalClasses.TimeStamp;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main extends Application {
     private static String currentChat;
@@ -27,10 +26,13 @@ public class Main extends Application {
     private static int serverPort = 1102;
     private static PrintWriter pw;
     private static BufferedReader br;
+    private static Parent root;
+    @FXML
+    private static GridPane chatArea;
 
     @Override
     public void start(Stage primaryWindow) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Structure.fxml"));
+        root = FXMLLoader.load(getClass().getResource("StructureRoot.fxml"));
         primaryWindow.setTitle("Messenger+++");
 
         //Først skal der oprettes forbindelse til serveren
@@ -127,8 +129,7 @@ public class Main extends Application {
     }
 
     public static void makeChat(String clients){
-        Alert makeChatWindow = new Alert(Alert.AlertType.CONFIRMATION);
-        makeChatWindow.setHeaderText("Choose users for chat");
+
         ListView users = new ListView();
         String client ="";
         for(int i=0; i<clients.length(); i++){
@@ -139,6 +140,7 @@ public class Main extends Application {
                 client ="";
             }
         }
+
 
     }
 

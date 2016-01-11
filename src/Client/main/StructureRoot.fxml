@@ -56,23 +56,5 @@
 
 </GridPane>
 
-<GridPane fx:controller="Client.main.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="0" vgap="0"
-          styleClass="root"
-          fx:id="login">
-    <TextField
-            GridPane.columnIndex="0" GridPane.rowIndex="0"
-            fx:id="loginUserInputText"
-            prefWidth="600"
-    />
-    <PasswordField
-            GridPane.columnIndex="0" GridPane.rowIndex="1"
-            fx:id="loginPassInputText"
-            prefWidth="600"
-    />
-    <Button text="Login"
-            onAction="#loginSubmitButtonAction"
-            GridPane.columnIndex="0" GridPane.rowIndex="2"
-    />
 
-</GridPane>
+
