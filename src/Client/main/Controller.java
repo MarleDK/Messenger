@@ -3,6 +3,8 @@ package Client.main;
 import com.sun.deploy.util.SessionState;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import universalClasses.Message;
 import javafx.scene.*;
@@ -39,7 +41,10 @@ public class Controller {
 
 
     @FXML
-    protected void newChatButtonAction(ActionEvent actionEvent) {
+    protected void newChatButtonAction(ActionEvent actionEvent) throws IOException {
+        Main.getPw().println("GetUsers");
+        Main.getPw().flush();
+
 
     }
 }

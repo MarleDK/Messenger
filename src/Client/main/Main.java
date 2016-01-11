@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import universalClasses.Message;
 import universalClasses.TimeStamp;
@@ -117,10 +118,26 @@ public class Main extends Application {
         }
 
     }
+
+    public static void makeChat(String clients){
+        Alert makeChatWindow = new Alert(Alert.AlertType.CONFIRMATION);
+        makeChatWindow.setHeaderText("Choose users for chat");
+        ListView users = new ListView();
+        String client ="";
+        for(int i=0; i<clients.length(); i++){
+            if(clients.charAt(i) != '§'){
+                client += clients.charAt(i);
+            } else if(clients.charAt(i) == '§'){
+                users.getItems().add(client);
+                client ="";
+            }
+        }
+
+    }
+
     public static void addMessage(Message message){
         chatlogs.get(chatIDs.indexOf(message.samtaleID)).add(message);
     }
-
 
     public static String getCurrentChat(){
         return currentChat;
