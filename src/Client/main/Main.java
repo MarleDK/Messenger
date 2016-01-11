@@ -128,7 +128,10 @@ public class Main extends Application {
     }
 
     public static String getCurrentChat(){
-       return currentChat;
+        if (currentChat == null) {
+
+        }
+        return currentChat;
     }
 
     public static String getUserID() {
