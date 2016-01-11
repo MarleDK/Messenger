@@ -88,18 +88,21 @@ public class ClientConnectionThread extends Thread{
                     // TYPE
                     // Clients
                     // END
+                    String clientInput = ChatDatabase.makeChat(input);
 
-                    pw.println(ChatDatabase.makeChat(input));
+                    pw.println(clientInput);
                     pw.flush();
                     // Videresend det!
-                    Message message = Message.toMessage(input);
+                    // Todo
+                    // HUSK!
+                    // Clienterne skal modtage den rigige
+
                     //ClientDatabase.logMessage(message);
 
                     ArrayList<String> Clients;
-                    Clients = ChatDatabase.getClients(message.samtaleID);
+                    Clients = ChatDatabase.getClients(clientInput);
                     ArrayList<Socket> Sockets = new ArrayList<>();
                     if (Clients != null) {
-                        Clients.remove(message.afsenderID);
                         for (String Client : Clients) {
                             Sockets.add(ActiveClient.getSocket(Client));
                         }
@@ -109,7 +112,7 @@ public class ClientConnectionThread extends Thread{
                             }
                             try {
                                 PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                                pw.write(message.toString());
+                                pw.write(input);
                                 pw.flush();
                                 pw.close();
                             } catch (Exception ex) {
