@@ -128,7 +128,7 @@ public class Main extends Application {
     }
 
     public static String getCurrentChat(){
-        return currentChat;
+       return currentChat;
     }
 
     public static String getUserID() {

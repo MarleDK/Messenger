@@ -29,21 +29,25 @@ public class Controller {
 
     @FXML
     public void chatSubmitButtonAction(ActionEvent actionEvent) {
-        Message message = new Message(Client.main.Main.getCurrentChat(), Client.main.Main.getUserID(), chatInputText.getText());
-        Main.addMessage(message);
-        try {
-
-
-            PrintWriter pwS = new PrintWriter(Client.main.Main.getSocket().getOutputStream());
-            pwS.println(message.toString());
-            pwS.flush();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (Main.getCurrentChat() == null) {
+            System.out.printf("No chat available");
         }
+        else {
+            Message message = new Message(Client.main.Main.getCurrentChat(), Client.main.Main.getUserID(), chatInputText.getText());
+            Main.addMessage(message);
+            try {
 
+
+                PrintWriter pwS = new PrintWriter(Client.main.Main.getSocket().getOutputStream());
+                pwS.println(message.toString());
+                pwS.flush();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -70,8 +74,15 @@ public class Controller {
         }
         else if(login.equals("LoginOkay")) {
             try {
-                Main.getPrimaryWindow().setScene(new Scene(Main.getRoot(), 600, 475));
                 Main.getLogFromServer();
+                if (Main.getCurrentChat() == null) {
+                    System.out.println("Sender new chat request");
+                    Main.getPw().println("GetUsers§");
+                    Main.getPw().flush();
+                }
+                else {
+                    Main.getPrimaryWindow().setScene(new Scene(Main.getRoot(), 600, 475));
+                }
                 Thread listener = new ListenerThread(Main.getSocket());
                 listener.start();
             } catch (IOException e) {
