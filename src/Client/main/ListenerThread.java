@@ -81,6 +81,7 @@ public class ListenerThread extends Thread {
                 });
             }
             else if(input.startsWith("GetUsers§")){
+                System.out.println(input);
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
                         // kald metoden her
