@@ -88,6 +88,7 @@ public class ListenerThread extends Thread {
                 }
                 // Vise hvilke clienter du skriver til
                 // TODO
+
                 // Kør modtagelse af beskeder
                 while (!done) {
                     try {
