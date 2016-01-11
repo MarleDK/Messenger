@@ -113,7 +113,7 @@ public class ClientConnectionThread extends Thread{
 
         System.out.println("Run Setup! Sender liste...");
         // Show History (chat messsages)
-        pw.println("ChatLogs");
+        pw.println("ChatLogs§");
         pw.flush();
 
 

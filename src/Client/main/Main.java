@@ -85,11 +85,9 @@ public class Main extends Application {
 
 
     public static void getLogFromServer() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
         System.out.println("Venter på type...");
         String input = br.readLine();
-        if (input.startsWith("ChatLogs")) {
+        if (input.startsWith("ChatLogs§")) {
             System.out.println("Fik " + input);
             chatlogs = new ArrayList<>();
             int chatLogIndex = 0;

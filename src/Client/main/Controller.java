@@ -31,9 +31,19 @@ public class Controller {
     public void chatSubmitButtonAction(ActionEvent actionEvent) {
         Message message = new Message(Client.main.Main.getCurrentChat(), Client.main.Main.getUserID(), chatInputText.getText());
         Main.addMessage(message);
+        try {
 
-        Main.getPw().println(message.toString());
-        Main.getPw().flush();
+
+            PrintWriter pwS = new PrintWriter(Client.main.Main.getSocket().getOutputStream());
+            pwS.println(message.toString());
+            pwS.flush();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -52,16 +62,14 @@ public class Controller {
         catch (Exception e) {
              login = "LoginFailed";
         }
-        if(login.equals("LoginFailed") || login.equals("LoginAlready")){
+        if(login.equals("LoginFailed")){
             Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
-            loginFail.setHeaderText("Log ind Fejlede programmet lukker");
+            loginFail.setHeaderText("Log ind Fejlede prøv igen");
             loginFail.showAndWait();
             loginPassInputText.setText("");
-            //Main.getPrimaryWindow().close();
         }
         else if(login.equals("LoginOkay")) {
             try {
-                Main.setUserID(loginUserInputText.getText());
                 Main.getPrimaryWindow().setScene(new Scene(Main.getRoot(), 600, 475));
                 Main.getLogFromServer();
                 Thread listener = new ListenerThread(Main.getSocket());

@@ -17,23 +17,23 @@ public class ChatDatabase {
     public static ArrayList<String> getClients(String ID){
 
         // Læs først linje i ID filen
+        ArrayList<String> clients = new ArrayList<>();
         File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
-        String Line;
+        String line;
         try {
             Scanner sc = new Scanner(chatFile);
-            Line = sc.nextLine();
-            int lastChar;
-            for (int i = 0; Line.length() > i; i++) {
-                lastChar = 0;
-                if (Line.charAt(i) == '§') {
-
+            line = sc.nextLine();
+            int lastChar = 0;
+            for (int i = 0; line.length() > i; i++) {
+                if (line.charAt(i) == '§') {
+                    clients.add(line.substring(lastChar, i));
                     lastChar = i+1;
                 }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
+        return clients;
     }
 
     public static String toString(ArrayList<String> clients){

@@ -22,7 +22,7 @@ public class ClientDatabase {
         for (File file : listOfFiles) {
             if (file.isFile()) {
                 //System.out.println(file.getName());
-                BuildClients += file.getName().substring(0,file.getName().length()-4) + "$";
+                BuildClients += file.getName().substring(0,file.getName().length()-4) + "§";
 
             }
         }
