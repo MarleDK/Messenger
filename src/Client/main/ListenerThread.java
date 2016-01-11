@@ -84,7 +84,7 @@ public class ListenerThread extends Thread {
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
                         // kald metoden her
-                        Main.makeChat(input.substring(9));
+                        newChat.makeChat(input.substring(9));
                     }
                 });
             }

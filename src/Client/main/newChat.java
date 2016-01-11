@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class newChat {
     @FXML
     private static VBox userListVBox;
-
+    private static ArrayList<String> chatUsers = null;
 
 
     public static void makeChat(String clients){
