@@ -51,8 +51,8 @@ public class Controller {
         // Login metode her
         String login;
         try {
-            Main.getPw().println("ExistingUser");
-            Main.getPw().println(loginUserInputText.getText());
+            Main.getPw().print("ExistingUser§");
+            Main.getPw().print(loginUserInputText.getText()+"§");
             Main.getPw().println(loginPassInputText.getText());
             Main.getPw().flush();
             login = Main.getBr().readLine();
@@ -62,16 +62,20 @@ public class Controller {
         }
         if(login.equals("LoginFailed") || login.equals("LoginAlready")){
             Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
-            loginFail.setHeaderText("Log ind Fejlede programmet lukker");
-            loginFail.showAndWait();
-            Main.getPrimaryWindow().close();
+            loginPassInputText.setText("");
+            //loginFail.setHeaderText("Log ind Fejlede programmet lukker");
+            //loginFail.showAndWait();
+            //Main.getPrimaryWindow().close();
         }
-        try {
-            Main.getLogFromServer();
-            Thread listener = new ListenerThread(Main.getSocket());
-            listener.start();
-        } catch (IOException e) {
-            e.printStackTrace();
+        else if(login.equals("LoginOkay")) {
+            try {
+                Main.getPrimaryWindow().setScene(new Scene(Main.getRoot(), 600, 475));
+                Main.getLogFromServer();
+                Thread listener = new ListenerThread(Main.getSocket());
+                listener.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
