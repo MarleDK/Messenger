@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class Main extends Application {
     private static String currentChat;
-    private static String userID = "Jakob";
+    private static String userID;
     private static Socket socket;
     private static ArrayList<String> chatIDs = new ArrayList<String>();
     private static ArrayList<ArrayList<Message>> chatlogs = new ArrayList<ArrayList<Message>>();

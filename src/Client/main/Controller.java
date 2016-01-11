@@ -31,6 +31,8 @@ public class Controller {
     public void chatSubmitButtonAction(ActionEvent actionEvent) {
         if (Main.getCurrentChat() == null) {
             System.out.printf("No chat available");
+        }else if(chatInputText.getText().equals("") || chatInputText.getText().isEmpty() ){
+            System.out.println("No message to send");
         }
         else {
             Message message = new Message(Client.main.Main.getCurrentChat(), Client.main.Main.getUserID(), chatInputText.getText());

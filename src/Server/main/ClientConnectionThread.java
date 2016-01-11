@@ -209,7 +209,7 @@ public class ClientConnectionThread extends Thread{
                     System.out.println("No clients available to forward to!");
                 }
 
-            } else if(input.startsWith("Message")) {
+            } else if(input.startsWith("Message§")) {
                 // En besked er kommet, videresend det!
 
                 // TYPE
