@@ -57,11 +57,18 @@ public class ClientConnectionThread extends Thread{
                     clientFilScanner.close();
                     PrintWriter pw = new PrintWriter(socket.getOutputStream());
                     if (passwordSrv.equals(passwordUsr)) {
-                        System.out.println("LoginOkay");
-                        pw.println("LoginOkay");
-                        pw.flush();
-                        this.ClientID = userID;
-                        new ActiveClient(userID, socket);
+                        if (ActiveClient.ClientLogged(userID)) {
+                            System.out.println("User Already Logged in!");
+                            pw.println("LoginAlready");
+                            pw.flush();
+                        }
+                        else {
+                            System.out.println("LoginOkay");
+                            pw.println("LoginOkay");
+                            pw.flush();
+                            this.ClientID = userID;
+                            new ActiveClient(userID, socket);
+                        }
                     } else {
                         System.out.println("LoginFailed");
                         pw.println("LoginFailed");

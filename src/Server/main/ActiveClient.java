@@ -40,5 +40,14 @@ public class ActiveClient {
         }
     }
 
+    public static boolean ClientLogged(String ID) {
+        if (ActiveClients.contains(ID)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
 }
