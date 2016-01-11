@@ -127,11 +127,12 @@ public class ChatDatabase {
                 //File checkfile = new File(path);
                 try {
                     Scanner sc = new Scanner(file);
-                    if (sc.nextLine().contains(Client)) {
-                        // add file to client (String)
-                        ChatIds.add(file.getName());
+                    if(sc.hasNextLine()) {
+                        if (sc.nextLine().contains(Client)) {
+                            // add file to client (String)
+                            ChatIds.add(file.getName());
+                        }
                     }
-
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
