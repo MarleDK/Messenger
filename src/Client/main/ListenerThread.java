@@ -43,6 +43,7 @@ public class ListenerThread extends Thread {
         try {
             list =  br.readLine();
         } catch (Exception ex) {
+            ex.printStackTrace();
             try {
                 socket.shutdownOutput();
                 socket.shutdownInput();
@@ -60,6 +61,7 @@ public class ListenerThread extends Thread {
             try {
                 ChatID = br.readLine();
             } catch (Exception ex) {
+                ex.printStackTrace();
                 try {
                     socket.shutdownOutput();
                     socket.shutdownInput();
@@ -82,6 +84,7 @@ public class ListenerThread extends Thread {
                 try {
                     Clients = br.readLine();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     try {
                         socket.shutdownOutput();
                         socket.shutdownInput();
@@ -114,6 +117,7 @@ public class ListenerThread extends Thread {
                             }
                         }
                     } catch (Exception ex) {
+                        ex.printStackTrace();
                         try {
                             socket.shutdownOutput();
                             socket.shutdownInput();
@@ -140,6 +144,7 @@ public class ListenerThread extends Thread {
                 input = br.readLine();
 
             } catch (Exception ex) {
+                ex.printStackTrace();
                 try {
                     socket.shutdownOutput();
                     socket.shutdownInput();
