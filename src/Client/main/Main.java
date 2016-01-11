@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import universalClasses.Message;
 import universalClasses.TimeStamp;
@@ -22,7 +23,7 @@ public class Main extends Application {
     private static ArrayList<String> chatIDs;
     private static ArrayList<ArrayList<Message>> chatlogs;
     private static String serverAdr = "127.0.0.1";
-    private static int serverPort = 9797;
+    private static int serverPort = 1102;
 
     @Override
     public void start(Stage primaryWindow) throws Exception{
@@ -33,12 +34,7 @@ public class Main extends Application {
         //åben ListenerThread
 
 
-        socket = new Socket();
-        PrintWriter pw = new PrintWriter(socket.getOutputStream());
-        pw.println("ExistingUser");
-        pw.println(userID);
-        pw.println(password);
-        pw.flush();
+
 
 
 
@@ -49,6 +45,20 @@ public class Main extends Application {
         primaryWindow.setScene(new Scene(root, 600, 475));
         root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryWindow.show();
+
+        socket = new Socket(serverAdr, serverPort);
+        PrintWriter pw = new PrintWriter(socket.getOutputStream());
+        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        pw.println("ExistingUser");
+        pw.println(userID);
+        pw.println(password);
+        pw.flush();
+        if(br.readLine().equals("LoginFailed")){
+            Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
+            loginFail.setHeaderText("Log ind Fejlede programmet lukker");
+            loginFail.showAndWait();
+            primaryWindow.close();
+        }
     }
 
 
