@@ -43,7 +43,7 @@ public class ClientConnectionThread extends Thread{
                 String input;
                 input = br.readLine();
                 String userID ="";
-                String passwordUsr;
+                String passwordUsr="";
                 if (input.startsWith("ExistingUser§")) {
                     int i = 13;
                     while(true){
@@ -52,6 +52,7 @@ public class ClientConnectionThread extends Thread{
                             break;
                         } else{
                             userID += input.charAt(i);
+                            System.out.println(userID);
                             i++;
                         }
                     }
@@ -59,6 +60,7 @@ public class ClientConnectionThread extends Thread{
                     System.out.println(userID);
                     System.out.println(passwordUsr);
                     File clientFolder = new File("serverdatabase/client");
+                    Boolean gotUser = false;
                     for (i = 0; i < clientFolder.listFiles().length; i++) {
                         System.out.println(clientFolder.listFiles()[i].getName());
                         if (clientFolder.listFiles()[i].getName().substring(0, userID.length()).equals(userID)) {
@@ -70,9 +72,7 @@ public class ClientConnectionThread extends Thread{
                             PrintWriter pw = new PrintWriter(socket.getOutputStream());
                             if (passwordSrv.equals(passwordUsr)) {
                                 if (ActiveClient.ClientLogged(userID)) {
-                                    System.out.println("User Already Logged in!");
-                                    pw.println("LoginAlready");
-                                    pw.flush();
+                                    break;
                                 } else {
                                     System.out.println("LoginOkay");
                                     pw.println("LoginOkay");
@@ -80,13 +80,18 @@ public class ClientConnectionThread extends Thread{
                                     loginin = true;
                                     this.ClientID = userID;
                                     new ActiveClient(userID, socket);
+                                    break;
                                 }
                             } else {
-                                System.out.println("LoginFailed");
-                                pw.println("LoginFailed");
-                                pw.flush();
+                                break;
                             }
                         }
+
+                    }
+                    if(!loginin) {
+                        System.out.println("LoginFailed");
+                        pw.println("LoginFailed");
+                        pw.flush();
                     }
                 }
             }

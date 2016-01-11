@@ -55,16 +55,18 @@ public class Controller {
             Main.getPw().print(loginUserInputText.getText()+"§");
             Main.getPw().println(loginPassInputText.getText());
             Main.getPw().flush();
+            System.out.println("Venter på svar..");
             login = Main.getBr().readLine();
+            System.out.println("Modtaget: " + login);
         }
         catch (Exception e) {
              login = "LoginFailed";
         }
         if(login.equals("LoginFailed") || login.equals("LoginAlready")){
             Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
+            loginFail.setHeaderText("Log ind Fejlede programmet lukker");
+            loginFail.showAndWait();
             loginPassInputText.setText("");
-            //loginFail.setHeaderText("Log ind Fejlede programmet lukker");
-            //loginFail.showAndWait();
             //Main.getPrimaryWindow().close();
         }
         else if(login.equals("LoginOkay")) {
