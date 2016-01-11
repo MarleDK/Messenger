@@ -1,9 +1,6 @@
 package Server.main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -46,16 +43,21 @@ public class Main {
                         File clientFil = new File(clientFolder.listFiles()[i].getName());
                         Scanner clientFilScanner = new Scanner(clientFil);
                         String passwordSrv = clientFilScanner.nextLine();
+                        clientFilScanner.close();
+                        PrintWriter pw = new PrintWriter(s.getOutputStream());
                         if(passwordSrv.equals(passwordUsr)){
-
+                            pw.println("LoginOkay");
+                            ClientConnectionThread g = new ClientConnectionThread(s, userID);
+                            if (g.threadOK) {
+                                g.start();
+                            }
+                            new ActiveClient(userID, s);
+                        }else{
+                            pw.println("LoginFailed");
                         }
                     }
                 }
             }
-
-            ClientConnectionThread g = new ClientConnectionThread(s, userID);
-            if (g.threadOK)
-                g.start();
         }
     }
 }
