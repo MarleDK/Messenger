@@ -25,8 +25,8 @@ public class Main extends Application {
     private static String currentChat;
     private static String userID = "Jakob";
     private static Socket socket;
-    private static ArrayList<String> chatIDs;
-    private static ArrayList<ArrayList<Message>> chatlogs;
+    private static ArrayList<String> chatIDs = new ArrayList<String>();
+    private static ArrayList<ArrayList<Message>> chatlogs = new ArrayList<ArrayList<Message>>();
     private static String serverAdr = "127.0.0.1";
     private static int serverPort = 1102;
     private static PrintWriter pw;
@@ -95,14 +95,19 @@ public class Main extends Application {
             Boolean hasMoreChats = true;
             while (hasMoreChats) {
                 String chatID = br.readLine();
+                System.out.println(chatID);
                 if (chatID.equals("§")) {
+                    System.out.println("No more chats");
                     hasMoreChats = false;
                 } else {
                     chatIDs.add(chatID);
                     chatlogs.add(new ArrayList<Message>());
                     Boolean hasMoreMessages = true;
                     while (hasMoreMessages) {
-                        if (br.readLine().equals("§")) {
+                        String message = br.readLine();
+                        System.out.println(message);
+                        if (message.equals("§")) {
+                            System.out.println("No more messages");
                             hasMoreMessages = false;
                         } else {
                             chatlogs.get(chatLogIndex).add(Message.toMessage(br.readLine()));
@@ -128,8 +133,8 @@ public class Main extends Application {
     }
 
     public static String getCurrentChat(){
-        if (currentChat == null) {
-
+        if (currentChat == null && chatIDs.get(0) != null) {
+            currentChat = chatIDs.get(0);
         }
         return currentChat;
     }

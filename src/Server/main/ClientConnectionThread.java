@@ -116,18 +116,23 @@ public class ClientConnectionThread extends Thread{
         pw.println("ChatLogs§");
         pw.flush();
 
-
-
         System.out.println("Indlæser chat history...");
         for (String s : ChatDatabase.GetChatIDs(this.ClientID)) {
-            File chatFile = new File("serverdatabase/chat/" + s + ".txt");
-            System.out.println("Sender ChatID!");
+            File chatFile = new File("serverdatabase/chat/" + s);
+            System.out.println("Sender ChatID! "+chatFile.getName());
+            System.out.println(s);
             pw.println(s);
             pw.flush();
             try {
                 Scanner sc = new Scanner(chatFile);
+                if(sc.hasNextLine()){
+                    sc.nextLine();
+                }else{
+                    System.out.println("Fejl i chatfil, mangler Clienter");
+                }
                 System.out.println("Sender Beskeder!");
                 while (sc.hasNextLine()){
+                    System.out.println("Server is sending messages");
                     pw.println(sc.nextLine());
                     pw.flush();
                 }
