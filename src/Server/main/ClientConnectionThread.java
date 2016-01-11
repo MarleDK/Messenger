@@ -81,62 +81,92 @@ public class ClientConnectionThread extends Thread{
                 }
                 return;
             }
+            if(input.startsWith("NewChat")) {
+                // En client vil gerne oprette en ny chat
 
-                if(input.startsWith("NewChat")) {
-                    // En client vil gerne oprette en ny chat
+                // TYPE
+                // Clients
+                // END
+                String clientInput = ChatDatabase.makeChat(input);
 
-                    // TYPE
-                    // Clients
-                    // END
+                //ClientDatabase.logMessage(message);
 
-                    pw.println(ChatDatabase.makeChat(input));
-                    pw.flush();
-
-                } else if(input.startsWith("Message")) {
-                    // En besked er kommet, videresend det!
-
-                    // TYPE
-                    // Beskeden
-                    // END
-
-                    Message message = Message.toMessage(input);
-                    //ClientDatabase.logMessage(message);
-
-                    ArrayList<String> Clients;
-                    Clients = ChatDatabase.getClients(message.samtaleID);
-                    ArrayList<Socket> Sockets = new ArrayList<>();
-                    Clients.remove(message.afsenderID);
-                    if (Clients != null) {
-                        for (String Client : Clients) {
-                            Sockets.add(ActiveClient.getSocket(Client));
+                ArrayList<String> Clients;
+                Clients = ChatDatabase.getClients(clientInput);
+                ArrayList<Socket> Sockets = new ArrayList<>();
+                if (Clients != null) {
+                    for (String Client : Clients) {
+                        Sockets.add(ActiveClient.getSocket(Client));
+                    }
+                    for (int i = Sockets.size(); 0 < i; i--) {
+                        if (Sockets.get(i) == null) {
+                            Sockets.remove(i);
                         }
-                        for (int i = Sockets.size(); 0 < i; i--) {
-                            if (Sockets.get(i) == null) {
-                                Sockets.remove(i);
-                            }
+                        try {
+                            PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                            pw.println("NewChat§" + clientInput);
+                            pw.flush();
+                            pw.close();
+                        } catch (Exception ex) {
                             try {
-                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                                pw.write(message.toString());
-                                pw.flush();
-                                pw.close();
-                            } catch (Exception ex) {
-                                try {
-                                    socket.shutdownOutput();
-                                    socket.shutdownInput();
-                                    socket.close();
-                                } catch (Exception ex1) {
-                                    return;
-                                }
+                                socket.shutdownOutput();
+                                socket.shutdownInput();
+                                socket.close();
+                            } catch (Exception ex1) {
                                 return;
                             }
+                            return;
                         }
-                    } else {
-                        System.out.println("No clients available to forward to!");
                     }
+                } else {
+                    System.out.println("No clients available to forward to!");
+                }
+
+            } else if(input.startsWith("Message")) {
+                // En besked er kommet, videresend det!
+
+                // TYPE
+                // Beskeden
+                // END
+
+                Message message = Message.toMessage(input);
+                //ClientDatabase.logMessage(message);
+
+                ArrayList<String> Clients;
+                Clients = ChatDatabase.getClients(message.samtaleID);
+                ArrayList<Socket> Sockets = new ArrayList<>();
+                if (Clients != null) {
+                    Clients.remove(message.afsenderID);
+                    for (String Client : Clients) {
+                        Sockets.add(ActiveClient.getSocket(Client));
+                    }
+                    for (int i = Sockets.size(); 0 < i; i--) {
+                        if (Sockets.get(i) == null) {
+                            Sockets.remove(i);
+                        }
+                        try {
+                            PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                            pw.write(message.toString());
+                            pw.flush();
+                            pw.close();
+                        } catch (Exception ex) {
+                            try {
+                                socket.shutdownOutput();
+                                socket.shutdownInput();
+                                socket.close();
+                            } catch (Exception ex1) {
+                                return;
+                            }
+                            return;
+                        }
+                    }
+                } else {
+                    System.out.println("No clients available to forward to!");
                 }
             }
-
         }
+
     }
+}
 
 
