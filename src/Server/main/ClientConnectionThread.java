@@ -47,8 +47,10 @@ public class ClientConnectionThread extends Thread{
             System.out.println(passwordUsr);
             File clientFolder = new File("serverdatabase/client");
             for (int i = 0; i < clientFolder.listFiles().length; i++) {
-                if (clientFolder.listFiles()[i].getName().substring(0, userID.length()) == userID) {
-                    File clientFil = new File(clientFolder.listFiles()[i].getName());
+                System.out.println(clientFolder.listFiles()[i].getName());
+                if (clientFolder.listFiles()[i].getName().substring(0, userID.length()).equals(userID)) {
+                    System.out.println(clientFolder.listFiles()[i].getName());
+                    File clientFil = new File("serverdatabase/client/"+clientFolder.listFiles()[i].getName());
                     Scanner clientFilScanner = new Scanner(clientFil);
                     String passwordSrv = clientFilScanner.nextLine();
                     clientFilScanner.close();
