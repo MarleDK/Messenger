@@ -59,6 +59,13 @@ public class Main extends Application {
         primaryWindow.setScene(new Scene(root, 600, 475));
         root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryWindow.show();
+
+        getLogFromServer();
+        // Listener Thread
+
+        //Thread listener = new ListenerThread(socket);
+        //listener.start();
+
     }
 
 
@@ -86,12 +93,11 @@ public class Main extends Application {
             Boolean hasMoreChats = true;
             while (hasMoreChats) {
                 String chatID = br.readLine();
-                chatIDs.add(chatID);
-                chatlogs.add(new ArrayList<Message>());
-
                 if (chatID.equals("§")) {
                     hasMoreChats = false;
                 } else {
+                    chatIDs.add(chatID);
+                    chatlogs.add(new ArrayList<Message>());
                     Boolean hasMoreMessages = true;
                     while (hasMoreMessages) {
                         if (br.readLine().equals("§")) {
