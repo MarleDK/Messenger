@@ -91,6 +91,8 @@ public class ClientConnectionThread extends Thread{
         pw.println("ChatLogs");
         pw.flush();
 
+
+
         System.out.println("Indlæser chat history...");
         for (String s : ChatDatabase.GetChatIDs(this.ClientID)) {
             File chatFile = new File("serverdatabase/chat/" + s + ".txt");

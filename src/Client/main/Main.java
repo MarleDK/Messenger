@@ -49,6 +49,7 @@ public class Main extends Application {
             primaryWindow.close();
         }
 
+        getLogFromServer();
 
 
 
@@ -60,7 +61,6 @@ public class Main extends Application {
         root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryWindow.show();
 
-        getLogFromServer();
         // Listener Thread
 
         //Thread listener = new ListenerThread(socket);
@@ -85,8 +85,10 @@ public class Main extends Application {
     private static void getLogFromServer() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-
-        if (br.readLine() == "ChatLogs") {
+        System.out.println("Venter på type...");
+        String input = br.readLine();
+        if (input.startsWith("ChatLogs")) {
+            System.out.println("Fik " + input);
             chatlogs = new ArrayList<>();
             int chatLogIndex = 0;
 
@@ -109,9 +111,10 @@ public class Main extends Application {
                 }
                 chatLogIndex++;
             }
+            System.out.println("Afsluttede ChatLogs");
         }
         else {
-            System.out.println("Should have gotten ChatLogs... but got something else...");
+            System.out.println("Should have gotten ChatLogs... but got " + input);
         }
 
     }
