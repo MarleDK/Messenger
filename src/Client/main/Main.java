@@ -36,31 +36,37 @@ public class Main extends Application {
         //Først skal der oprettes forbindelse til serveren
         //åben ListenerThread
 
-        socket = new Socket(serverAdr, serverPort);
-        pw = new PrintWriter(socket.getOutputStream());
-        br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        pw.println("ExistingUser");
-        pw.println(userID);
-        pw.println(password);
-        pw.flush();
-        if(br.readLine().equals("LoginFailed")){
-            Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
-            loginFail.setHeaderText("Log ind Fejlede programmet lukker");
-            loginFail.showAndWait();
-            primaryWindow.close();
+        try {
+            socket = new Socket(serverAdr, serverPort);
+            pw = new PrintWriter(socket.getOutputStream());
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            pw.println("ExistingUser");
+            pw.println(userID);
+            pw.println(password);
+            pw.flush();
+            if(br.readLine().equals("LoginFailed")){
+                Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
+                loginFail.setHeaderText("Log ind Fejlede programmet lukker");
+                loginFail.showAndWait();
+                primaryWindow.close();
+            }
+
+            getLogFromServer();
+            Thread listener = new ListenerThread(socket);
+            listener.start();
+
+            primaryWindow.setOnCloseRequest(e ->{
+                //deleteLog();
+
+            });
+            primaryWindow.setScene(new Scene(root, 600, 475));
+            root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+            primaryWindow.show();
+        }
+        catch (Exception e) {
+            System.out.println("No connection to server! Is it running?");
         }
 
-        getLogFromServer();
-        Thread listener = new ListenerThread(socket);
-        listener.start();
-
-        primaryWindow.setOnCloseRequest(e ->{
-            //deleteLog();
-
-        });
-        primaryWindow.setScene(new Scene(root, 600, 475));
-        root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
-        primaryWindow.show();
 
         // Listener Thread
 
