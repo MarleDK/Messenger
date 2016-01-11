@@ -31,19 +31,9 @@ public class Controller {
     public void chatSubmitButtonAction(ActionEvent actionEvent) {
         Message message = new Message(Client.main.Main.getCurrentChat(), Client.main.Main.getUserID(), chatInputText.getText());
         Main.addMessage(message);
-        try {
 
-
-            PrintWriter pwS = new PrintWriter(Client.main.Main.getSocket().getOutputStream());
-            pwS.println(message.toString());
-            pwS.flush();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Main.getPw().println(message.toString());
+        Main.getPw().flush();
     }
 
     @FXML
@@ -71,6 +61,7 @@ public class Controller {
         }
         else if(login.equals("LoginOkay")) {
             try {
+                Main.setUserID(loginUserInputText.getText());
                 Main.getPrimaryWindow().setScene(new Scene(Main.getRoot(), 600, 475));
                 Main.getLogFromServer();
                 Thread listener = new ListenerThread(Main.getSocket());
