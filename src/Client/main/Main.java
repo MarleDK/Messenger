@@ -87,7 +87,9 @@ public class Main extends Application {
         }
 
     }
-
+    public static void addMessage(Message message){
+        chatlogs.get(chatIDs.indexOf(message.samtaleID)).add(message);
+    }
 
 
     public static String getCurrentChat(){
