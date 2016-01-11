@@ -27,11 +27,13 @@ public class Main extends Application {
     private static PrintWriter pw;
     private static BufferedReader br;
     private static Parent root;
+    private static Stage primaryWindow;
     @FXML
     private static GridPane chatArea;
 
     @Override
-    public void start(Stage primaryWindow) throws Exception{
+    public void start(Stage primaryStage) throws Exception{
+        primaryWindow = primaryStage;
         root = FXMLLoader.load(getClass().getResource("StructureRoot.fxml"));
         primaryWindow.setTitle("Messenger+++");
 
@@ -42,37 +44,18 @@ public class Main extends Application {
             socket = new Socket(serverAdr, serverPort);
             pw = new PrintWriter(socket.getOutputStream());
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            pw.println("ExistingUser");
-            pw.println(userID);
-            pw.println(password);
-            pw.flush();
-            String login = br.readLine();
-            if(login.equals("LoginFailed") || login.equals("LoginAlready")){
-                Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
-                loginFail.setHeaderText("Log ind Fejlede programmet lukker");
-                loginFail.showAndWait();
-                primaryWindow.close();
-            }
 
-            getLogFromServer();
-            Thread listener = new ListenerThread(socket);
-            listener.start();
-
-            primaryWindow.setOnCloseRequest(e ->{
-                //deleteLog();
-
-            });
-            primaryWindow.setScene(new Scene(root, 600, 475));
-            root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
-            primaryWindow.show();
         }
         catch (Exception e) {
             System.out.println("No connection to server! Is it running?");
         }
+        primaryWindow.setOnCloseRequest(e ->{
+            //deleteLog();
 
-
-        // Listener Thread
-
+        });
+        primaryWindow.setScene(new Scene(root, 600, 475));
+        root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+        primaryWindow.show();
 
 
     }
@@ -91,7 +74,7 @@ public class Main extends Application {
     }
 
 
-    private static void getLogFromServer() throws IOException {
+    public static void getLogFromServer() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         System.out.println("Venter på type...");
@@ -164,6 +147,10 @@ public class Main extends Application {
         chatIDs.add(IDs);
         chatlogs.add(new ArrayList<Message>());
         //
+    }
+
+    public static Stage getPrimaryWindow() {
+        return primaryWindow;
     }
 
     public static BufferedReader getBr() {
