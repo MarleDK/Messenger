@@ -71,6 +71,14 @@ public class ClientConnectionThread extends Thread{
         }
         } catch (IOException e) {
             e.printStackTrace();
+            try {
+                socket.shutdownOutput();
+                socket.shutdownInput();
+                socket.close();
+            } catch (Exception ex1) {
+                return;
+            }
+            return;
         }
 
         // Setup
@@ -94,6 +102,7 @@ public class ClientConnectionThread extends Thread{
                 sc.close();
             }
             catch (Exception ex) {
+                ex.printStackTrace();
                 System.out.println("Failed reading file:" + "Server/database/chat/" + s + ".txt");
             }
             pw.write("§");
@@ -109,6 +118,7 @@ public class ClientConnectionThread extends Thread{
                 input = br.readLine();
 
             } catch (Exception ex) {
+                ex.printStackTrace();
                 try {
                     socket.shutdownOutput();
                     socket.shutdownInput();
@@ -143,6 +153,7 @@ public class ClientConnectionThread extends Thread{
                             pw.flush();
                             pw.close();
                         } catch (Exception ex) {
+                            ex.printStackTrace();
                             try {
                                 socket.shutdownOutput();
                                 socket.shutdownInput();
@@ -185,6 +196,7 @@ public class ClientConnectionThread extends Thread{
                             pw.flush();
                             pw.close();
                         } catch (Exception ex) {
+                            ex.printStackTrace();
                             try {
                                 socket.shutdownOutput();
                                 socket.shutdownInput();
