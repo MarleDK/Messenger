@@ -35,8 +35,7 @@ public class Main extends Application {
     private static Parent loginScene;
     private static Parent newChatScene;
     private static Stage primaryWindow;
-    @FXML
-    private static VBox userListVBox;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -123,39 +122,6 @@ public class Main extends Application {
 
     }
 
-    public static void makeChat(String clients){
-
-        ListView<Button> users = new ListView<Button>();
-
-        String client ="";
-        ArrayList<String> chatUsers = null;
-        for(int i=0; i<clients.length(); i++){
-            if(clients.charAt(i) != '§'){
-                client += clients.charAt(i);
-            } else if(clients.charAt(i) == '§'){
-                users.getItems().add(new Button(client));
-                users.getItems().get(i).setStyle("-fx-background-color: white; -fx-text-fill: white");
-                users.getItems().get(i).setOnAction(e -> {
-                    if (chatUsers == null){
-                        chatUsers.add(e.getSource().toString());
-                        users.getItems().get(users.getItems().indexOf(e.getSource().toString())).setStyle("-fx-background-color: deepskyblue; -fx-text-fill: white");
-                    } else if(chatUsers.contains(e.getSource().toString())){
-                        chatUsers.remove(e.getSource().toString());
-                        users.getItems().get(users.getItems().indexOf(e.getSource().toString())).setStyle("-fx-background-color: white; -fx-text-fill: black");
-                    } else {
-                        chatUsers.add(e.getSource().toString());
-                        users.getItems().get(users.getItems().indexOf(e.getSource().toString())).setStyle("-fx-background-color: deepskyblue; -fx-text-fill: white");
-                    }
-
-                });
-                client ="";
-            }
-        }
-        userListVBox.getChildren().add(users);
-        primaryWindow.setScene(new Scene(newChatScene));
-
-    }
-
     public static Parent getRoot() {
         return root;
     }
@@ -196,6 +162,11 @@ public class Main extends Application {
 
     public static void setUserID(String userID) {
         Main.userID = userID;
+    }
+
+
+    public static Parent getNewChatScene() {
+        return newChatScene;
     }
 }
 

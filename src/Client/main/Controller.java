@@ -86,12 +86,4 @@ public class Controller {
         Main.getPw().println("GetUsers");
         Main.getPw().flush();
     }
-
-
-    public void makeNewChat(ActionEvent actionEvent) {
-
-    }
-
-    public void cancelNewChat(ActionEvent actionEvent) {
-    }
 }
