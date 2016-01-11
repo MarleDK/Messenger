@@ -20,13 +20,13 @@ public class ClientConnectionThread extends Thread{
     private String ClientID;
 
 
-    public ClientConnectionThread(Socket socket, String ID) {
+    public ClientConnectionThread(Socket socket) {
         try {
             this.socket = socket;
             this.socket.setSoTimeout(50000);
             pw = new PrintWriter(this.socket.getOutputStream());
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            this.ClientID = ID;
+
 
             this.threadOK = true;
         } catch (Exception ex) {
@@ -35,6 +35,41 @@ public class ClientConnectionThread extends Thread{
     }
 
     public void run() {
+        String type;
+        try {
+            type = br.readLine();
+        String userID;
+        String passwordUsr;
+        if(type.equals("ExistingUser")) {
+            userID = br.readLine();
+            System.out.println(userID);
+            passwordUsr = br.readLine();
+            System.out.println(passwordUsr);
+            File clientFolder = new File("serverdatabase/client");
+            for (int i = 0; i < clientFolder.listFiles().length; i++) {
+                if (clientFolder.listFiles()[i].getName().substring(0, userID.length()) == userID) {
+                    File clientFil = new File(clientFolder.listFiles()[i].getName());
+                    Scanner clientFilScanner = new Scanner(clientFil);
+                    String passwordSrv = clientFilScanner.nextLine();
+                    clientFilScanner.close();
+                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                    if (passwordSrv.equals(passwordUsr)) {
+                        System.out.println("LoginOkay");
+                        pw.println("LoginOkay");
+                        pw.flush();
+                        this.ClientID = userID;
+                        new ActiveClient(userID, socket);
+                    } else {
+                        System.out.println("LoginFailed");
+                        pw.println("LoginFailed");
+                        pw.flush();
+                    }
+                }
+            }
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Setup
         // Show Online
