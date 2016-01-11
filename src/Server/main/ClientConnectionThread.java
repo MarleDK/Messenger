@@ -3,6 +3,7 @@ package Server.main;
 //Husk at tråden ikke skal kunne køre i bagggrunden, hvis fx. socket er død.
 
 import com.sun.deploy.util.SessionState;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import jdk.net.Sockets;
 import org.omg.PortableInterceptor.ACTIVE;
 import universalClasses.Message;
@@ -84,17 +85,21 @@ public class ClientConnectionThread extends Thread{
         // Setup
         // Show Online
         //pw.write("Bob§James§Kagemand");
-        
+
+        System.out.println("Run Setup! Sender liste...");
         // Show History (chat messsages)
         pw.write(ChatDatabase.toString(ChatDatabase.GetChatIDs(this.ClientID)));
         pw.flush();
 
+        System.out.println("Indlæser chat history...");
         for (String s : ChatDatabase.GetChatIDs(this.ClientID)) {
             File chatFile = new File("serverdatabase/chat/" + s + ".txt");
+            System.out.println("Sender ChatID!");
             pw.write(s);
             pw.flush();
             try {
                 Scanner sc = new Scanner(chatFile);
+                System.out.println("Sender Beskeder!");
                 while (sc.hasNextLine()){
                     pw.println(sc.nextLine());
                     pw.flush();
@@ -105,12 +110,15 @@ public class ClientConnectionThread extends Thread{
                 ex.printStackTrace();
                 System.out.println("Failed reading file:" + "Server/database/chat/" + s + ".txt");
             }
+            System.out.println("Færdig sende beskeder!");
             pw.write("§");
             pw.flush();
         }
 
         pw.write("§");
         pw.flush();
+
+        System.out.println("Setup færdiggjort! Venter på client...");
 
         while (true) {
             String input;
@@ -211,9 +219,14 @@ public class ClientConnectionThread extends Thread{
                     System.out.println("No clients available to forward to!");
                 }
             }
+            else if(input.startsWith("getUsers")) {
+                pw.write(ClientDatabase.getClientsOnline());
+                pw.flush();
+            }
         }
 
     }
+
     // Fjern active client
 }
 

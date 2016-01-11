@@ -37,9 +37,11 @@ public class ListenerThread extends Thread {
 
     public void run() {
 
+        System.out.println("RUN! Venter på modtagelse af liste...");
         // Modtagelse af listen
+        String list = "";
         try {
-            String list =  br.readLine();
+            list =  br.readLine();
         } catch (Exception ex) {
             try {
                 socket.shutdownOutput();
@@ -50,9 +52,11 @@ public class ListenerThread extends Thread {
             }
             return;
         }
+        System.out.println(list + " blev modtaget!");
         // Check om § eller ny samtale ID
         boolean allmessages = false;
         while (!allmessages) {
+            System.out.println("Check om ny SamtaleID...");
             try {
                 ChatID = br.readLine();
             } catch (Exception ex) {
@@ -65,6 +69,7 @@ public class ListenerThread extends Thread {
                 }
                 return;
             }
+            System.out.println(ChatID + " blev modtaget!");
             if (!ChatID.equals("§")) {
                 // Ny chat
                 Platform.runLater(new Runnable() {
@@ -73,6 +78,7 @@ public class ListenerThread extends Thread {
                     }
                 });
                 // Første linje indeholder clienter i denne chat
+                System.out.println("Klar til modtagelse af første linje...");
                 try {
                     Clients = br.readLine();
                 } catch (Exception ex) {
@@ -87,13 +93,14 @@ public class ListenerThread extends Thread {
                 }
                 // Vise hvilke clienter du skriver til
                 // TODO
-
+                System.out.println(Clients + " modtaget! Nu til beskeder...");
                 // Kør modtagelse af beskeder
                 while (!done) {
                     try {
                         done = false;
                         while (!done) {
                             message = br.readLine();
+                            System.out.println(message);
                             if (message.equals("§")) {
                                 done = true;
                             } else {
@@ -117,12 +124,13 @@ public class ListenerThread extends Thread {
                         return;
                     }
                 }
-                // Færdig modtagelse af beskeder
+                System.out.println("Færdig modtagelse af beskeder!");
             }
             else {
                 allmessages = true;
             }
         }
+        System.out.println("Ikke flere beskeder! Setup Done!");
 
 
         // Setup done, start main listener
