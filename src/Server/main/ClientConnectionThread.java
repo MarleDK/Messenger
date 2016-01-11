@@ -91,6 +91,41 @@ public class ClientConnectionThread extends Thread{
 
                     pw.println(ChatDatabase.makeChat(input));
                     pw.flush();
+                    // Videresend det!
+                    Message message = Message.toMessage(input);
+                    //ClientDatabase.logMessage(message);
+
+                    ArrayList<String> Clients;
+                    Clients = ChatDatabase.getClients(message.samtaleID);
+                    ArrayList<Socket> Sockets = new ArrayList<>();
+                    if (Clients != null) {
+                        Clients.remove(message.afsenderID);
+                        for (String Client : Clients) {
+                            Sockets.add(ActiveClient.getSocket(Client));
+                        }
+                        for (int i = Sockets.size(); 0 < i; i--) {
+                            if (Sockets.get(i) == null) {
+                                Sockets.remove(i);
+                            }
+                            try {
+                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                                pw.write(message.toString());
+                                pw.flush();
+                                pw.close();
+                            } catch (Exception ex) {
+                                try {
+                                    socket.shutdownOutput();
+                                    socket.shutdownInput();
+                                    socket.close();
+                                } catch (Exception ex1) {
+                                    return;
+                                }
+                                return;
+                            }
+                        }
+                    } else {
+                        System.out.println("No clients available to forward to!");
+                    }
 
                 } else if(input.startsWith("Message")) {
                     // En besked er kommet, videresend det!

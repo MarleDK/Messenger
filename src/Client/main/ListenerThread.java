@@ -87,7 +87,7 @@ public class ListenerThread extends Thread {
                     return;
                 }
                 // Vise hvilke clienter du skriver til
-
+                // TODO
                 // Kør modtagelse af beskeder
                 while (!done) {
                     try {
@@ -154,7 +154,7 @@ public class ListenerThread extends Thread {
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
                         // kald metoden her
-
+                        Main.newChat(Message.toMessage(input).samtaleID);
                     }
                 });
 

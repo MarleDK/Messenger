@@ -15,6 +15,24 @@ public class ChatDatabase {
     }
 
     public static ArrayList<String> getClients(String ID){
+
+        // Læs først linje i ID filen
+        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
+        String Line;
+        try {
+            Scanner sc = new Scanner(chatFile);
+            Line = sc.nextLine();
+            int lastChar;
+            for (int i = 0; Line.length() > i; i++) {
+                lastChar = 0;
+                if (Line.charAt(i) == '§') {
+
+                    lastChar = i+1;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
