@@ -36,47 +36,60 @@ public class ClientConnectionThread extends Thread{
     }
 
     public void run() {
-        String type;
         try {
-            type = br.readLine();
-        String userID;
-        String passwordUsr;
-        if(type.equals("ExistingUser")) {
-            userID = br.readLine();
-            System.out.println(userID);
-            passwordUsr = br.readLine();
-            System.out.println(passwordUsr);
-            File clientFolder = new File("serverdatabase/client");
-            for (int i = 0; i < clientFolder.listFiles().length; i++) {
-                System.out.println(clientFolder.listFiles()[i].getName());
-                if (clientFolder.listFiles()[i].getName().substring(0, userID.length()).equals(userID)) {
-                    System.out.println(clientFolder.listFiles()[i].getName());
-                    File clientFil = new File("serverdatabase/client/"+clientFolder.listFiles()[i].getName());
-                    Scanner clientFilScanner = new Scanner(clientFil);
-                    String passwordSrv = clientFilScanner.nextLine();
-                    clientFilScanner.close();
-                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
-                    if (passwordSrv.equals(passwordUsr)) {
-                        if (ActiveClient.ClientLogged(userID)) {
-                            System.out.println("User Already Logged in!");
-                            pw.println("LoginAlready");
-                            pw.flush();
+            boolean loginin = false;
+            while (!loginin) {
+
+                String input;
+                input = br.readLine();
+                String userID ="";
+                String passwordUsr;
+                if (input.startsWith("ExistingUser§")) {
+                    int i = 13;
+                    while(true){
+                        if(input.charAt(i) == '§'){
+                            i++;
+                            break;
+                        } else{
+                            userID += input.charAt(i);
+                            i++;
                         }
-                        else {
-                            System.out.println("LoginOkay");
-                            pw.println("LoginOkay");
-                            pw.flush();
-                            this.ClientID = userID;
-                            new ActiveClient(userID, socket);
+                    }
+                    passwordUsr = input.substring(i);
+                    System.out.println(userID);
+                    System.out.println(passwordUsr);
+                    File clientFolder = new File("serverdatabase/client");
+                    for (i = 0; i < clientFolder.listFiles().length; i++) {
+                        System.out.println(clientFolder.listFiles()[i].getName());
+                        if (clientFolder.listFiles()[i].getName().substring(0, userID.length()).equals(userID)) {
+                            System.out.println(clientFolder.listFiles()[i].getName());
+                            File clientFil = new File("serverdatabase/client/" + clientFolder.listFiles()[i].getName());
+                            Scanner clientFilScanner = new Scanner(clientFil);
+                            String passwordSrv = clientFilScanner.nextLine();
+                            clientFilScanner.close();
+                            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                            if (passwordSrv.equals(passwordUsr)) {
+                                if (ActiveClient.ClientLogged(userID)) {
+                                    System.out.println("User Already Logged in!");
+                                    pw.println("LoginAlready");
+                                    pw.flush();
+                                } else {
+                                    System.out.println("LoginOkay");
+                                    pw.println("LoginOkay");
+                                    pw.flush();
+                                    loginin = true;
+                                    this.ClientID = userID;
+                                    new ActiveClient(userID, socket);
+                                }
+                            } else {
+                                System.out.println("LoginFailed");
+                                pw.println("LoginFailed");
+                                pw.flush();
+                            }
                         }
-                    } else {
-                        System.out.println("LoginFailed");
-                        pw.println("LoginFailed");
-                        pw.flush();
                     }
                 }
             }
-        }
         } catch (IOException e) {
             e.printStackTrace();
             try {

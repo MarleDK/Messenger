@@ -58,12 +58,15 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         catch (Exception e) {
             System.out.println("No connection to server! Is it running?");
         }
+
         primaryWindow.setOnCloseRequest(e ->{
             //deleteLog();
 
         });
-        primaryWindow.setScene(new Scene(root, 600, 475));
+        primaryWindow.setScene(new Scene(loginScene, 600, 475));
         root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+        loginScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+        newChatScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryWindow.show();
 
 
@@ -139,6 +142,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
     }
 
+    public static Parent getRoot() {
+        return root;
+    }
 
     @Override
     public void handle(ActionEvent event) {
