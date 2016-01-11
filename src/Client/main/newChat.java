@@ -53,11 +53,17 @@ public class newChat {
 
     @FXML
     public void makeNewChat(ActionEvent actionEvent) {
-
+        Main.getPw().print("NewChat§");
+        for(String user: chatUsers){
+            Main.getPw().print(user+"§");
+        }
+        Main.getPw().println();
+        Main.getPw().flush();
     }
 
     @FXML
     public void cancelNewChat(ActionEvent actionEvent) {
+        chatUsers = null;
 
     }
 }

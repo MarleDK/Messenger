@@ -158,7 +158,7 @@ public class ClientConnectionThread extends Thread{
                 }
                 break;
             }
-            if(input.startsWith("NewChat")) {
+            if(input.startsWith("NewChat§")) {
                 // En client vil gerne oprette en ny chat
 
                 // TYPE
