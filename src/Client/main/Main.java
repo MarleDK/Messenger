@@ -86,7 +86,7 @@ public class Main extends Application {
             folder.listFiles()[i].delete();
         }
     }
-    //Hej
+
 
     private static void getLogFromServer() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
