@@ -9,9 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -45,25 +43,31 @@ public class Main extends Application {
         primaryWindow = primaryStage;
         Platform.setImplicitExit(false);
 
-        GridPane root = new GridPane();
-        root.setAlignment(Pos.CENTER);
-        root.setHgap(10);
-        root.setVgap(10);
-        root.setPadding(new Insets(25, 25, 25, 25));
-
         GridPane loginScene = new GridPane();
         loginScene.setAlignment(Pos.CENTER);
         loginScene.setHgap(10);
         loginScene.setVgap(10);
 
-        GridPane newChatScene = new GridPane();
-        newChatScene.setAlignment(Pos.CENTER);
-        newChatScene.setHgap(10);
-        newChatScene.setVgap(10);
+        GridPane felter = new GridPane();
+        felter.setAlignment(Pos.CENTER);
 
+        Button loginbtn = new Button();
+        loginbtn.setText("Login");
+        loginbtn.setOnAction();
+        TextField logintext = new TextField();
+        PasswordField passtext = new PasswordField();
+
+        felter.add(logintext,0,0);
+        felter.add(passtext,0,1);
+        loginScene.add(felter,0,0);
+        loginScene.add(loginbtn,0,1);
+
+
+        /// FUUUUUU DIS!!!! (7 timer mistet pga. dette!)
         //root = FXMLLoader.load(getClass().getResource("StructureRoot.fxml"));
         // loginScene = FXMLLoader.load(getClass().getResource("StructureLogin.fxml"));
         // newChatScene = FXMLLoader.load(getClass().getResource("StructureNCS.fxml"));
+
         primaryWindow.setTitle("Messenger+++");
 
         //Først skal der oprettes forbindelse til serveren
@@ -84,9 +88,9 @@ public class Main extends Application {
 
         });
         primaryWindow.setScene(new Scene(loginScene, 600, 475));
-        root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
-        loginScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
-        newChatScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+        //root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+        //loginScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+        //newChatScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryWindow.show();
 
     }
