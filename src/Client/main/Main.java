@@ -28,8 +28,8 @@ public class Main extends Application {
     private static Socket socket;
     private static TextField loginPassInputText;
     private static TextField loginUserInputText;
-    private static ArrayList<String> chatIDs;
-    private static ArrayList<ArrayList<Message>> chatlogs;
+    public static ArrayList<String> chatIDs = new ArrayList<>();
+    public static ArrayList<ArrayList<Message>> chatlogs;
     private static String serverAdr = "127.0.0.1";
     private static int serverPort = 1102;
     private static PrintWriter pw;
@@ -87,7 +87,7 @@ public class Main extends Application {
                         Main.getPw().flush();
                     }
                     else {
-                        Main.getPrimaryWindow().setScene(new Scene(Main.getRoot(), 600, 475));
+                        new MainScene(Main.getPrimaryWindow());
                     }
                     Thread listener = new ListenerThread(Main.getSocket());
                     listener.start();
@@ -156,7 +156,7 @@ public class Main extends Application {
         String input = br.readLine();
         if (input.startsWith("ChatLogs§")) {
             System.out.println("Fik " + input);
-            chatlogs = new ArrayList<>();
+            chatlogs = new ArrayList<ArrayList<Message>>();
             int chatLogIndex = 0;
 
             Boolean hasMoreChats = true;
