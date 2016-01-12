@@ -1,9 +1,12 @@
 package Client.main;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,10 +26,10 @@ import java.util.ArrayList;
 
 public class Main extends Application {
     private static String currentChat;
-    private static String userID;
+    private static String userID = "Jakob";
     private static Socket socket;
-    private static ArrayList<String> chatIDs = new ArrayList<String>();
-    private static ArrayList<ArrayList<Message>> chatlogs = new ArrayList<ArrayList<Message>>();
+    private static ArrayList<String> chatIDs;
+    private static ArrayList<ArrayList<Message>> chatlogs;
     private static String serverAdr = "127.0.0.1";
     private static int serverPort = 1102;
     private static PrintWriter pw;
@@ -40,9 +43,27 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryWindow = primaryStage;
-        root = FXMLLoader.load(getClass().getResource("StructureRoot.fxml"));
-        loginScene = FXMLLoader.load(getClass().getResource("StructureLogin.fxml"));
-        newChatScene = FXMLLoader.load(getClass().getResource("StructureNCS.fxml"));
+        Platform.setImplicitExit(false);
+
+        GridPane root = new GridPane();
+        root.setAlignment(Pos.CENTER);
+        root.setHgap(10);
+        root.setVgap(10);
+        root.setPadding(new Insets(25, 25, 25, 25));
+
+        GridPane loginScene = new GridPane();
+        loginScene.setAlignment(Pos.CENTER);
+        loginScene.setHgap(10);
+        loginScene.setVgap(10);
+
+        GridPane newChatScene = new GridPane();
+        newChatScene.setAlignment(Pos.CENTER);
+        newChatScene.setHgap(10);
+        newChatScene.setVgap(10);
+
+        //root = FXMLLoader.load(getClass().getResource("StructureRoot.fxml"));
+        // loginScene = FXMLLoader.load(getClass().getResource("StructureLogin.fxml"));
+        // newChatScene = FXMLLoader.load(getClass().getResource("StructureNCS.fxml"));
         primaryWindow.setTitle("Messenger+++");
 
         //Først skal der oprettes forbindelse til serveren
@@ -95,19 +116,14 @@ public class Main extends Application {
             Boolean hasMoreChats = true;
             while (hasMoreChats) {
                 String chatID = br.readLine();
-                System.out.println(chatID);
                 if (chatID.equals("§")) {
-                    System.out.println("No more chats");
                     hasMoreChats = false;
                 } else {
                     chatIDs.add(chatID);
                     chatlogs.add(new ArrayList<Message>());
                     Boolean hasMoreMessages = true;
                     while (hasMoreMessages) {
-                        String message = br.readLine();
-                        System.out.println(message);
-                        if (message.equals("§")) {
-                            System.out.println("No more messages");
+                        if (br.readLine().equals("§")) {
                             hasMoreMessages = false;
                         } else {
                             chatlogs.get(chatLogIndex).add(Message.toMessage(br.readLine()));
@@ -133,8 +149,8 @@ public class Main extends Application {
     }
 
     public static String getCurrentChat(){
-        if (currentChat == null && chatIDs.get(0) != null) {
-            currentChat = chatIDs.get(0);
+        if (currentChat == null) {
+
         }
         return currentChat;
     }

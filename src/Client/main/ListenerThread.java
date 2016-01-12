@@ -42,6 +42,7 @@ public class ListenerThread extends Thread {
             //Håndtering af motagelse af besked
             try {
                 input = br.readLine();
+                System.out.println(input);
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -69,8 +70,7 @@ public class ListenerThread extends Thread {
                         // kald metoden her
                         Main.newChat(Message.toMessage(input.substring(8)).samtaleID);
                     }
-                });
-            }
+            });}
             else if(input.startsWith("Message§")) {
                     //Modtagelse af besked
                     //Send besked til Layout
@@ -82,8 +82,13 @@ public class ListenerThread extends Thread {
             }
             else if(input.startsWith("GetUsers§")){
                 System.out.println(input);
-                newChat.makeChat(input.substring(9));
-            }
+
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        newChat.makeChat(input.substring(9));
+                }});
+
+    }
         }
     }
 }

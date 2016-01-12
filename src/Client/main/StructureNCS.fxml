@@ -10,7 +10,7 @@
     <VBox xmlns:fx="http://javafx.com/fxml" alignment="top_left"
             prefHeight="600"
             minWidth="80"
-            fx:id="sidebar"
+            fx:id="sidebarMCW"
             GridPane.columnIndex="0" GridPane.rowIndex="0">
         <Button text="New Chat"
                 fx:id="newChatMCW"
@@ -19,16 +19,25 @@
 
     <GridPane
             xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="0" vgap="0"
-            styleClass="root"
             fx:id="newChatArea"
             GridPane.columnIndex="1" GridPane.rowIndex="0">
-        <GridPane
-                xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="0" vgap="0"
-                styleClass="root"
-                fx:id="usersList"
-                GridPane.columnIndex="0" GridPane.rowIndex="0">
-        </GridPane>
-            <HBox xmlns:fx="http://javafx.com/fxml" alignment="bottom_right"
+        <VBox xmlns:fx="http://javafx.com/fxml" alignment="top_left"
+              GridPane.columnIndex="0" GridPane.rowIndex="0"
+              fx:id="userListVBox">
+            <ListView xmlns:fx="http://javafx.com/fxml"
+                      fx:id="users">
+            </ListView>
+
+        </VBox>
+        <VBox xmlns:fx="http://javafx.com/fxml" alignment="top_left"
+              GridPane.columnIndex="1" GridPane.rowIndex="0"
+              fx:id="chatUsersVBox">
+            <ListView xmlns:fx="http://javafx.com/fxml"
+                      fx:id="chatUsers">
+            </ListView>
+
+        </VBox>
+        <HBox xmlns:fx="http://javafx.com/fxml" alignment="bottom_right"
               GridPane.columnIndex="1" GridPane.rowIndex="1"
               fx:id="makeChatButtons">
             <Button text="Submit"

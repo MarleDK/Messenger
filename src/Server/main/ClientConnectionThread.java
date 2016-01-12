@@ -116,23 +116,18 @@ public class ClientConnectionThread extends Thread{
         pw.println("ChatLogs§");
         pw.flush();
 
+
+
         System.out.println("Indlæser chat history...");
         for (String s : ChatDatabase.GetChatIDs(this.ClientID)) {
-            File chatFile = new File("serverdatabase/chat/" + s);
-            System.out.println("Sender ChatID! "+chatFile.getName());
-            System.out.println(s);
+            File chatFile = new File("serverdatabase/chat/" + s + ".txt");
+            System.out.println("Sender ChatID!");
             pw.println(s);
             pw.flush();
             try {
                 Scanner sc = new Scanner(chatFile);
-                if(sc.hasNextLine()){
-                    sc.nextLine();
-                }else{
-                    System.out.println("Fejl i chatfil, mangler Clienter");
-                }
                 System.out.println("Sender Beskeder!");
                 while (sc.hasNextLine()){
-                    System.out.println("Server is sending messages");
                     pw.println(sc.nextLine());
                     pw.flush();
                 }
@@ -184,7 +179,7 @@ public class ClientConnectionThread extends Thread{
                     for (String Client : Clients) {
                         Sockets.add(ActiveClient.getSocket(Client));
                     }
-                    for (int i = Sockets.size()-1; 0 < i; i--) {
+                    for (int i = Sockets.size(); 0 < i; i--) {
                         if (Sockets.get(i) == null) {
                             Sockets.remove(i);
                         }
@@ -209,7 +204,7 @@ public class ClientConnectionThread extends Thread{
                     System.out.println("No clients available to forward to!");
                 }
 
-            } else if(input.startsWith("Message§")) {
+            } else if(input.startsWith("Message")) {
                 // En besked er kommet, videresend det!
 
                 // TYPE
@@ -227,26 +222,25 @@ public class ClientConnectionThread extends Thread{
                     for (String Client : Clients) {
                         Sockets.add(ActiveClient.getSocket(Client));
                     }
-                    for (int i = Sockets.size()-1; 0 < i; i--) {
+                    for (int i = Sockets.size(); 0 < i; i--) {
                         if (Sockets.get(i) == null) {
                             Sockets.remove(i);
-                        }else {
+                        }
+                        try {
+                            PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                            pw.println(message.toString());
+                            pw.flush();
+                            pw.close();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                             try {
-                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                                pw.println(message.toString());
-                                pw.flush();
-                                pw.close();
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                                try {
-                                    socket.shutdownOutput();
-                                    socket.shutdownInput();
-                                    socket.close();
-                                } catch (Exception ex1) {
-                                    break;
-                                }
+                                socket.shutdownOutput();
+                                socket.shutdownInput();
+                                socket.close();
+                            } catch (Exception ex1) {
                                 break;
                             }
+                            break;
                         }
                     }
                 } else {

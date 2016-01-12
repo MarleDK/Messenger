@@ -3,11 +3,10 @@
 
 }
 
-#newChat, #newChatMCW{
+#newChat{
     -fx-background-color: white;
     -fx-border-color: black;
 }
-
 
 .root{
     -fx-background-color: whitesmoke;
