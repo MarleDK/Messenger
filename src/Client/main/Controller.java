@@ -50,50 +50,6 @@ public class Controller {
         }
     }
 
-    @FXML
-    public void loginSubmitButtonAction(ActionEvent actionEvent) {
-        // Login metode her
-        String login;
-        try {
-            Main.getPw().print("ExistingUser§");
-            Main.getPw().print(loginUserInputText.getText()+"§");
-            Main.getPw().println(loginPassInputText.getText());
-            Main.getPw().flush();
-            System.out.println("Venter på svar..");
-            login = Main.getBr().readLine();
-            System.out.println("Modtaget: " + login);
-        }
-        catch (Exception e) {
-             login = "LoginFailed";
-        }
-        if(login.equals("LoginFailed")){
-            Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
-            loginFail.setHeaderText("Log ind Fejlede prøv igen");
-            loginFail.showAndWait();
-            loginPassInputText.setText("");
-        }
-        else if(login.equals("LoginOkay")) {
-            try {
-                Main.getLogFromServer();
-                if (Main.getCurrentChat() == null) {
-                    System.out.println("Sender new chat request");
-                    Main.getPw().println("GetUsers§");
-                    Main.getPw().flush();
-                }
-                else {
-                    Main.getPrimaryWindow().setScene(new Scene(Main.getRoot(), 600, 475));
-                }
-                Thread listener = new ListenerThread(Main.getSocket());
-                listener.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-
-    @FXML
     protected void newChatButtonAction(ActionEvent actionEvent) throws IOException {
         System.out.println("Sender new chat request");
         Main.getPw().println("GetUsers§");

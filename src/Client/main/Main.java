@@ -26,6 +26,8 @@ public class Main extends Application {
     private static String currentChat;
     private static String userID = "Jakob";
     private static Socket socket;
+    private static TextField loginPassInputText;
+    private static TextField loginUserInputText;
     private static ArrayList<String> chatIDs;
     private static ArrayList<ArrayList<Message>> chatlogs;
     private static String serverAdr = "127.0.0.1";
@@ -53,12 +55,52 @@ public class Main extends Application {
 
         Button loginbtn = new Button();
         loginbtn.setText("Login");
-        loginbtn.setOnAction();
-        TextField logintext = new TextField();
-        PasswordField passtext = new PasswordField();
+        loginbtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            // Login metode her
+            String login;
+            try {
+                Main.getPw().print("ExistingUser§");
+                Main.getPw().print(loginUserInputText.getText()+"§");
+                Main.getPw().println(loginPassInputText.getText());
+                Main.getPw().flush();
+                System.out.println("Venter på svar..");
+                login = Main.getBr().readLine();
+                System.out.println("Modtaget: " + login);
+            }
+            catch (Exception ex) {
+                login = "LoginFailed";
+            }
+            if(login.equals("LoginFailed")){
+                Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
+                loginFail.setHeaderText("Log ind Fejlede prøv igen");
+                loginFail.showAndWait();
+                loginPassInputText.setText("");
+            }
+            else if(login.equals("LoginOkay")) {
+                try {
+                    Main.getLogFromServer();
+                    if (Main.getCurrentChat() == null) {
+                        System.out.println("Sender new chat request");
+                        Main.getPw().println("GetUsers§");
+                        Main.getPw().flush();
+                    }
+                    else {
+                        Main.getPrimaryWindow().setScene(new Scene(Main.getRoot(), 600, 475));
+                    }
+                    Thread listener = new ListenerThread(Main.getSocket());
+                    listener.start();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            }});
+        loginUserInputText = new TextField();
+        loginPassInputText = new PasswordField();
 
-        felter.add(logintext,0,0);
-        felter.add(passtext,0,1);
+        felter.add(loginUserInputText,0,0);
+        felter.add(loginPassInputText,0,1);
         loginScene.add(felter,0,0);
         loginScene.add(loginbtn,0,1);
 
