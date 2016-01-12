@@ -184,7 +184,7 @@ public class ClientConnectionThread extends Thread{
                     for (String Client : Clients) {
                         Sockets.add(ActiveClient.getSocket(Client));
                     }
-                    for (int i = Sockets.size(); 0 < i; i--) {
+                    for (int i = Sockets.size()-1; 0 < i; i--) {
                         if (Sockets.get(i) == null) {
                             Sockets.remove(i);
                         }
@@ -227,25 +227,26 @@ public class ClientConnectionThread extends Thread{
                     for (String Client : Clients) {
                         Sockets.add(ActiveClient.getSocket(Client));
                     }
-                    for (int i = Sockets.size(); 0 < i; i--) {
+                    for (int i = Sockets.size()-1; 0 < i; i--) {
                         if (Sockets.get(i) == null) {
                             Sockets.remove(i);
-                        }
-                        try {
-                            PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                            pw.println(message.toString());
-                            pw.flush();
-                            pw.close();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+                        }else {
                             try {
-                                socket.shutdownOutput();
-                                socket.shutdownInput();
-                                socket.close();
-                            } catch (Exception ex1) {
+                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                                pw.println(message.toString());
+                                pw.flush();
+                                pw.close();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                try {
+                                    socket.shutdownOutput();
+                                    socket.shutdownInput();
+                                    socket.close();
+                                } catch (Exception ex1) {
+                                    break;
+                                }
                                 break;
                             }
-                            break;
                         }
                     }
                 } else {
