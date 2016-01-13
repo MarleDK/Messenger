@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ClientConnectionThread extends Thread{
+public class ClientConnectionThread extends Thread {
     public boolean threadOK;
     private Socket socket;
     private PrintWriter pw;
@@ -42,15 +42,15 @@ public class ClientConnectionThread extends Thread{
 
                 String input;
                 input = br.readLine();
-                String userID ="";
+                String userID = "";
                 String passwordUsr;
                 if (input.startsWith("ExistingUser§")) {
                     int i = 13;
-                    while(true){
-                        if(input.charAt(i) == '§'){
+                    while (true) {
+                        if (input.charAt(i) == '§') {
                             i++;
                             break;
-                        } else{
+                        } else {
                             userID += input.charAt(i);
                             i++;
                         }
@@ -62,7 +62,7 @@ public class ClientConnectionThread extends Thread{
                     Boolean gotUser = false;
                     for (i = 0; i < clientFolder.listFiles().length; i++) {
                         System.out.println(clientFolder.listFiles()[i].getName());
-                        if (clientFolder.listFiles()[i].getName().equals(userID +".txt")) {
+                        if (clientFolder.listFiles()[i].getName().equals(userID + ".txt")) {
                             System.out.println(clientFolder.listFiles()[i].getName());
                             File clientFil = new File("serverdatabase/client/" + clientFolder.listFiles()[i].getName());
                             Scanner clientFilScanner = new Scanner(clientFil);
@@ -78,7 +78,7 @@ public class ClientConnectionThread extends Thread{
                                     pw.flush();
                                     loginin = true;
                                     this.ClientID = userID;
-                                    new ActiveClient(userID, socket);
+                                    new ActiveClient(userID, socket, this);
                                     break;
                                 }
                             } else {
@@ -87,7 +87,7 @@ public class ClientConnectionThread extends Thread{
                         }
 
                     }
-                    if(!loginin) {
+                    if (!loginin) {
                         System.out.println("LoginFailed");
                         pw.println("LoginFailed");
                         pw.flush();
@@ -116,7 +116,6 @@ public class ClientConnectionThread extends Thread{
         pw.flush();
 
 
-
         System.out.println("Indlæser chat history...");
         for (String s : ChatDatabase.GetChatIDs(this.ClientID)) {
             File chatFile = new File("serverdatabase/chat/" + s);
@@ -126,13 +125,12 @@ public class ClientConnectionThread extends Thread{
             try {
                 Scanner sc = new Scanner(chatFile);
                 System.out.println("Sender Beskeder!");
-                while (sc.hasNextLine()){
+                while (sc.hasNextLine()) {
                     pw.println(sc.nextLine());
                     pw.flush();
                 }
                 sc.close();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 System.out.println("Failed reading file:" + "Server/database/chat/" + s);
                 System.out.println(ex.getMessage());
                 try {
@@ -180,8 +178,7 @@ public class ClientConnectionThread extends Thread{
                     break;
                 }
                 break;
-            }
-            else if(input.startsWith("NewChat§")) {
+            } else if (input.startsWith("NewChat§")) {
                 System.out.println("Making new chat");
                 // En client vil gerne oprette en ny chat
 
@@ -197,36 +194,22 @@ public class ClientConnectionThread extends Thread{
                 ArrayList<Socket> Sockets = new ArrayList<>();
                 if (Clients != null) {
                     Clients.remove(this.ClientID);
-                    for (String Client : Clients) {
-                        System.out.println(Client);
-                        Sockets.add(ActiveClient.getSocket(Client));
-                    }
-                    System.out.println("SOCKETS: " + Sockets.toString());
-                    for (int i = Sockets.size()-1; 0 <= i; i--) {
-                        if (Sockets.get(i) == null) {
-                            System.out.println("Removed Offline Socket!");
-                            Sockets.remove(i);
-                        }
-                        else {
+                    for (String client : Clients) {
+                        System.out.println(client);
+                        try {
+                            ActiveClient.getClientThread(client).pw.println("NewChat§" + clientInput);
+                            ActiveClient.getClientThread(client).pw.flush();
+                            System.out.println("SENT NewChat§" + clientInput);
+                        } catch (Exception ex) {
+                            System.out.println("Disconnected: " + ex.getMessage());
                             try {
-                                PrintWriter pws = new PrintWriter(Sockets.get(i).getOutputStream());
-
-                                pws.close();
-                                pws.println("NewChat§" + clientInput);
-                                pws.flush();
-                                System.out.println("SENT NewChat§" + clientInput);
-                                pws.close();
-                            } catch (Exception ex) {
-                                System.out.println("Disconnected: " + ex.getMessage());
-                                try {
-                                    socket.shutdownOutput();
-                                    socket.shutdownInput();
-                                    socket.close();
-                                } catch (Exception ex1) {
-                                    break;
-                                }
+                                socket.shutdownOutput();
+                                socket.shutdownInput();
+                                socket.close();
+                            } catch (Exception ex1) {
                                 break;
                             }
+                            break;
                         }
                     }
                 } else {
@@ -234,7 +217,7 @@ public class ClientConnectionThread extends Thread{
                 }
                 System.out.println("END NewChat");
 
-            } else if(input.startsWith("Message§")) {
+            } else if (input.startsWith("Message§")) {
                 // En besked er kommet, videresend det!
 
                 // TYPE
@@ -253,7 +236,7 @@ public class ClientConnectionThread extends Thread{
                         for (String Client : Clients) {
                             Sockets.add(ActiveClient.getSocket(Client));
                         }
-                        for (int i = Sockets.size()-1; 0 < i; i--) {
+                        for (int i = Sockets.size() - 1; 0 < i; i--) {
                             if (Sockets.get(i) == null) {
                                 Sockets.remove(i);
                             }
@@ -278,11 +261,10 @@ public class ClientConnectionThread extends Thread{
                     } else {
                         System.out.println("No clients available to forward to!");
                     }
-                }
-                else {
+                } else {
                     System.out.println("SamtaleID not found!");
                 }
-            } else if(input.startsWith("GetUsers§")) {
+            } else if (input.startsWith("GetUsers§")) {
                 System.out.println("Sending users");
                 System.out.println(ClientDatabase.getClients());
                 pw.println(ClientDatabase.getClients());

@@ -10,45 +10,45 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import universalClasses.Message;
 
-public class MainScene {
+import java.util.ArrayList;
 
-    public MainScene(Stage primaryWindow){
+public class MainScene {
+    private ObservableList<HBox> chat;
+    private Stage window;
+    private VBox chatArea;
+
+    public MainScene(Stage primaryWindow) {
+        window = primaryWindow;
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
 
         VBox leftSidebar = new VBox();
-        root.add(leftSidebar, 0,0);
+        root.add(leftSidebar, 0, 0);
 
         GridPane rightSide = new GridPane();
-        root.add(rightSide, 1,0);
+        root.add(rightSide, 1, 0);
 
-        VBox chatArea = new VBox();
-        rightSide.add(chatArea, 0,0);
+        chatArea = new VBox();
+        rightSide.add(chatArea, 0, 0);
 
         HBox chatBottom = new HBox();
-        rightSide.add(chatBottom, 0,1);
+        rightSide.add(chatBottom, 0, 1);
 
         TextField chatInput = new TextField();
         chatBottom.getChildren().add(0, chatInput);
 
         Button submitChat = new Button("Send");
         chatBottom.getChildren().add(1, submitChat);
-        submitChat.setOnAction(event1 -> {
-            Message message = new Message(Main.getCurrentChat(), Main.getUserID(), chatInput.getText());
-            Main.addMessage(message);
-            Main.getPw().println(message.toString());
-            Main.getPw().flush();
-
-        });
 
         ListView<String> chats = new ListView<>();
         ObservableList<String> chatIDs = FXCollections.observableArrayList();
         chats.setItems(chatIDs);
-        for(int i=0; i<Main.chatIDs.size(); i++){
+        for (int i = 0; i < Main.chatIDs.size(); i++) {
             chatIDs.add(Main.chatIDs.get(i));
         }
 
@@ -64,14 +64,61 @@ public class MainScene {
             System.out.println("Sending new chat request");
             Main.getPw().println("GetUsers§");
             Main.getPw().flush();
+
+        });
+
+        chat = FXCollections.observableArrayList();
+        addAllMessages();
+
+
+        submitChat.setOnAction(event1 -> {
+            Message message = new Message(Main.getCurrentChat(), Main.getUserID(), chatInput.getText());
+            Main.addMessage(message);
+            Main.getPw().println(message.toString());
+            Main.getPw().flush();
+            chatInput.clear();
+            this.addMessage(message);
         });
 
 
+        ListView<HBox> chatList = new ListView<>();
+        chatArea.getChildren().add(chatList);
+        chatList.setItems(chat);
 
 
 
         primaryWindow.setScene(new Scene(root, primaryWindow.getWidth(), primaryWindow.getHeight()));
     }
 
+    public void addAllMessages(){
+        ArrayList<Message> messages = Main.getMessagesFromCurrentChat();
+        System.out.println("adding messages");
+        if (messages.get(0) == null) {
+            messages.remove(0);
+        }
+        for (Message message : messages) {
+            addMessage(message);
+        }
+    }
+
+    public void addMessage(Message message){
+        System.out.println(message);
+        TextField field = new TextField(message.afsenderID +":\n"+ message.text);
+        HBox hbox = new HBox();
+        chat.add(hbox);
+        if (message.afsenderID.equals(Main.getUserID())) {
+            hbox.setAlignment(Pos.BOTTOM_RIGHT);
+            field.setStyle("ID:MessageFieldThis");
+        } else {
+            hbox.setAlignment(Pos.BOTTOM_LEFT);
+            field.setStyle("ID:MessageFieldOther");
+        }
+        field.setText(message.afsenderID + ":\n" + message.text);
+        hbox.getChildren().add(field);
+        field.setMaxWidth(chatArea.getWidth()*0.7);
+        field.setEditable(false);
+        hbox.setPrefWidth(500);
+        hbox.setMaxWidth(chatArea.getWidth());
+    }
 
 }

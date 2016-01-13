@@ -30,7 +30,7 @@ public class Main extends Application {
     private static TextField loginUserInputText;
     public static ArrayList<String> chatIDs = new ArrayList<>();
     public static ArrayList<ArrayList<Message>> chatlogs;
-    private static String serverAdr = "127.0.0.1";
+    private static String serverAdr = "";
     private static int serverPort = 1302;
     private static PrintWriter pw;
     private static BufferedReader br;
@@ -41,7 +41,7 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         primaryWindow = primaryStage;
         Platform.setImplicitExit(false);
 
@@ -52,56 +52,67 @@ public class Main extends Application {
 
         GridPane felter = new GridPane();
         felter.setAlignment(Pos.CENTER);
+        TextField ip = new TextField("127.0.0.1");
 
         Button loginbtn = new Button();
         loginbtn.setText("Login");
         loginbtn.setOnAction(e -> {
-        // Login metode her
-        String login;
-        try {
-            Main.getPw().print("ExistingUser§");
-            Main.getPw().print(loginUserInputText.getText()+"§");
-            Main.getPw().println(loginPassInputText.getText());
-            Main.getPw().flush();
-            System.out.println("Venter på svar..");
-            login = Main.getBr().readLine();
-            System.out.println("Modtaget: " + login);
-        }
-        catch (Exception ex) {
-            login = "LoginFailed";
-        }
-        if(login.equals("LoginFailed")){
-            Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
-            loginFail.setHeaderText("Log ind Fejlede prøv igen");
-            loginFail.showAndWait();
-            loginPassInputText.setText("");
-        }
-        else if(login.equals("LoginOkay")) {
-            try {
-                Main.getLogFromServer();
-                if (Main.getCurrentChat() == null) {
-                    System.out.println("Sender new chat request");
-                    Main.getPw().println("GetUsers§");
-                    Main.getPw().flush();
+            if(!serverAdr.equals(ip.getText())) {
+                try {
+                    socket = new Socket(serverAdr, serverPort);
+                    pw = new PrintWriter(socket.getOutputStream());
+                    br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                } catch (Exception ex) {
+                    System.out.println("No connection to server! Is it running?");
                 }
-                else {
-                    new MainScene(Main.getPrimaryWindow());
-                }
-                setUserID(loginUserInputText.getText());
-                Thread listener = new ListenerThread(Main.getSocket());
-                listener.start();
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
-        }
+
+
+            // Login metode her
+            String login;
+            try {
+                Main.getPw().print("ExistingUser§");
+                Main.getPw().print(loginUserInputText.getText() + "§");
+                Main.getPw().println(loginPassInputText.getText());
+                Main.getPw().flush();
+                System.out.println("Venter på svar..");
+                login = Main.getBr().readLine();
+                System.out.println("Modtaget: " + login);
+            } catch (Exception ex) {
+                login = "LoginFailed";
+            }
+            if (login.equals("LoginFailed")) {
+                Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
+                loginFail.setHeaderText("Log ind Fejlede prøv igen");
+                loginFail.showAndWait();
+                loginPassInputText.setText("");
+            } else if (login.equals("LoginOkay")) {
+                try {
+                    Main.getLogFromServer();
+                    if (Main.getCurrentChat() == null) {
+                        System.out.println("Sender new chat request");
+                        Main.getPw().println("GetUsers§");
+                        Main.getPw().flush();
+                    } else {
+                        new MainScene(Main.getPrimaryWindow());
+                    }
+                    setUserID(loginUserInputText.getText());
+                    Thread listener = new ListenerThread(Main.getSocket());
+                    listener.start();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         });
         loginUserInputText = new TextField();
         loginPassInputText = new PasswordField();
 
-        felter.add(loginUserInputText,0,0);
-        felter.add(loginPassInputText,0,1);
-        loginScene.add(felter,0,0);
-        loginScene.add(loginbtn,0,1);
+        felter.add(loginUserInputText, 0, 0);
+        felter.add(loginPassInputText, 0, 1);
+        felter.add(ip, 0, 2);
+        loginScene.add(felter, 0, 0);
+        loginScene.add(loginbtn, 0, 1);
 
 
         /// FUUUUUU DIS!!!! (7 timer mistet pga. dette!)
@@ -114,17 +125,7 @@ public class Main extends Application {
         //Først skal der oprettes forbindelse til serveren
         //åben ListenerThread
 
-        try {
-            socket = new Socket(serverAdr, serverPort);
-            pw = new PrintWriter(socket.getOutputStream());
-            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-        }
-        catch (Exception e) {
-            System.out.println("No connection to server! Is it running?");
-        }
-
-        primaryWindow.setOnCloseRequest(e ->{
+        primaryWindow.setOnCloseRequest(e -> {
             //deleteLog();
 
         });
@@ -172,22 +173,26 @@ public class Main extends Application {
             }
             System.out.println("Afsluttede ChatLogs");
 
-        }
-        else {
+        } else {
             System.out.println("Should have gotten ChatLogs... but got " + input);
         }
 
+    }
+
+    public static ArrayList<Message> getMessagesFromCurrentChat() {
+        int index = chatIDs.indexOf(currentChat);
+        return chatlogs.get(index);
     }
 
     public static Parent getRoot() {
         return root;
     }
 
-    public static void addMessage(Message message){
+    public static void addMessage(Message message) {
         chatlogs.get(chatIDs.indexOf(message.samtaleID)).add(message);
     }
 
-    public static String getCurrentChat(){
+    public static String getCurrentChat() {
         if (currentChat == null && !chatIDs.isEmpty()) {
             currentChat = chatIDs.get(0);
         }
@@ -202,7 +207,7 @@ public class Main extends Application {
         return socket;
     }
 
-    public static void newChat (String IDs) {
+    public static void newChat(String IDs) {
         chatIDs.add(IDs);
         chatlogs.add(new ArrayList<>());
         //
