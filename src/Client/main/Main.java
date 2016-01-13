@@ -59,6 +59,7 @@ public class Main extends Application {
         loginbtn.setText("Login");
         loginbtn.setOnAction(e -> {
             if(!serverAdr.equals(ip.getText())) {
+                serverAdr = ip.getText();
                 try {
                     socket = new Socket(serverAdr, serverPort);
                     pw = new PrintWriter(socket.getOutputStream());
