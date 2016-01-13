@@ -43,7 +43,7 @@ public class ClientConnectionThread extends Thread{
                 String input;
                 input = br.readLine();
                 String userID ="";
-                String passwordUsr="";
+                String passwordUsr;
                 if (input.startsWith("ExistingUser§")) {
                     int i = 13;
                     while(true){
@@ -52,7 +52,6 @@ public class ClientConnectionThread extends Thread{
                             break;
                         } else{
                             userID += input.charAt(i);
-                            System.out.println(userID);
                             i++;
                         }
                     }
@@ -95,8 +94,8 @@ public class ClientConnectionThread extends Thread{
                     }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
             try {
                 socket.shutdownOutput();
                 socket.shutdownInput();
@@ -134,8 +133,16 @@ public class ClientConnectionThread extends Thread{
                 sc.close();
             }
             catch (Exception ex) {
-                ex.printStackTrace();
                 System.out.println("Failed reading file:" + "Server/database/chat/" + s);
+                System.out.println(ex.getMessage());
+                try {
+                    socket.shutdownOutput();
+                    socket.shutdownInput();
+                    socket.close();
+                } catch (Exception ex1) {
+                    break;
+                }
+                break;
             }
             System.out.println("Færdig sende beskeder!");
             pw.println("§");
@@ -153,7 +160,7 @@ public class ClientConnectionThread extends Thread{
                 input = br.readLine();
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
                 try {
                     socket.shutdownOutput();
                     socket.shutdownInput();
@@ -189,7 +196,7 @@ public class ClientConnectionThread extends Thread{
                             pw.flush();
                             pw.close();
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            System.out.println(ex.getMessage());
                             try {
                                 socket.shutdownOutput();
                                 socket.shutdownInput();
@@ -215,36 +222,41 @@ public class ClientConnectionThread extends Thread{
                 ChatDatabase.logMessage(message);
 
                 ArrayList<String> Clients;
-                Clients = ChatDatabase.getClients(message.samtaleID);
-                ArrayList<Socket> Sockets = new ArrayList<>();
-                if (Clients != null) {
-                    Clients.remove(message.afsenderID);
-                    for (String Client : Clients) {
-                        Sockets.add(ActiveClient.getSocket(Client));
-                    }
-                    for (int i = Sockets.size(); 0 < i; i--) {
-                        if (Sockets.get(i) == null) {
-                            Sockets.remove(i);
+                if (message != null) {
+                    Clients = ChatDatabase.getClients(message.samtaleID);
+                    ArrayList<Socket> Sockets = new ArrayList<>();
+                    if (Clients != null) {
+                        Clients.remove(message.afsenderID);
+                        for (String Client : Clients) {
+                            Sockets.add(ActiveClient.getSocket(Client));
                         }
-                        try {
-                            PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                            pw.println(message.toString());
-                            pw.flush();
-                            pw.close();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+                        for (int i = Sockets.size(); 0 < i; i--) {
+                            if (Sockets.get(i) == null) {
+                                Sockets.remove(i);
+                            }
                             try {
-                                socket.shutdownOutput();
-                                socket.shutdownInput();
-                                socket.close();
-                            } catch (Exception ex1) {
+                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                                pw.println(message.toString());
+                                pw.flush();
+                                pw.close();
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                                try {
+                                    socket.shutdownOutput();
+                                    socket.shutdownInput();
+                                    socket.close();
+                                } catch (Exception ex1) {
+                                    break;
+                                }
                                 break;
                             }
-                            break;
                         }
+                    } else {
+                        System.out.println("No clients available to forward to!");
                     }
-                } else {
-                    System.out.println("No clients available to forward to!");
+                }
+                else {
+                    System.out.println("SamtaleID not found!");
                 }
             } else if(input.startsWith("GetUsers§")) {
                 System.out.println("Sending users");
