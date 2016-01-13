@@ -190,12 +190,14 @@ public class ClientConnectionThread extends Thread{
                 // Clients
                 // END
                 String clientInput = ChatDatabase.makeChat(input);
-
+                pw.println("NewChat§" + clientInput);
+                pw.flush();
                 System.out.println("Sending to inform other clients....");
                 ArrayList<String> Clients;
                 Clients = ChatDatabase.getClients(clientInput);
                 ArrayList<Socket> Sockets = new ArrayList<>();
                 if (Clients != null) {
+                    Clients.remove(this.ClientID);
                     for (String Client : Clients) {
                         System.out.println(Client);
                         Sockets.add(ActiveClient.getSocket(Client));
@@ -208,13 +210,13 @@ public class ClientConnectionThread extends Thread{
                         }
                         else {
                             try {
-                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+                                PrintWriter pws = new PrintWriter(Sockets.get(i).getOutputStream());
 
-                                pw.close();
-                                pw.println("NewChat§" + clientInput);
-                                pw.flush();
+                                pws.close();
+                                pws.println("NewChat§" + clientInput);
+                                pws.flush();
                                 System.out.println("SENT NewChat§" + clientInput);
-                                pw.close();
+                                pws.close();
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 System.out.println(ex.getMessage());
@@ -258,11 +260,12 @@ public class ClientConnectionThread extends Thread{
                                 Sockets.remove(i);
                             }
                             try {
-                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                                pw.println(message.toString());
-                                pw.flush();
-                                //pw.close();
-                            } catch (Exception ex) {
+                                PrintWriter pws = new PrintWriter(Sockets.get(i).getOutputStream());
+                                pws.println(message.toString());
+                                pws.flush();
+                                pws.close();
+                                //pws.close();
+                            } catch (java.io.IOException ex) {
                                 ex.printStackTrace();
                                 System.out.println(ex.getMessage());
                                 try {

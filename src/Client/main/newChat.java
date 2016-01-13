@@ -28,7 +28,6 @@ public class newChat {
 
         System.out.println("Starter makeChat i newChat...");
 
-
         GridPane NewChatScene = new GridPane();
         NewChatScene.setAlignment(Pos.CENTER);
         NewChatScene.setHgap(10);
@@ -79,8 +78,10 @@ public class newChat {
             System.out.println();
             Main.getPw().println();
             Main.getPw().flush();
+            new MainScene(Main.getPrimaryWindow());
         });
 
+        cancelbtn.setOnAction(event -> new MainScene(Main.getPrimaryWindow()));
         NewChatScene.add(users,0,0);
         NewChatScene.add(chatUsers,1,0);
         NewChatScene.add(Buttons,0,1);
@@ -104,9 +105,4 @@ public class newChat {
 
     }
 
-
-    public void cancelNewChat(ActionEvent actionEvent) {
-        chatUsers = null;
-
-    }
 }

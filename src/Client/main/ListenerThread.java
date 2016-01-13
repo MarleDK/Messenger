@@ -68,7 +68,8 @@ public class ListenerThread extends Thread {
                     // Vis i layout, om den nye chat
                     Platform.runLater(() -> {
                         // kald metoden her
-                        Main.newChat(Message.toMessage(input.substring(8)).samtaleID);
+                        System.out.println(input.substring(8));
+                        Main.newChat(input.substring(8));
                     });
                 } else {
                     if (input.startsWith("Message§")) {
