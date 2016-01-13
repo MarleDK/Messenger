@@ -158,8 +158,9 @@ public class ClientConnectionThread extends Thread{
             String input;
             try {
                 input = br.readLine();
-
+                System.out.println("INPUT:  " + input);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 System.out.println(ex.getMessage());
                 try {
                     socket.shutdownOutput();
@@ -190,6 +191,7 @@ public class ClientConnectionThread extends Thread{
                 // END
                 String clientInput = ChatDatabase.makeChat(input);
 
+                System.out.println("Sending to inform other clients....");
                 ArrayList<String> Clients;
                 Clients = ChatDatabase.getClients(clientInput);
                 ArrayList<Socket> Sockets = new ArrayList<>();
@@ -198,30 +200,39 @@ public class ClientConnectionThread extends Thread{
                         System.out.println(Client);
                         Sockets.add(ActiveClient.getSocket(Client));
                     }
-                    for (int i = Sockets.size()-1; 0 < i; i--) {
+                    System.out.println("SOCKETS: " + Sockets.toString());
+                    for (int i = Sockets.size()-1; 0 <= i; i--) {
                         if (Sockets.get(i) == null) {
+                            System.out.println("Removed Offline Socket!");
                             Sockets.remove(i);
                         }
-                        try {
-                            PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
-                            pw.println("NewChat§" + clientInput);
-                            pw.flush();
-                            pw.close();
-                        } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
+                        else {
                             try {
-                                socket.shutdownOutput();
-                                socket.shutdownInput();
-                                socket.close();
-                            } catch (Exception ex1) {
+                                PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
+
+                                pw.close();
+                                pw.println("NewChat§" + clientInput);
+                                pw.flush();
+                                System.out.println("SENT NewChat§" + clientInput);
+                                pw.close();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                System.out.println(ex.getMessage());
+                                try {
+                                    socket.shutdownOutput();
+                                    socket.shutdownInput();
+                                    socket.close();
+                                } catch (Exception ex1) {
+                                    break;
+                                }
                                 break;
                             }
-                            break;
                         }
                     }
                 } else {
                     System.out.println("No clients available to forward to!");
                 }
+                System.out.println("END NewChat");
 
             } else if(input.startsWith("Message§")) {
                 // En besked er kommet, videresend det!
@@ -252,6 +263,7 @@ public class ClientConnectionThread extends Thread{
                                 pw.flush();
                                 pw.close();
                             } catch (Exception ex) {
+                                ex.printStackTrace();
                                 System.out.println(ex.getMessage());
                                 try {
                                     socket.shutdownOutput();

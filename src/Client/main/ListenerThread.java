@@ -42,7 +42,7 @@ public class ListenerThread extends Thread {
             //Håndtering af motagelse af besked
             try {
                 input = br.readLine();
-                System.out.println(input);
+                System.out.println("INPUT:  " + input);
 
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());

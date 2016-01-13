@@ -33,7 +33,6 @@ public class ChatDatabase {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println(clients.get(0) + " is in clients");
         return clients;
     }
 
@@ -50,6 +49,7 @@ public class ChatDatabase {
         // Lave ny fil med ChatID som filnavn
         // Navn: TimeStamp + ClientID
         if(!s.startsWith("NewChat§")){
+            System.out.println("RETURNED NULL");
             return null;
         }
         ArrayList<String> clients = new ArrayList<>();
@@ -101,6 +101,7 @@ public class ChatDatabase {
 
 
         //HUSK!! Check om det er oprettede clienter
+        System.out.println(ID);
         return ID;
     }
 

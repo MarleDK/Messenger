@@ -21,9 +21,9 @@ public class ActiveClient {
     }
 
     public static Socket getSocket(String client) {
-        for (Server.main.ActiveClient ActiveClient : ActiveClients) {
-            if (Objects.equals(client, ActiveClient.getID())) {
-                return ActiveClient.getSocket();
+        for (ActiveClient activeClient : ActiveClients) {
+            if (activeClient.getID().equals(client)) {
+                return activeClient.getSocket();
             }
         }
         return null;
