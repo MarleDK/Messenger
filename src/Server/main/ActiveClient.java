@@ -3,6 +3,7 @@ package Server.main;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ActiveClient {
     private static ArrayList<ActiveClient> ActiveClients = new ArrayList<>();
@@ -20,9 +21,9 @@ public class ActiveClient {
     }
 
     public static Socket getSocket(String client) {
-        for (int i = 0; ActiveClients.size() > i; i++) {
-            if (ActiveClients.get(i).getID() == client) {
-                return ActiveClients.get(i).getSocket();
+        for (Server.main.ActiveClient ActiveClient : ActiveClients) {
+            if (Objects.equals(client, ActiveClient.getID())) {
+                return ActiveClient.getSocket();
             }
         }
         return null;
@@ -33,20 +34,15 @@ public class ActiveClient {
     }
 
     public static void removeActiveClient(String client){
-        for(int i=ActiveClients.size(); i>0; i--){
-            if (ActiveClients.get(i).getID() == client) {
+        for(int i= ActiveClients.size()-1; i>0; i--){
+            if (Objects.equals(ActiveClients.get(i).getID(), client)) {
                 ActiveClients.remove(i);
             }
         }
     }
 
     public static boolean ClientLogged(String ID) {
-        if (ActiveClients.contains(ID)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return ActiveClients.contains(ID);
     }
 
 
