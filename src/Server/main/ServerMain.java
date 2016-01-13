@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 
 public class ServerMain {
-    private static int serverPort = 1102;
+    private static int serverPort = 1302;
 
     public static void main(String[] args) throws IOException {
         ServerSocket srv = null;
