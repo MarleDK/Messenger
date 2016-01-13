@@ -70,8 +70,9 @@ public class ChatDatabase {
         //String ID = new TimeStamp().toString() + toString(clients);
         // Dette gør så man kun kan lave en unik gruppe hvert sekundt.
         // det for at undgå § symbolet når man bruger GetChatIDs
-        String ID = new TimeStamp().toString();
-        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
+        String ID = String.valueOf(System.currentTimeMillis()) + ".txt";
+        //String ID = new TimeStamp().toString();
+        File chatFile = new File("serverdatabase/chat/" + ID);
         try {
             chatFile.createNewFile();
         } catch (IOException e) {
@@ -87,7 +88,7 @@ public class ChatDatabase {
 
         }
         catch (Exception ex) {
-            System.out.println("Failed creating file:" + "Server/database/chat/" + ID + ".txt");
+            System.out.println("Failed creating file:" + "Server/database/chat/" + ID);
             return null;
         }
         // Filen indeholde Navne på Clienter
