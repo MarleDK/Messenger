@@ -30,8 +30,8 @@ public class Main extends Application {
     private static TextField loginUserInputText;
     public static ArrayList<String> chatIDs = new ArrayList<>();
     public static ArrayList<ArrayList<Message>> chatlogs;
-    private static String serverAdr = "127.0.0.1";
-    private static int serverPort = 1102;
+    private static String serverAdr = "10.16.175.64";
+    private static int serverPort = 1302;
     private static PrintWriter pw;
     private static BufferedReader br;
     private static Parent root;
