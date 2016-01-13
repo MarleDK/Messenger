@@ -19,8 +19,11 @@ import java.util.ArrayList;
 
 public class MainScene {
     private ObservableList<HBox> chat;
+    private ObservableList<String> chatIDs;
     private Stage window;
     private VBox chatArea;
+    private GridPane rightSide2;
+    private GridPane rightSide;
 
     public MainScene(Stage primaryWindow) {
         window = primaryWindow;
@@ -30,8 +33,11 @@ public class MainScene {
         VBox leftSidebar = new VBox();
         root.add(leftSidebar, 0, 0);
 
-        GridPane rightSide = new GridPane();
-        root.add(rightSide, 1, 0);
+        rightSide2 = new GridPane();
+        root.add(rightSide2,1,0);
+
+        rightSide = new GridPane();
+        rightSide2.add(rightSide, 0, 0);
 
         chatArea = new VBox();
         rightSide.add(chatArea, 0, 0);
@@ -46,7 +52,7 @@ public class MainScene {
         chatBottom.getChildren().add(1, submitChat);
 
         ListView<String> chats = new ListView<>();
-        ObservableList<String> chatIDs = FXCollections.observableArrayList();
+        chatIDs = FXCollections.observableArrayList();
         chats.setItems(chatIDs);
         for (int i = 0; i < Main.chatIDs.size(); i++) {
             chatIDs.add(Main.chatIDs.get(i));
@@ -54,8 +60,11 @@ public class MainScene {
 
         leftSidebar.getChildren().add(chats);
 
-        chats.setOnMouseClicked(e -> {
 
+        chats.setOnMouseClicked(e -> {
+            String chat = chats.getSelectionModel().getSelectedItems().get(0);
+            Main.setCurrentChat(chat);
+            addAllMessages();
         });
 
         Button newChat = new Button("New Chat");
@@ -85,15 +94,13 @@ public class MainScene {
         chatArea.getChildren().add(chatList);
         chatList.setItems(chat);
 
-
-
         primaryWindow.setScene(new Scene(root, primaryWindow.getWidth(), primaryWindow.getHeight()));
     }
 
     public void addAllMessages(){
         ArrayList<Message> messages = Main.getMessagesFromCurrentChat();
         System.out.println("adding messages");
-        if (messages.get(0) == null) {
+        if (!messages.isEmpty() && messages.get(0) == null) {
             messages.remove(0);
         }
         for (Message message : messages) {
@@ -121,4 +128,16 @@ public class MainScene {
         hbox.setMaxWidth(chatArea.getWidth());
     }
 
+    public void addChat(String ID){
+        chatIDs.add(ID);
+
+    }
+
+    public void setRightSide(GridPane rightSide) {
+        this.rightSide2.getChildren().setAll(rightSide);
+    }
+
+    public void setToChatArea() {
+        this.rightSide2.getChildren().setAll(rightSide);
+    }
 }

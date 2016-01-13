@@ -38,6 +38,7 @@ public class Main extends Application {
     private static Parent loginScene;
     private static Parent newChatScene;
     private static Stage primaryWindow;
+    private static MainScene mainScene;
 
 
     @Override
@@ -92,10 +93,11 @@ public class Main extends Application {
                     Main.getLogFromServer();
                     if (Main.getCurrentChat() == null) {
                         System.out.println("Sender new chat request");
+                        mainScene = new MainScene(Main.getPrimaryWindow());
                         Main.getPw().println("GetUsers§");
                         Main.getPw().flush();
                     } else {
-                        new MainScene(Main.getPrimaryWindow());
+                        mainScene = new MainScene(Main.getPrimaryWindow());
                     }
                     setUserID(loginUserInputText.getText());
                     Thread listener = new ListenerThread(Main.getSocket());
@@ -190,6 +192,7 @@ public class Main extends Application {
 
     public static void addMessage(Message message) {
         chatlogs.get(chatIDs.indexOf(message.samtaleID)).add(message);
+        mainScene.addMessage(message);
     }
 
     public static String getCurrentChat() {
@@ -199,6 +202,8 @@ public class Main extends Application {
         return currentChat;
     }
 
+    public static void setCurrentChat(String chat){currentChat = chat;}
+
     public static String getUserID() {
         return userID;
     }
@@ -207,9 +212,11 @@ public class Main extends Application {
         return socket;
     }
 
-    public static void newChat(String IDs) {
-        chatIDs.add(IDs);
+    public static void newChat(String ID) {
+        currentChat = ID;
+        chatIDs.add(ID);
         chatlogs.add(new ArrayList<>());
+        mainScene.addChat(ID);
         //
     }
 
@@ -233,5 +240,7 @@ public class Main extends Application {
     public static Parent getNewChatScene() {
         return newChatScene;
     }
+
+    public static MainScene getMainScene(){return mainScene;}
 }
 

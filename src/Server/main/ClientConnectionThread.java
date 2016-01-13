@@ -10,6 +10,7 @@ import universalClasses.Message;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -218,6 +219,7 @@ public class ClientConnectionThread extends Thread {
                 System.out.println("END NewChat");
 
             } else if (input.startsWith("Message§")) {
+                System.out.println("fik message, sender videre");
                 // En besked er kommet, videresend det!
 
                 // TYPE
@@ -225,38 +227,30 @@ public class ClientConnectionThread extends Thread {
                 // END
 
                 Message message = Message.toMessage(input);
+                System.out.println("Message converted: "+message.samtaleID);
                 ChatDatabase.logMessage(message);
 
                 ArrayList<String> Clients;
                 if (message != null) {
                     Clients = ChatDatabase.getClients(message.samtaleID);
-                    ArrayList<Socket> Sockets = new ArrayList<>();
+                    System.out.println(Clients.toString());
+                    ArrayList<ClientConnectionThread> clientThreads = new ArrayList<>();
                     if (Clients != null) {
                         Clients.remove(message.afsenderID);
+                        System.out.println(Clients);
+                        System.out.println("Afsender: "+message.afsenderID);
                         for (String Client : Clients) {
-                            Sockets.add(ActiveClient.getSocket(Client));
+                            clientThreads.add(ActiveClient.getClientThread(Client));
                         }
-                        for (int i = Sockets.size() - 1; 0 < i; i--) {
-                            if (Sockets.get(i) == null) {
-                                Sockets.remove(i);
+                        for (int i = clientThreads.size() - 1; 0 <= i; i--) {
+                            if (clientThreads.get(i) == null) {
+                                clientThreads.remove(i);
                             }
-                            try {
-                                PrintWriter pws = new PrintWriter(Sockets.get(i).getOutputStream());
-                                pws.println(message.toString());
-                                pws.flush();
-                                pws.close();
-                                //pws.close();
-                            } catch (java.io.IOException ex) {
-                                System.out.println("Disconnected: " + ex.getMessage());
-                                try {
-                                    socket.shutdownOutput();
-                                    socket.shutdownInput();
-                                    socket.close();
-                                } catch (Exception ex1) {
-                                    break;
-                                }
-                                break;
-                            }
+                            System.out.println("Sending message to " + Clients.get(i));
+                            System.out.println("Sending through clientThread of "+clientThreads.get(i).ClientID);
+                            System.out.println(message.toString());
+                            clientThreads.get(i).pw.println(message.toString());
+                            clientThreads.get(i).pw.flush();
                         }
                     } else {
                         System.out.println("No clients available to forward to!");

@@ -70,6 +70,7 @@ public class ListenerThread extends Thread {
                         // kald metoden her
                         System.out.println(input.substring(8));
                         Main.newChat(input.substring(8));
+
                     });
                 } else {
                     if (input.startsWith("Message§")) {

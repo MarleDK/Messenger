@@ -78,7 +78,7 @@ public class newChat {
             System.out.println();
             Main.getPw().println();
             Main.getPw().flush();
-            new MainScene(Main.getPrimaryWindow());
+            Main.getMainScene().setToChatArea();
         });
 
         cancelbtn.setOnAction(event -> new MainScene(Main.getPrimaryWindow()));
@@ -101,7 +101,7 @@ public class newChat {
             }
         }
         useritems.remove(Main.getUserID());
-        Main.getPrimaryWindow().setScene(new Scene(NewChatScene));
+        Main.getMainScene().setRightSide(NewChatScene);
 
     }
 
