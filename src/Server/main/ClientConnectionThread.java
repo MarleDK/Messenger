@@ -246,11 +246,13 @@ public class ClientConnectionThread extends Thread {
                             if (clientThreads.get(i) == null) {
                                 clientThreads.remove(i);
                             }
-                            System.out.println("Sending message to " + Clients.get(i));
-                            System.out.println("Sending through clientThread of "+clientThreads.get(i).ClientID);
-                            System.out.println(message.toString());
-                            clientThreads.get(i).pw.println(message.toString());
-                            clientThreads.get(i).pw.flush();
+                            else {
+                                System.out.println("Sending message to " + Clients.get(i));
+                                System.out.println("Sending through clientThread of " + clientThreads.get(i).ClientID);
+                                System.out.println(message.toString());
+                                clientThreads.get(i).pw.println(message.toString());
+                                clientThreads.get(i).pw.flush();
+                            }
                         }
                     } else {
                         System.out.println("No clients available to forward to!");

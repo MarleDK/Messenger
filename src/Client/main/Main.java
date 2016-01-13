@@ -65,7 +65,7 @@ public class Main extends Application {
                     pw = new PrintWriter(socket.getOutputStream());
                     br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                } catch (Exception ex) {
+                } catch (java.io.IOException ex) {
                     System.out.println("No connection to server! Is it running?");
                 }
             }

@@ -64,6 +64,7 @@ public class MainScene {
         chats.setOnMouseClicked(e -> {
             String chat = chats.getSelectionModel().getSelectedItems().get(0);
             Main.setCurrentChat(chat);
+
             addAllMessages();
         });
 
@@ -99,6 +100,7 @@ public class MainScene {
     public void addAllMessages(){
         ArrayList<Message> messages = Main.getMessagesFromCurrentChat();
         System.out.println("adding messages");
+        chat.clear();
         if (!messages.isEmpty() && messages.get(0) == null) {
             messages.remove(0);
         }
@@ -129,7 +131,6 @@ public class MainScene {
 
     public void addChat(String ID){
         chatIDs.add(ID);
-
     }
 
     public void setRightSide(GridPane rightSide) {
