@@ -211,7 +211,7 @@ public class ClientConnectionThread extends Thread{
                     System.out.println("No clients available to forward to!");
                 }
 
-            } else if(input.startsWith("Message")) {
+            } else if(input.startsWith("Message§")) {
                 // En besked er kommet, videresend det!
 
                 // TYPE
@@ -230,7 +230,7 @@ public class ClientConnectionThread extends Thread{
                         for (String Client : Clients) {
                             Sockets.add(ActiveClient.getSocket(Client));
                         }
-                        for (int i = Sockets.size(); 0 < i; i--) {
+                        for (int i = Sockets.size()-1; 0 < i; i--) {
                             if (Sockets.get(i) == null) {
                                 Sockets.remove(i);
                             }

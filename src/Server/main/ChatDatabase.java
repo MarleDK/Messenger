@@ -104,7 +104,7 @@ public class ChatDatabase {
 
     public static void logMessage(Message message){
         String ID = message.samtaleID;
-        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
+        File chatFile = new File("serverdatabase/chat/" + ID);
         try {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
@@ -112,7 +112,7 @@ public class ChatDatabase {
             out.close();
         }
         catch (Exception ex) {
-            System.out.println("Failed logging file:" + "Server/database/chat/" + ID + ".txt");
+            System.out.println("Failed logging file:" + "Server/database/chat/" + ID);
         }
     }
 
