@@ -261,7 +261,7 @@ public class ClientConnectionThread extends Thread{
                                 PrintWriter pw = new PrintWriter(Sockets.get(i).getOutputStream());
                                 pw.println(message.toString());
                                 pw.flush();
-                                pw.close();
+                                //pw.close();
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 System.out.println(ex.getMessage());

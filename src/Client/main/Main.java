@@ -24,13 +24,13 @@ import java.util.ArrayList;
 
 public class Main extends Application {
     private static String currentChat;
-    private static String userID = "Jakob";
+    private static String userID;
     private static Socket socket;
     private static TextField loginPassInputText;
     private static TextField loginUserInputText;
     public static ArrayList<String> chatIDs = new ArrayList<>();
     public static ArrayList<ArrayList<Message>> chatlogs;
-    private static String serverAdr = "10.16.175.64";
+    private static String serverAdr = "127.0.0.1";
     private static int serverPort = 1302;
     private static PrintWriter pw;
     private static BufferedReader br;
