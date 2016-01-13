@@ -160,8 +160,7 @@ public class ClientConnectionThread extends Thread{
                 input = br.readLine();
                 System.out.println("INPUT:  " + input);
             } catch (Exception ex) {
-                ex.printStackTrace();
-                System.out.println(ex.getMessage());
+                System.out.println("Disconnected: " + ex.getMessage());
                 try {
                     socket.shutdownOutput();
                     socket.shutdownInput();
@@ -218,8 +217,7 @@ public class ClientConnectionThread extends Thread{
                                 System.out.println("SENT NewChat§" + clientInput);
                                 pws.close();
                             } catch (Exception ex) {
-                                ex.printStackTrace();
-                                System.out.println(ex.getMessage());
+                                System.out.println("Disconnected: " + ex.getMessage());
                                 try {
                                     socket.shutdownOutput();
                                     socket.shutdownInput();
@@ -266,8 +264,7 @@ public class ClientConnectionThread extends Thread{
                                 pws.close();
                                 //pws.close();
                             } catch (java.io.IOException ex) {
-                                ex.printStackTrace();
-                                System.out.println(ex.getMessage());
+                                System.out.println("Disconnected: " + ex.getMessage());
                                 try {
                                     socket.shutdownOutput();
                                     socket.shutdownInput();
