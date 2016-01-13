@@ -62,7 +62,7 @@ public class ClientConnectionThread extends Thread{
                     Boolean gotUser = false;
                     for (i = 0; i < clientFolder.listFiles().length; i++) {
                         System.out.println(clientFolder.listFiles()[i].getName());
-                        if (clientFolder.listFiles()[i].getName().substring(0, userID.length()).equals(userID)) {
+                        if (clientFolder.listFiles()[i].getName().equals(userID +".txt")) {
                             System.out.println(clientFolder.listFiles()[i].getName());
                             File clientFil = new File("serverdatabase/client/" + clientFolder.listFiles()[i].getName());
                             Scanner clientFilScanner = new Scanner(clientFil);
