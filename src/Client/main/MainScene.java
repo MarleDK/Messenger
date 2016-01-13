@@ -86,7 +86,6 @@ public class MainScene {
             Main.getPw().println(message.toString());
             Main.getPw().flush();
             chatInput.clear();
-            this.addMessage(message);
         });
 
 
