@@ -35,7 +35,7 @@ public class MainScene {
         chatBottom.getChildren().add(0, chatInput);
 
         Button submitChat = new Button("Send");
-        chatBottom.getChildren().add(1, chatInput);
+        chatBottom.getChildren().add(1, submitChat);
 
         ListView<String> chats = new ListView<>();
         ObservableList<String> chatIDs = FXCollections.observableArrayList();

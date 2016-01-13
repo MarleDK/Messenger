@@ -18,7 +18,7 @@ public class ChatDatabase {
 
         // Læs først linje i ID filen
         ArrayList<String> clients = new ArrayList<>();
-        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
+        File chatFile = new File("serverdatabase/chat/" + ID);
         String line;
         try {
             Scanner sc = new Scanner(chatFile);

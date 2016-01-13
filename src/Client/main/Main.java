@@ -162,6 +162,7 @@ public class Main extends Application {
             Boolean hasMoreChats = true;
             while (hasMoreChats) {
                 String chatID = br.readLine();
+                System.out.println(chatID);
                 if (chatID.equals("§")) {
                     hasMoreChats = false;
                 } else {
@@ -169,16 +170,18 @@ public class Main extends Application {
                     chatlogs.add(new ArrayList<Message>());
                     Boolean hasMoreMessages = true;
                     while (hasMoreMessages) {
-                        if (br.readLine().equals("§")) {
+                        String message = br.readLine();
+                        if (message.equals("§")) {
                             hasMoreMessages = false;
                         } else {
-                            chatlogs.get(chatLogIndex).add(Message.toMessage(br.readLine()));
+                            chatlogs.get(chatLogIndex).add(Message.toMessage(message));
                         }
                     }
                 }
                 chatLogIndex++;
             }
             System.out.println("Afsluttede ChatLogs");
+
         }
         else {
             System.out.println("Should have gotten ChatLogs... but got " + input);
@@ -196,7 +199,7 @@ public class Main extends Application {
 
     public static String getCurrentChat(){
         if (currentChat == null) {
-
+            currentChat = chatIDs.get(0);
         }
         return currentChat;
     }

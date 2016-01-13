@@ -120,8 +120,8 @@ public class ClientConnectionThread extends Thread{
 
         System.out.println("Indlæser chat history...");
         for (String s : ChatDatabase.GetChatIDs(this.ClientID)) {
-            File chatFile = new File("serverdatabase/chat/" + s + ".txt");
-            System.out.println("Sender ChatID!");
+            File chatFile = new File("serverdatabase/chat/" + s);
+            System.out.println("Sender ChatID! " + s);
             pw.println(s);
             pw.flush();
             try {
@@ -135,7 +135,7 @@ public class ClientConnectionThread extends Thread{
             }
             catch (Exception ex) {
                 ex.printStackTrace();
-                System.out.println("Failed reading file:" + "Server/database/chat/" + s + ".txt");
+                System.out.println("Failed reading file:" + "Server/database/chat/" + s);
             }
             System.out.println("Færdig sende beskeder!");
             pw.println("§");
