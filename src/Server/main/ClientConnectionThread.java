@@ -93,6 +93,43 @@ public class ClientConnectionThread extends Thread {
                         pw.println("LoginFailed");
                         pw.flush();
                     }
+                } else if(input.startsWith("NewUser§")){
+                    String username = "";
+                    String password = "";
+                    int index = 8;
+                    while (true) {
+                        try {
+                            if(input.charAt(index) == '§'){
+                                break;
+                            }
+                            username += input.charAt(index);
+
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+                    while (true) {
+                        try {
+                            if(input.charAt(index) == '§'){
+                                break;
+                            }
+                            password += input.charAt(index);
+
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                    if(ClientDatabase.hasClient(username)){
+                        pw.println("UsernameTaken§");
+                        pw.flush();
+                    } else {
+                        ClientDatabase.newClient(username, password);
+                        pw.println("True§");
+                        pw.flush();
+                    }
                 }
             }
         } catch (IOException ex) {
@@ -158,7 +195,7 @@ public class ClientConnectionThread extends Thread {
             try {
                 input = br.readLine();
                 System.out.println("INPUT:  " + input);
-            } catch (Exception ex) {
+            } catch (java.io.IOException ex) {
                 System.out.println("Disconnected: " + ex.getMessage());
                 try {
                     socket.shutdownOutput();
@@ -171,14 +208,6 @@ public class ClientConnectionThread extends Thread {
             }
             if (input == null) {
                 System.out.println("Got null input, assuming client is dead...");
-                try {
-                    socket.shutdownOutput();
-                    socket.shutdownInput();
-                    socket.close();
-                } catch (Exception ex1) {
-                    break;
-                }
-                break;
             } else if (input.startsWith("NewChat§")) {
                 System.out.println("Making new chat");
                 // En client vil gerne oprette en ny chat

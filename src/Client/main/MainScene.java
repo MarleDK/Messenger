@@ -8,10 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import universalClasses.Message;
 
@@ -27,8 +26,10 @@ public class MainScene {
 
     public MainScene(Stage primaryWindow) {
         window = primaryWindow;
+
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
+        root.setPadding(new Insets(0,0,0,0));
 
         VBox leftSidebar = new VBox();
         root.add(leftSidebar, 0, 0);
@@ -63,6 +64,7 @@ public class MainScene {
 
         chats.setOnMouseClicked(e -> {
             String chat = chats.getSelectionModel().getSelectedItems().get(0);
+            setRightSide(rightSide);
             Main.setCurrentChat(chat);
 
             addAllMessages();
@@ -78,6 +80,8 @@ public class MainScene {
         });
 
         chat = FXCollections.observableArrayList();
+        setRightSide(rightSide);
+        System.out.println("current chat " +Main.getCurrentChat());
         addAllMessages();
 
 
@@ -111,7 +115,7 @@ public class MainScene {
 
     public void addMessage(Message message){
         System.out.println(message);
-        TextField field = new TextField(message.afsenderID +":\n"+ message.text);
+        Text field = new Text(message.afsenderID +":\n"+ message.text);
         HBox hbox = new HBox();
         chat.add(hbox);
         if (message.afsenderID.equals(Main.getUserID())) {
@@ -123,8 +127,10 @@ public class MainScene {
         }
         field.setText(message.afsenderID + ":\n" + message.text);
         hbox.getChildren().add(field);
-        field.setMaxWidth(chatArea.getWidth()*0.7);
-        field.setEditable(false);
+//        field.setMaxWidth(chatArea.getWidth()*0.7);
+//        field.setEditable(false);
+        hbox.setStyle("-fx-background-color: deepskyblue;");
+        field.setStyle(" -fx-border-top-left-radius: 10px; -fx-border-top-right-radius: 10px; -fx-border-bottom-left-radius: 10px;-fx-border-bottom-right-radius: 10px ");
         hbox.setPrefWidth(500);
         hbox.setMaxWidth(chatArea.getWidth());
     }

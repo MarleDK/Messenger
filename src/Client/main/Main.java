@@ -11,7 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
@@ -20,6 +22,7 @@ import universalClasses.Message;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -52,25 +55,18 @@ public class Main extends Application {
         loginScene.setVgap(10);
 
         GridPane felter = new GridPane();
-        felter.setAlignment(Pos.CENTER);
+        felter.setAlignment(Pos.CENTER_RIGHT);
         TextField ip = new TextField("127.0.0.1");
+
+        HBox knapper = new HBox();
+
+        Button newUserBtn = new Button("New user");
 
         Button loginbtn = new Button();
         loginbtn.setText("Login");
         loginbtn.setOnAction(e -> {
-            if(!serverAdr.equals(ip.getText())) {
-                serverAdr = ip.getText();
-                try {
-                    socket = new Socket(serverAdr, serverPort);
-                    pw = new PrintWriter(socket.getOutputStream());
-                    br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                } catch (java.io.IOException ex) {
-                    System.out.println("No connection to server! Is it running?");
-                }
-            }
-
-
+            setServerAdr(ip.getText());
             // Login metode her
             String login;
             try {
@@ -111,14 +107,90 @@ public class Main extends Application {
         loginUserInputText = new TextField();
         loginPassInputText = new PasswordField();
 
-        felter.add(loginUserInputText, 0, 0);
-        felter.add(loginPassInputText, 0, 1);
-        felter.add(ip, 0, 2);
+        Label username = new Label("Username:  ");
+        Label password = new Label("Password:  ");
+        Label ipLabel = new Label("IP adresse: ");
+        Text warning = new Text();
+        username.setAlignment(Pos.CENTER_RIGHT);
+
+        felter.add(loginUserInputText, 1, 0);
+        felter.add(loginPassInputText, 1, 1);
+        felter.add(ip, 1, 2);
+        felter.add(username,0,0);
+        felter.add(password,0,1);
+        felter.add(ipLabel, 0,2);
+        loginScene.add(warning, 0,1);
+
         loginScene.add(felter, 0, 0);
-        loginScene.add(loginbtn, 0, 1);
+        felter.add(knapper, 1, 4);
+        knapper.getChildren().add(loginbtn);
+        knapper.getChildren().add(newUserBtn);
+
+        newUserBtn.setOnAction(event -> {
+            Button registerUser = new Button("Register");
+            Button cancel = new Button("cancel");
+            Label confirmPassLbl = new Label("ConfirmPassword:  ");
+            TextField confirmPassField = new TextField();
+
+            knapper.getChildren().setAll(registerUser, cancel );
+            felter.getChildren().remove(ip);
+            felter.getChildren().remove(ipLabel);
+            felter.add(confirmPassField,1,2);
+            felter.add(confirmPassLbl,0,2);
+            felter.add(ip, 1,3);
+            felter.add(ipLabel, 0,3);
+
+            cancel.setOnAction(event1 -> {
+                knapper.getChildren().setAll(loginbtn, newUserBtn );
+                felter.getChildren().remove(ip);
+                felter.getChildren().remove(ipLabel);
+                felter.getChildren().remove(confirmPassField);
+                felter.getChildren().remove(confirmPassLbl);
+                felter.add(ip,1,2);
+                felter.add(ipLabel,0,2);
+            });
+
+            registerUser.setOnAction(event1 -> {
+                if(loginUserInputText.getText().contains("§") || loginPassInputText.getText().contains("§") ){
+                    warning.setText("Illegal username og password \nNeither must contain §");
+                }else if(loginUserInputText.getText().isEmpty() || loginPassInputText.getText().isEmpty()){
+                    warning.setText("Please input new username and password");
+                }
+                else if(!loginPassInputText.getText().equals(confirmPassField.getText())){
+                    warning.setText("Password does not match confirmation password\nPlease input new password");
+                }else {
+                    setServerAdr(ip.getText());
+                    String isNewUser;
+                    try {
+                        Main.getPw().print("NewUser§");
+                        Main.getPw().print(loginUserInputText.getText() + "§");
+                        Main.getPw().println(loginPassInputText.getText());
+                        Main.getPw().flush();
+                        System.out.println("Venter på svar..");
+                        isNewUser = Main.getBr().readLine();
+                        System.out.println("Modtaget: " + isNewUser);
+                    } catch (java.io.IOException ex) {
+                        isNewUser = "RegisteringFailed";
+                        System.out.println("RegisteringFailed");
+                    }
+                    if(isNewUser.equals("True§")){
+                        System.out.println("Sender new chat request");
+                        mainScene = new MainScene(Main.getPrimaryWindow());
+                        Main.getPw().println("GetUsers§");
+                        Main.getPw().flush();
+                        setUserID(loginUserInputText.getText());
+                        Thread listener = new ListenerThread(Main.getSocket());
+                        listener.start();
+                    } else if(isNewUser.equals("UsernameTaken§")){
+                        warning.setText("Username already taken");
+                    }
+                }
+            });
+
+        });
 
 
-        /// FUUUUUU DIS!!!! (7 timer mistet pga. dette!)
+        /// FUUUUUU DIS!!!! (10 timer mistet pga. dette!)
         //root = FXMLLoader.load(getClass().getResource("StructureRoot.fxml"));
         // loginScene = FXMLLoader.load(getClass().getResource("StructureLogin.fxml"));
         // newChatScene = FXMLLoader.load(getClass().getResource("StructureNCS.fxml"));
@@ -175,6 +247,7 @@ public class Main extends Application {
                 chatLogIndex++;
             }
             System.out.println("Afsluttede ChatLogs");
+            currentChat = chatIDs.get(0);
 
         } else {
             System.out.println("Should have gotten ChatLogs... but got " + input);
@@ -197,7 +270,7 @@ public class Main extends Application {
     }
 
     public static String getCurrentChat() {
-        if (currentChat == null && !chatIDs.isEmpty()) {
+        if (currentChat == null || !chatIDs.isEmpty()) {
             currentChat = chatIDs.get(0);
         }
         return currentChat;
@@ -243,5 +316,20 @@ public class Main extends Application {
     }
 
     public static MainScene getMainScene(){return mainScene;}
+
+    public static void setServerAdr(String serverAdress) {
+        if(socket.isClosed()) {
+            serverAdr = serverAdress;
+            try {
+                socket = new Socket(serverAdr, serverPort);
+                pw = new PrintWriter(socket.getOutputStream());
+                br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            } catch (java.io.IOException ex) {
+                System.out.println("No connection to server! Is it running?");
+            }
+        }
+
+    }
 }
 

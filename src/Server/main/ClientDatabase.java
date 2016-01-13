@@ -3,14 +3,20 @@ package Server.main;
 
 import universalClasses.Message;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ClientDatabase {
 
     public static boolean hasClient(String ID){
+        ID += ".txt";
+        File folder = new File("/serverdatabase/client/");
+        for(int i=0 ; i<folder.listFiles().length ; i++){
+            if(folder.listFiles()[i].getName().equals(ID)){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -29,6 +35,19 @@ public class ClientDatabase {
         return BuildClients;
     }
 
+    public static void newClient(String ID, String password){
+        File file = new File("serverdatabase/client/" + ID + ".txt");
+
+        try{
+            FileWriter outFile = new FileWriter(file, true);
+            PrintWriter out = new PrintWriter(outFile);
+
+            file.createNewFile();
+            out.println(password);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

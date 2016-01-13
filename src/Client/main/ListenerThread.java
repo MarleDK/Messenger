@@ -72,22 +72,19 @@ public class ListenerThread extends Thread {
                         Main.newChat(input.substring(8));
 
                     });
-                } else {
-                    if (input.startsWith("Message§")) {
-                        //Modtagelse af besked
-                        //Send besked til Layout
-                        Platform.runLater(() -> Main.addMessage(Message.toMessage(input)));
-                    } else if (input.startsWith("GetUsers§")) {
-                        System.out.println(input);
+                } else if (input.startsWith("Message§")) {
+                    //Modtagelse af besked
+                    //Send besked til Layout
+                    Platform.runLater(() -> Main.addMessage(Message.toMessage(input)));
+                } else if (input.startsWith("GetUsers§")) {
+                    System.out.println(input);
 
-                        Platform.runLater(() -> newChat.makeChat(input.substring(9)));
+                    Platform.runLater(() -> newChat.makeChat(input.substring(9)));
 
-                    }
+
                 }
-            }
-            else {
+            } else {
                 System.out.println("Got null from input! Assuming socket is dead...");
-                return;
             }
         }
     }
