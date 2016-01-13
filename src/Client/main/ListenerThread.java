@@ -84,7 +84,8 @@ public class ListenerThread extends Thread {
                 }
             }
             else {
-                System.out.println("Got null from input!");
+                System.out.println("Got null from input! Assuming socket is dead...");
+                return;
             }
         }
     }
