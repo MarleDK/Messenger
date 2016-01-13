@@ -87,6 +87,7 @@ public class Main extends Application {
                 else {
                     new MainScene(Main.getPrimaryWindow());
                 }
+                setUserID(loginUserInputText.getText());
                 Thread listener = new ListenerThread(Main.getSocket());
                 listener.start();
             } catch (IOException ex) {

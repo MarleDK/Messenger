@@ -33,6 +33,7 @@ public class ChatDatabase {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println(clients.get(0) + " is in clients");
         return clients;
     }
 
@@ -82,9 +83,10 @@ public class ChatDatabase {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
 
-            out.println(toString(clients));
+            out.println(s.substring(8));
 
             out.close();
+            outFile.close();
 
         }
         catch (Exception ex) {
@@ -92,7 +94,7 @@ public class ChatDatabase {
             return null;
         }
         // Filen indeholde Navne på Clienter
-        // Bob§James§Kagemand
+        // Bob§James§Kagemand§
 
         //Lav ny chat, med unikt chatID og returner
         //HUSK at at fortælle de forbundet klienter (både aktive og inaktive), at de er med i en ny chat.
@@ -110,6 +112,7 @@ public class ChatDatabase {
             PrintWriter out = new PrintWriter(outFile);
             out.println(message.toString());
             out.close();
+            outFile.close();
         }
         catch (Exception ex) {
             System.out.println("Failed logging file:" + "Server/database/chat/" + ID);

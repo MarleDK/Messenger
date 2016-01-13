@@ -45,7 +45,7 @@ public class ListenerThread extends Thread {
                 System.out.println(input);
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
                 try {
                     socket.shutdownOutput();
                     socket.shutdownInput();
