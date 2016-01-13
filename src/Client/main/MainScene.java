@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import universalClasses.Message;
 
 public class MainScene {
 
@@ -36,6 +37,13 @@ public class MainScene {
 
         Button submitChat = new Button("Send");
         chatBottom.getChildren().add(1, submitChat);
+        submitChat.setOnAction(event1 -> {
+            Message message = new Message(Main.getCurrentChat(), Main.getUserID(), chatInput.getText());
+            Main.addMessage(message);
+            Main.getPw().println(message.toString());
+            Main.getPw().flush();
+
+        });
 
         ListView<String> chats = new ListView<>();
         ObservableList<String> chatIDs = FXCollections.observableArrayList();
@@ -46,10 +54,19 @@ public class MainScene {
 
         leftSidebar.getChildren().add(chats);
 
-
         chats.setOnMouseClicked(e -> {
 
         });
+
+        Button newChat = new Button("New Chat");
+        leftSidebar.getChildren().add(0, newChat);
+        newChat.setOnAction(event -> {
+            System.out.println("Sending new chat request");
+            Main.getPw().println("GetUsers§");
+            Main.getPw().flush();
+        });
+
+
 
 
 

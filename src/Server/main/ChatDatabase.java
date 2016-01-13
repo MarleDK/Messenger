@@ -33,6 +33,7 @@ public class ChatDatabase {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println(clients.get(0) + " is in clients");
         return clients;
     }
 
@@ -70,8 +71,9 @@ public class ChatDatabase {
         //String ID = new TimeStamp().toString() + toString(clients);
         // Dette gør så man kun kan lave en unik gruppe hvert sekundt.
         // det for at undgå § symbolet når man bruger GetChatIDs
-        String ID = new TimeStamp().toString();
-        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
+        String ID = String.valueOf(System.currentTimeMillis()) + ".txt";
+        //String ID = new TimeStamp().toString();
+        File chatFile = new File("serverdatabase/chat/" + ID);
         try {
             chatFile.createNewFile();
         } catch (IOException e) {
@@ -81,17 +83,18 @@ public class ChatDatabase {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
 
-            out.println(toString(clients));
+            out.println(s.substring(8));
 
             out.close();
+            outFile.close();
 
         }
         catch (Exception ex) {
-            System.out.println("Failed creating file:" + "Server/database/chat/" + ID + ".txt");
+            System.out.println("Failed creating file:" + "Server/database/chat/" + ID);
             return null;
         }
         // Filen indeholde Navne på Clienter
-        // Bob§James§Kagemand
+        // Bob§James§Kagemand§
 
         //Lav ny chat, med unikt chatID og returner
         //HUSK at at fortælle de forbundet klienter (både aktive og inaktive), at de er med i en ny chat.
@@ -103,15 +106,16 @@ public class ChatDatabase {
 
     public static void logMessage(Message message){
         String ID = message.samtaleID;
-        File chatFile = new File("serverdatabase/chat/" + ID + ".txt");
+        File chatFile = new File("serverdatabase/chat/" + ID);
         try {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
             out.println(message.toString());
             out.close();
+            outFile.close();
         }
         catch (Exception ex) {
-            System.out.println("Failed logging file:" + "Server/database/chat/" + ID + ".txt");
+            System.out.println("Failed logging file:" + "Server/database/chat/" + ID);
         }
     }
 

@@ -67,15 +67,18 @@ public class newChat {
                 useritems.remove(users.getSelectionModel().getSelectedItem());
             }
         });
+        System.out.println(Main.getUserID() + " is getUserID");
         submitbtn.setOnAction(e -> {
-
-            Main.getPw().print("NewChat§");
+            System.out.print("NewChat§" + Main.getUserID() + "§");
+            Main.getPw().print("NewChat§" + Main.getUserID() + "§");
             for(int i=0; i<chatUsers.getItems().size(); i++){
-                Main.getPw().print(chatUsers.getItems().get(i)+"§");
+                if (!chatUsers.getItems().get(i).equals("null")) {
+                    Main.getPw().print(chatUsers.getItems().get(i) + "§");
+                }
             }
+            System.out.println();
             Main.getPw().println();
             Main.getPw().flush();
-            // er det kun det man skal gøre?
         });
 
         NewChatScene.add(users,0,0);
@@ -96,9 +99,8 @@ public class newChat {
                 indexChatUser ++;
             }
         }
+        useritems.remove(Main.getUserID());
         Main.getPrimaryWindow().setScene(new Scene(NewChatScene));
-        Alert noget = new Alert(Alert.AlertType.CONFIRMATION);
-        noget.showAndWait();
 
     }
 

@@ -45,7 +45,7 @@ public class ListenerThread extends Thread {
                 System.out.println(input);
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
                 try {
                     socket.shutdownOutput();
                     socket.shutdownInput();
@@ -57,38 +57,36 @@ public class ListenerThread extends Thread {
             }
             // Udnyt Arrayet af beskeder
             //Message New = new Message(Input);
-            if(input.startsWith("NewChat§")) {
-                // Informere om der er kommet en ny chat.
+            if (input != null) {
+                if (input.startsWith("NewChat§")) {
+                    // Informere om der er kommet en ny chat.
 
-                // TYPE
-                // Clients
-                // END
+                    // TYPE
+                    // Clients
+                    // END
 
-                // Vis i layout, om den nye chat
-                Platform.runLater(new Runnable() {
-                    @Override public void run() {
+                    // Vis i layout, om den nye chat
+                    Platform.runLater(() -> {
                         // kald metoden her
                         Main.newChat(Message.toMessage(input.substring(8)).samtaleID);
+                    });
+                } else {
+                    if (input.startsWith("Message§")) {
+                        //Modtagelse af besked
+                        //Send besked til Layout
+                        Platform.runLater(() -> Main.addMessage(Message.toMessage(input)));
+                    } else if (input.startsWith("GetUsers§")) {
+                        System.out.println(input);
+
+                        Platform.runLater(() -> newChat.makeChat(input.substring(9)));
+
                     }
-            });}
-            else if(input.startsWith("Message§")) {
-                    //Modtagelse af besked
-                    //Send besked til Layout
-                Platform.runLater(new Runnable() {
-                    @Override public void run() {
-                        Main.addMessage(Message.toMessage(input));
-                    }
-                });
+                }
             }
-            else if(input.startsWith("GetUsers§")){
-                System.out.println(input);
-
-                Platform.runLater(new Runnable() {
-                    @Override public void run() {
-                        newChat.makeChat(input.substring(9));
-                }});
-
-    }
+            else {
+                System.out.println("Got null from input! Assuming socket is dead...");
+                return;
+            }
         }
     }
 }

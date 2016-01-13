@@ -170,7 +170,18 @@ public class ClientConnectionThread extends Thread{
                 }
                 break;
             }
-            if(input.startsWith("NewChat§")) {
+            if (input == null) {
+                System.out.println("Got null input, assuming client is dead...");
+                try {
+                    socket.shutdownOutput();
+                    socket.shutdownInput();
+                    socket.close();
+                } catch (Exception ex1) {
+                    break;
+                }
+                break;
+            }
+            else if(input.startsWith("NewChat§")) {
                 System.out.println("Making new chat");
                 // En client vil gerne oprette en ny chat
 
@@ -184,9 +195,10 @@ public class ClientConnectionThread extends Thread{
                 ArrayList<Socket> Sockets = new ArrayList<>();
                 if (Clients != null) {
                     for (String Client : Clients) {
+                        System.out.println(Client);
                         Sockets.add(ActiveClient.getSocket(Client));
                     }
-                    for (int i = Sockets.size(); 0 < i; i--) {
+                    for (int i = Sockets.size()-1; 0 < i; i--) {
                         if (Sockets.get(i) == null) {
                             Sockets.remove(i);
                         }
@@ -211,7 +223,7 @@ public class ClientConnectionThread extends Thread{
                     System.out.println("No clients available to forward to!");
                 }
 
-            } else if(input.startsWith("Message")) {
+            } else if(input.startsWith("Message§")) {
                 // En besked er kommet, videresend det!
 
                 // TYPE
@@ -230,7 +242,7 @@ public class ClientConnectionThread extends Thread{
                         for (String Client : Clients) {
                             Sockets.add(ActiveClient.getSocket(Client));
                         }
-                        for (int i = Sockets.size(); 0 < i; i--) {
+                        for (int i = Sockets.size()-1; 0 < i; i--) {
                             if (Sockets.get(i) == null) {
                                 Sockets.remove(i);
                             }

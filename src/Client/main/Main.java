@@ -55,47 +55,46 @@ public class Main extends Application {
 
         Button loginbtn = new Button();
         loginbtn.setText("Login");
-        loginbtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-            // Login metode her
-            String login;
+        loginbtn.setOnAction(e -> {
+        // Login metode her
+        String login;
+        try {
+            Main.getPw().print("ExistingUser§");
+            Main.getPw().print(loginUserInputText.getText()+"§");
+            Main.getPw().println(loginPassInputText.getText());
+            Main.getPw().flush();
+            System.out.println("Venter på svar..");
+            login = Main.getBr().readLine();
+            System.out.println("Modtaget: " + login);
+        }
+        catch (Exception ex) {
+            login = "LoginFailed";
+        }
+        if(login.equals("LoginFailed")){
+            Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
+            loginFail.setHeaderText("Log ind Fejlede prøv igen");
+            loginFail.showAndWait();
+            loginPassInputText.setText("");
+        }
+        else if(login.equals("LoginOkay")) {
             try {
-                Main.getPw().print("ExistingUser§");
-                Main.getPw().print(loginUserInputText.getText()+"§");
-                Main.getPw().println(loginPassInputText.getText());
-                Main.getPw().flush();
-                System.out.println("Venter på svar..");
-                login = Main.getBr().readLine();
-                System.out.println("Modtaget: " + login);
-            }
-            catch (Exception ex) {
-                login = "LoginFailed";
-            }
-            if(login.equals("LoginFailed")){
-                Alert loginFail = new Alert(Alert.AlertType.INFORMATION);
-                loginFail.setHeaderText("Log ind Fejlede prøv igen");
-                loginFail.showAndWait();
-                loginPassInputText.setText("");
-            }
-            else if(login.equals("LoginOkay")) {
-                try {
-                    Main.getLogFromServer();
-                    if (Main.getCurrentChat() == null) {
-                        System.out.println("Sender new chat request");
-                        Main.getPw().println("GetUsers§");
-                        Main.getPw().flush();
-                    }
-                    else {
-                        new MainScene(Main.getPrimaryWindow());
-                    }
-                    Thread listener = new ListenerThread(Main.getSocket());
-                    listener.start();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                Main.getLogFromServer();
+                if (Main.getCurrentChat() == null) {
+                    System.out.println("Sender new chat request");
+                    Main.getPw().println("GetUsers§");
+                    Main.getPw().flush();
                 }
+                else {
+                    new MainScene(Main.getPrimaryWindow());
+                }
+                setUserID(loginUserInputText.getText());
+                Thread listener = new ListenerThread(Main.getSocket());
+                listener.start();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-            }});
+        }
+        });
         loginUserInputText = new TextField();
         loginPassInputText = new PasswordField();
 
@@ -142,21 +141,12 @@ public class Main extends Application {
         launch(args);
     }
 
-    //Denne metode bør ikke være nødvendig mere.
-    private static void deleteLog(){
-        File folder = new File("clientdatabase/log");
-        for(int i=0; i<folder.listFiles().length; i++) {
-            folder.listFiles()[i].delete();
-        }
-    }
-
-
     public static void getLogFromServer() throws IOException {
         System.out.println("Venter på type...");
         String input = br.readLine();
         if (input.startsWith("ChatLogs§")) {
             System.out.println("Fik " + input);
-            chatlogs = new ArrayList<ArrayList<Message>>();
+            chatlogs = new ArrayList<>();
             int chatLogIndex = 0;
 
             Boolean hasMoreChats = true;
@@ -167,7 +157,7 @@ public class Main extends Application {
                     hasMoreChats = false;
                 } else {
                     chatIDs.add(chatID);
-                    chatlogs.add(new ArrayList<Message>());
+                    chatlogs.add(new ArrayList<>());
                     Boolean hasMoreMessages = true;
                     while (hasMoreMessages) {
                         String message = br.readLine();
@@ -198,7 +188,7 @@ public class Main extends Application {
     }
 
     public static String getCurrentChat(){
-        if (currentChat == null) {
+        if (currentChat == null && !chatIDs.isEmpty()) {
             currentChat = chatIDs.get(0);
         }
         return currentChat;
@@ -214,7 +204,7 @@ public class Main extends Application {
 
     public static void newChat (String IDs) {
         chatIDs.add(IDs);
-        chatlogs.add(new ArrayList<Message>());
+        chatlogs.add(new ArrayList<>());
         //
     }
 
