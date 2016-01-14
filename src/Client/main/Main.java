@@ -59,6 +59,7 @@ public class Main extends Application {
         TextField ip = new TextField("127.0.0.1");
 
         HBox knapper = new HBox();
+        HBox knapper1 = new HBox();
 
         Button newUserBtn = new Button("New user");
 
@@ -106,6 +107,10 @@ public class Main extends Application {
         });
         loginUserInputText = new TextField();
         loginPassInputText = new PasswordField();
+        Button registerUser = new Button("Register");
+        Button cancel = new Button("cancel");
+        Label confirmPassLbl = new Label("ConfirmPassword:  ");
+        PasswordField confirmPassField = new PasswordField();
 
         Label username = new Label("Username:  ");
         Label password = new Label("Password:  ");
@@ -125,29 +130,28 @@ public class Main extends Application {
         felter.add(knapper, 1, 4);
         knapper.getChildren().add(loginbtn);
         knapper.getChildren().add(newUserBtn);
+        knapper1.getChildren().setAll(registerUser, cancel );
 
         newUserBtn.setOnAction(event -> {
-            Button registerUser = new Button("Register");
-            Button cancel = new Button("cancel");
-            Label confirmPassLbl = new Label("ConfirmPassword:  ");
-            TextField confirmPassField = new TextField();
 
-            knapper.getChildren().setAll(registerUser, cancel );
             felter.getChildren().remove(ip);
             felter.getChildren().remove(ipLabel);
+            felter.getChildren().remove(knapper);
             felter.add(confirmPassField,1,2);
             felter.add(confirmPassLbl,0,2);
             felter.add(ip, 1,3);
             felter.add(ipLabel, 0,3);
+            felter.add(knapper1, 1,4);
 
             cancel.setOnAction(event1 -> {
-                knapper.getChildren().setAll(loginbtn, newUserBtn );
                 felter.getChildren().remove(ip);
                 felter.getChildren().remove(ipLabel);
                 felter.getChildren().remove(confirmPassField);
                 felter.getChildren().remove(confirmPassLbl);
+                felter.getChildren().remove(knapper1);
                 felter.add(ip,1,2);
                 felter.add(ipLabel,0,2);
+                felter.add(knapper, 1,3);
             });
 
             registerUser.setOnAction(event1 -> {
@@ -167,7 +171,7 @@ public class Main extends Application {
                         Main.getPw().println(loginPassInputText.getText());
                         Main.getPw().flush();
                         System.out.println("Venter på svar..");
-                        isNewUser = Main.getBr().readLine();
+                        isNewUser = br.readLine();
                         System.out.println("Modtaget: " + isNewUser);
                     } catch (java.io.IOException ex) {
                         isNewUser = "RegisteringFailed";

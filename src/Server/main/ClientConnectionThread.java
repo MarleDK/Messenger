@@ -22,7 +22,7 @@ public class ClientConnectionThread extends Thread {
     private String ClientID;
 
 
-    public ClientConnectionThread(Socket socket) {
+    public ClientConnectionThread(Socket socket){
         try {
             this.socket = socket;
             this.socket.setSoTimeout(100000);
@@ -45,6 +45,7 @@ public class ClientConnectionThread extends Thread {
                 input = br.readLine();
                 String userID = "";
                 String passwordUsr;
+                System.out.println(input);
                 if (input.startsWith("ExistingUser§")) {
                     int i = 13;
                     while (true) {
@@ -94,34 +95,43 @@ public class ClientConnectionThread extends Thread {
                         pw.flush();
                     }
                 } else if(input.startsWith("NewUser§")){
+                    System.out.println("Trying to make new users");
                     String username = "";
                     String password = "";
                     int index = 8;
+                    Thread.sleep(1);
                     while (true) {
+                        System.out.println("Building username");
                         try {
                             if(input.charAt(index) == '§'){
+                                System.out.println("Username built");
                                 break;
                             }
                             username += input.charAt(index);
+                            System.out.println("username is \""+username+"\" so far");
+                            index++;
 
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                             break;
                         }
                     }
+                    System.out.println(username);
+                    Thread.sleep(1);
                     while (true) {
                         try {
                             if(input.charAt(index) == '§'){
                                 break;
                             }
                             password += input.charAt(index);
+                            index++;
 
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                             break;
                         }
                     }
-
+                    System.out.println(password);
                     if(ClientDatabase.hasClient(username)){
                         pw.println("UsernameTaken§");
                         pw.flush();
@@ -142,6 +152,8 @@ public class ClientConnectionThread extends Thread {
                 return;
             }
             return;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         // Setup

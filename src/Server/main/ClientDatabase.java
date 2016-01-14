@@ -11,7 +11,7 @@ public class ClientDatabase {
 
     public static boolean hasClient(String ID){
         ID += ".txt";
-        File folder = new File("/serverdatabase/client/");
+        File folder = new File("serverdatabase/client/");
         for(int i=0 ; i<folder.listFiles().length ; i++){
             if(folder.listFiles()[i].getName().equals(ID)){
                 return true;
