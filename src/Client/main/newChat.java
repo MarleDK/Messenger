@@ -40,8 +40,7 @@ public class newChat {
         ObservableList<String> useritems = FXCollections.observableArrayList ();
         users.setItems(useritems);
         users.setPrefHeight(448-cancelbtn.getHeight());
-        users.setStyle("-fx-border-color: black; -fx");
-        // users.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        users.setStyle("-fx-border-color: black;");
 
 
         chatUsers = new ListView<>();
