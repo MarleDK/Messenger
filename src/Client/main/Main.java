@@ -178,11 +178,16 @@ public class Main extends Application {
                         System.out.println("RegisteringFailed");
                     }
                     if(isNewUser.equals("True§")){
+                        setUserID(loginUserInputText.getText());
+                        try {
+                            Main.getLogFromServer();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         System.out.println("Sender new chat request");
                         mainScene = new MainScene(Main.getPrimaryWindow());
                         Main.getPw().println("GetUsers§");
                         Main.getPw().flush();
-                        setUserID(loginUserInputText.getText());
                         Thread listener = new ListenerThread(Main.getSocket());
                         listener.start();
                     } else if(isNewUser.equals("UsernameTaken§")){
