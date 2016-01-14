@@ -68,20 +68,22 @@ public class newChat {
         });
         System.out.println(Main.getUserID() + " is getUserID");
         submitbtn.setOnAction(e -> {
-            System.out.print("NewChat§" + Main.getUserID() + "§");
-            Main.getPw().print("NewChat§" + Main.getUserID() + "§");
-            for(int i=0; i<chatUsers.getItems().size(); i++){
-                if (!chatUsers.getItems().get(i).equals("null")) {
-                    Main.getPw().print(chatUsers.getItems().get(i) + "§");
+            if (!chatitems.isEmpty()) {
+                System.out.print("NewChat§" + Main.getUserID() + "§");
+                Main.getPw().print("NewChat§" + Main.getUserID() + "§");
+                for (int i = 0; i < chatUsers.getItems().size(); i++) {
+                    if (!chatUsers.getItems().get(i).equals("null")) {
+                        Main.getPw().print(chatUsers.getItems().get(i) + "§");
+                    }
                 }
+                System.out.println();
+                Main.getPw().println();
+                Main.getPw().flush();
+                Main.getMainScene().setToChatArea();
             }
-            System.out.println();
-            Main.getPw().println();
-            Main.getPw().flush();
-            Main.getMainScene().setToChatArea();
         });
 
-        cancelbtn.setOnAction(event -> new MainScene(Main.getPrimaryWindow()));
+        cancelbtn.setOnAction(event ->Main.getMainScene().setToChatArea());
         NewChatScene.add(users,0,0);
         NewChatScene.add(chatUsers,1,0);
         NewChatScene.add(Buttons,0,1);
@@ -101,6 +103,7 @@ public class newChat {
             }
         }
         useritems.remove(Main.getUserID());
+        System.out.println("Should switch scene");
         Main.getMainScene().setRightSide(NewChatScene);
 
     }
