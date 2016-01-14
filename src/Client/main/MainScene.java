@@ -104,6 +104,7 @@ public class MainScene {
         chatList = new ListView<>();
         chatArea.getChildren().add(chatList);
         chatList.setItems(chat);
+        chatList.setPrefWidth(450);
 
         primaryWindow.setScene(new Scene(root, primaryWindow.getWidth(), primaryWindow.getHeight()));
         if(!(Main.getCurrentChat() == null)) {
@@ -139,9 +140,8 @@ public class MainScene {
         hbox.getChildren().add(field);
 //        field.setMaxWidth(chatArea.getWidth()*0.7);
 //        field.setEditable(false);
-        hbox.setStyle("-fx-background-color: deepskyblue;");
-        field.setStyle(" -fx-border-top-left-radius: 10px; -fx-border-top-right-radius: 10px; -fx-border-bottom-left-radius: 10px;-fx-border-bottom-right-radius: 10px ");
-        hbox.setPrefWidth(500);
+
+        hbox.setPrefWidth(430);
         hbox.setMaxWidth(chatArea.getWidth());
     }
 
