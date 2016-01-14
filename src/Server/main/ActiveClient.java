@@ -45,9 +45,9 @@ public class ActiveClient {
     }
 
     public static void removeActiveClient(String client){
-        for(int i= ActiveClients.size()-1; i>0; i--){
-            if (Objects.equals(ActiveClients.get(i).getID(), client)) {
-                ActiveClients.remove(i);
+        for (ActiveClient activeClient : ActiveClients) {
+            if (activeClient.getID().equals(client)) {
+                ActiveClients.remove(activeClient);
             }
         }
     }

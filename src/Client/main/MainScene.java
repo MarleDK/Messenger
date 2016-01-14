@@ -25,6 +25,7 @@ public class MainScene {
     private GridPane rightSide2;
     private GridPane rightSide;
     private TextField chatInput;
+    private ListView<HBox> chatList;
 
     public MainScene(Stage primaryWindow) {
         window = primaryWindow;
@@ -35,12 +36,14 @@ public class MainScene {
 
         VBox leftSidebar = new VBox();
         root.add(leftSidebar, 0, 0);
+        leftSidebar.setPrefWidth(150);
 
         rightSide2 = new GridPane();
         root.add(rightSide2,1,0);
 
         rightSide = new GridPane();
         rightSide2.add(rightSide, 0, 0);
+        rightSide.setPrefWidth(450);
 
         chatArea = new VBox();
         rightSide.add(chatArea, 0, 0);
@@ -98,7 +101,7 @@ public class MainScene {
         });
 
 
-        ListView<HBox> chatList = new ListView<>();
+        chatList = new ListView<>();
         chatArea.getChildren().add(chatList);
         chatList.setItems(chat);
 
