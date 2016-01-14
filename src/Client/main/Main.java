@@ -247,7 +247,7 @@ public class Main extends Application {
                 chatLogIndex++;
             }
             System.out.println("Afsluttede ChatLogs");
-            currentChat = chatIDs.get(0);
+            getCurrentChat();
 
         } else {
             System.out.println("Should have gotten ChatLogs... but got " + input);
@@ -270,7 +270,7 @@ public class Main extends Application {
     }
 
     public static String getCurrentChat() {
-        if (currentChat == null || !chatIDs.isEmpty()) {
+        if (currentChat == null && !chatIDs.isEmpty()) {
             currentChat = chatIDs.get(0);
         }
         return currentChat;

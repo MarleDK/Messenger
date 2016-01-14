@@ -82,7 +82,7 @@ public class MainScene {
         chat = FXCollections.observableArrayList();
         setRightSide(rightSide);
         System.out.println("current chat " +Main.getCurrentChat());
-        addAllMessages();
+
 
 
         submitChat.setOnAction(event1 -> {
@@ -99,6 +99,9 @@ public class MainScene {
         chatList.setItems(chat);
 
         primaryWindow.setScene(new Scene(root, primaryWindow.getWidth(), primaryWindow.getHeight()));
+        if(!(Main.getCurrentChat() == null)) {
+            addAllMessages();
+        }
     }
 
     public void addAllMessages(){
