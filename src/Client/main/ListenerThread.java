@@ -44,13 +44,17 @@ public class ListenerThread extends Thread {
                 input = br.readLine();
                 System.out.println("INPUT:  " + input);
 
-            } catch (Exception ex) {
+            } catch (java.io.IOException ex) {
                 System.out.println(ex.getMessage());
                 try {
+                    Main.getPw().println("Quit§Error");
+                    Main.getPw().flush();
+                    Main.getPw().close();
+                    br.close();
                     socket.shutdownOutput();
                     socket.shutdownInput();
                     socket.close();
-                } catch (Exception ex1) {
+                } catch (java.io.IOException ex1) {
                     return;
                 }
                 return;

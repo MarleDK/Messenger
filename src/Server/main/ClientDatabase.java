@@ -48,6 +48,8 @@ public class ClientDatabase {
             out.println(password);
             out.flush();
             System.out.println("Should have written password:"+password);
+            out.close();
+            outFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

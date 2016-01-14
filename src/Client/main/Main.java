@@ -210,7 +210,18 @@ public class Main extends Application {
         //åben ListenerThread
 
         primaryWindow.setOnCloseRequest(e -> {
-            //deleteLog();
+            try {
+                pw.println("Quit§UserClosedProgram");
+                pw.flush();
+                pw.close();
+                br.close();
+                socket.shutdownOutput();
+                socket.shutdownInput();
+                socket.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
 
         });
         primaryWindow.setScene(new Scene(loginScene, 600, 475));
