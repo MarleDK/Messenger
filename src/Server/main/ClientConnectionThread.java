@@ -142,8 +142,8 @@ public class ClientConnectionThread extends Thread {
                         pw.println("True§");
                         pw.flush();
                         loginin = true;
-                        this.ClientID = userID;
-                        new ActiveClient(userID, socket, this);
+                        this.ClientID = username;
+                        new ActiveClient(username, socket, this);
                     }
                 }
             }
