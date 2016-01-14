@@ -2,27 +2,20 @@ package Client.main;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
-
 import universalClasses.Message;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -38,9 +31,6 @@ public class Main extends Application {
     private static int serverPort = 1302;
     private static PrintWriter pw;
     private static BufferedReader br;
-    private static Parent root;
-    private static Parent loginScene;
-    private static Parent newChatScene;
     private static Stage primaryWindow;
     private static MainScene mainScene;
 
@@ -290,9 +280,6 @@ public class Main extends Application {
         return null;
     }
 
-    public static Parent getRoot() {
-        return root;
-    }
 
     public static void addMessage(Message message) {
         chatlogs.get(chatIDs.indexOf(message.samtaleID)).add(message);
@@ -340,11 +327,6 @@ public class Main extends Application {
 
     public static void setUserID(String userID) {
         Main.userID = userID;
-    }
-
-
-    public static Parent getNewChatScene() {
-        return newChatScene;
     }
 
     public static MainScene getMainScene(){return mainScene;}

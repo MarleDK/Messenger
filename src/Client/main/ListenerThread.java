@@ -4,11 +4,10 @@ package Client.main;
 
 import javafx.application.Platform;
 import universalClasses.Message;
-import universalClasses.TimeStamp;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class ListenerThread extends Thread {
     public boolean threadOK;
