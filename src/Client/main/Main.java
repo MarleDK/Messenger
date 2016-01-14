@@ -189,16 +189,7 @@ public class Main extends Application {
 
         });
 
-
-        /// FUUUUUU DIS!!!! (10 timer mistet pga. dette!)
-        //root = FXMLLoader.load(getClass().getResource("StructureRoot.fxml"));
-        // loginScene = FXMLLoader.load(getClass().getResource("StructureLogin.fxml"));
-        // newChatScene = FXMLLoader.load(getClass().getResource("StructureNCS.fxml"));
-
         primaryWindow.setTitle("Messenger+++");
-
-        //Først skal der oprettes forbindelse til serveren
-        //åben ListenerThread
 
         primaryWindow.setOnCloseRequest(e -> {
             try {
@@ -216,9 +207,6 @@ public class Main extends Application {
             System.exit(0);
         });
         primaryWindow.setScene(new Scene(loginScene, 600, 475));
-        //root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
-        //loginScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
-        //newChatScene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryWindow.show();
 
     }
