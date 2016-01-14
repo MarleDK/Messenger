@@ -45,6 +45,7 @@ public class ClientDatabase {
             file.createNewFile();
             System.out.println("File has been created");
             out.println(password);
+            out.flush();
             System.out.println("Should have written password:"+password);
         } catch (IOException e) {
             e.printStackTrace();
