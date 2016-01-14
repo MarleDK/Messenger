@@ -204,7 +204,6 @@ public class ClientConnectionThread extends Thread {
 
         pw.println("§");
         pw.flush();
-
         System.out.println("Setup færdiggjort! Venter på client...");
 
         while (true) {
@@ -225,6 +224,8 @@ public class ClientConnectionThread extends Thread {
             }
             if (input == null) {
                 System.out.println("Got null input, assuming client is dead...");
+                break;
+            } else if (input.startsWith("Quit§")) {
                 break;
             } else if (input.startsWith("NewChat§")) {
                 System.out.println("Making new chat");
@@ -307,6 +308,14 @@ public class ClientConnectionThread extends Thread {
             }
         }
         System.out.println("Removing client..." + this.ClientID);
+        try {
+            socket.shutdownOutput();
+            socket.shutdownInput();
+            socket.close();
+            br.close();
+        } catch (java.io.IOException ex1) {
+        }
+        pw.close();
         ActiveClient.removeActiveClient(this.ClientID);
     }
 }
