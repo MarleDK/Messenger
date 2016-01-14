@@ -88,6 +88,7 @@ public class Main extends Application {
                 loginPassInputText.setText("");
             } else if (login.equals("LoginOkay")) {
                 try {
+                    setUserID(loginUserInputText.getText());
                     Main.getLogFromServer();
                     if (Main.getCurrentChat() == null) {
                         System.out.println("Sender new chat request");
@@ -97,7 +98,6 @@ public class Main extends Application {
                     } else {
                         mainScene = new MainScene(Main.getPrimaryWindow());
                     }
-                    setUserID(loginUserInputText.getText());
                     Thread listener = new ListenerThread(Main.getSocket());
                     listener.start();
                 } catch (IOException ex) {
