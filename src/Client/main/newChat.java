@@ -70,6 +70,7 @@ public class newChat {
         submitbtn.setOnAction(e -> {
             if (!chatitems.isEmpty()) {
                 System.out.print("NewChat§" + Main.getUserID() + "§");
+
                 Main.getPw().print("NewChat§" + Main.getUserID() + "§");
                 for (int i = 0; i < chatUsers.getItems().size(); i++) {
                     if (!chatUsers.getItems().get(i).equals("null")) {

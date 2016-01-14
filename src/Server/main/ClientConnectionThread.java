@@ -208,6 +208,7 @@ public class ClientConnectionThread extends Thread {
             }
             if (input == null) {
                 System.out.println("Got null input, assuming client is dead...");
+                break;
             } else if (input.startsWith("NewChat§")) {
                 System.out.println("Making new chat");
                 // En client vil gerne oprette en ny chat
@@ -230,16 +231,8 @@ public class ClientConnectionThread extends Thread {
                             ActiveClient.getClientThread(client).pw.println("NewChat§" + clientInput);
                             ActiveClient.getClientThread(client).pw.flush();
                             System.out.println("SENT NewChat§" + clientInput);
-                        } catch (Exception ex) {
-                            System.out.println("Disconnected: " + ex.getMessage());
-                            try {
-                                socket.shutdownOutput();
-                                socket.shutdownInput();
-                                socket.close();
-                            } catch (Exception ex1) {
-                                break;
-                            }
-                            break;
+                        } catch (java.lang.NullPointerException ex) {
+                            System.out.println("NullPointerException. Is the socket/client active?");
                         }
                     }
                 } else {
