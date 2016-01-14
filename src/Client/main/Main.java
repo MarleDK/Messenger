@@ -218,7 +218,7 @@ public class Main extends Application {
                 socket.shutdownOutput();
                 socket.shutdownInput();
                 socket.close();
-            } catch (IOException e1) {
+            } catch (Exception e1) {
                 e1.printStackTrace();
             }
 
