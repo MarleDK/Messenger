@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -23,6 +24,7 @@ public class MainScene {
     private VBox chatArea;
     private GridPane rightSide2;
     private GridPane rightSide;
+    private TextField chatInput;
 
     public MainScene(Stage primaryWindow) {
         window = primaryWindow;
@@ -46,7 +48,7 @@ public class MainScene {
         HBox chatBottom = new HBox();
         rightSide.add(chatBottom, 0, 1);
 
-        TextField chatInput = new TextField();
+        chatInput = new TextField();
         chatBottom.getChildren().add(0, chatInput);
 
         Button submitChat = new Button("Send");
@@ -58,6 +60,12 @@ public class MainScene {
         for (int i = 0; i < Main.chatIDs.size(); i++) {
             chatIDs.add(Main.chatIDs.get(i));
         }
+
+        chatInput.setOnKeyPressed(event2 -> {
+            if(event2.getCode() == KeyCode.ENTER){
+                this.submitChat();
+            }
+        });
 
         leftSidebar.getChildren().add(chats);
 
@@ -86,11 +94,7 @@ public class MainScene {
 
 
         submitChat.setOnAction(event1 -> {
-            Message message = new Message(Main.getCurrentChat(), Main.getUserID(), chatInput.getText());
-            Main.addMessage(message);
-            Main.getPw().println(message.toString());
-            Main.getPw().flush();
-            chatInput.clear();
+            this.submitChat();
         });
 
 
@@ -148,5 +152,13 @@ public class MainScene {
 
     public void setToChatArea() {
         this.rightSide2.getChildren().setAll(rightSide);
+    }
+
+    private void submitChat(){
+        Message message = new Message(Main.getCurrentChat(), Main.getUserID(), chatInput.getText());
+        Main.addMessage(message);
+        Main.getPw().println(message.toString());
+        Main.getPw().flush();
+        chatInput.clear();
     }
 }
