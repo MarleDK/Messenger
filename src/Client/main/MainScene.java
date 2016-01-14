@@ -174,10 +174,12 @@ public class MainScene {
     }
 
     private void submitChat(){
-        Message message = new Message(Main.getCurrentChat(), Main.getUserID(), chatInput.getText());
-        Main.addMessage(message);
-        Main.getPw().println(message.toString());
-        Main.getPw().flush();
-        chatInput.clear();
+        if (!chatInput.getText().isEmpty()) {
+            Message message = new Message(Main.getCurrentChat(), Main.getUserID(), chatInput.getText());
+            Main.addMessage(message);
+            Main.getPw().println(message.toString());
+            Main.getPw().flush();
+            chatInput.clear();
+        }
     }
 }
