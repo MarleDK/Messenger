@@ -276,8 +276,11 @@ public class Main extends Application {
     }
 
     public static ArrayList<Message> getMessagesFromCurrentChat() {
-        int index = chatIDs.indexOf(currentChat);
-        return chatlogs.get(index);
+        if(!chatIDs.isEmpty()) {
+            int index = chatIDs.indexOf(currentChat);
+            return chatlogs.get(index);
+        }
+        return null;
     }
 
     public static Parent getRoot() {
