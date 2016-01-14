@@ -32,6 +32,7 @@ public class Main extends Application {
     private static TextField loginPassInputText;
     private static TextField loginUserInputText;
     public static ArrayList<String> chatIDs = new ArrayList<>();
+    public static ArrayList<String> chatNames = new ArrayList<>();
     public static ArrayList<ArrayList<Message>> chatlogs;
     private static String serverAdr = "";
     private static int serverPort = 1302;
@@ -260,7 +261,13 @@ public class Main extends Application {
                         if (message.equals("§")) {
                             hasMoreMessages = false;
                         } else {
-                            chatlogs.get(chatLogIndex).add(Message.toMessage(message));
+                            if (message.startsWith("Message§")) {
+                                chatlogs.get(chatLogIndex).add(Message.toMessage(message));
+                            }
+                            else {
+                                // Change the name to this
+                                chatNames.add(message);
+                            }
                         }
                     }
                 }
