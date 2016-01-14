@@ -38,6 +38,7 @@ public class ClientDatabase {
     public static void newClient(String ID, String password){
         File file = new File("serverdatabase/client/" + ID + ".txt");
         System.out.println("Creating new client");
+        System.out.println(file.getName());
         try{
             FileWriter outFile = new FileWriter(file, true);
             PrintWriter out = new PrintWriter(outFile);

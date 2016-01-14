@@ -112,6 +112,7 @@ public class ChatDatabase {
             FileWriter outFile = new FileWriter(chatFile, true);
             PrintWriter out = new PrintWriter(outFile);
             out.println(message.toString());
+            out.flush();
             out.close();
             outFile.close();
         }
