@@ -30,29 +30,32 @@ public class newChat {
 
         GridPane NewChatScene = new GridPane();
         NewChatScene.setAlignment(Pos.CENTER);
-        NewChatScene.setHgap(10);
-        NewChatScene.setVgap(10);
 
-        GridPane Buttons = new GridPane();
-        NewChatScene.setAlignment(Pos.CENTER);
-        NewChatScene.setHgap(10);
-        NewChatScene.setVgap(10);
 
         Button submitbtn = new Button();
         submitbtn.setText("Submit");
+        submitbtn.setStyle("-fx-background-color: white;" +
+                "-fx-border-color: black;");
+        submitbtn.setPrefWidth(250);
 
         Button cancelbtn = new Button();
         cancelbtn.setText("Cancel");
+        cancelbtn.setStyle("-fx-background-color: white;" +
+                "-fx-border-color: black;");
+        cancelbtn.setPrefWidth(250);
 
         users = new ListView<>();
         ObservableList<String> useritems = FXCollections.observableArrayList ();
         users.setItems(useritems);
+        users.setPrefHeight(448-cancelbtn.getHeight());
+        users.setStyle("-fx-border-color: black; -fx");
         // users.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
         chatUsers = new ListView<>();
         ObservableList<String> chatitems = FXCollections.observableArrayList ();
         chatUsers.setItems(chatitems);
+        chatUsers.setPrefHeight(448-cancelbtn.getHeight());
         // chatUsers.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         chatUsers.setOnMouseClicked(e -> {
             if (chatUsers.getSelectionModel().getSelectedItem() != null) {
@@ -84,12 +87,12 @@ public class newChat {
             }
         });
 
+
         cancelbtn.setOnAction(event ->Main.getMainScene().setToChatArea());
         NewChatScene.add(users,0,0);
         NewChatScene.add(chatUsers,1,0);
-        NewChatScene.add(Buttons,0,1);
-        Buttons.add(cancelbtn,0,0);
-        Buttons.add(submitbtn,1,0);
+        NewChatScene.add(cancelbtn,0,1);
+        NewChatScene.add(submitbtn,1,1);
 
         String client ="";
         indexChatUser = 0;
