@@ -275,7 +275,9 @@ public class Main extends Application {
 
     public static void addMessage(Message message) {
         chatlogs.get(chatIDs.indexOf(message.samtaleID)).add(message);
-        mainScene.addMessage(message);
+        if(currentChat.equals(message.samtaleID)) {
+            mainScene.addMessage(message);
+        }
     }
 
     public static String getCurrentChat() {
