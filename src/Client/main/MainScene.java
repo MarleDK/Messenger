@@ -33,6 +33,7 @@ public class MainScene {
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(0,0,0,0));
+        root.setStyle("-fx-background-color: white");
 
         VBox leftSidebar = new VBox();
         root.add(leftSidebar, 0, 0);
@@ -44,8 +45,11 @@ public class MainScene {
         rightSide = new GridPane();
         rightSide2.add(rightSide, 0, 0);
         rightSide.setPrefWidth(450);
+        rightSide.setPrefHeight(475);
 
         chatArea = new VBox();
+        chatArea.setStyle("-fx-border-color: black");
+        chatArea.setPrefHeight(475);
         rightSide.add(chatArea, 0, 0);
 
         HBox chatBottom = new HBox();
@@ -53,6 +57,7 @@ public class MainScene {
 
         chatInput = new TextField();
         chatBottom.getChildren().add(0, chatInput);
+        chatInput.setStyle("-fx-border-color: black");
 
         Button submitChat = new Button("Send");
         chatBottom.getChildren().add(1, submitChat);
@@ -65,6 +70,8 @@ public class MainScene {
         ListView<String> chats = new ListView<>();
         chatIDs = FXCollections.observableArrayList();
         chats.setItems(chatIDs);
+        chats.setStyle("-fx-border-color: black");
+        chats.setPrefHeight(448);
         for (int i = 0; i < Main.chatIDs.size(); i++) {
             chatIDs.add(Main.chatNames.get(i).replaceAll("§"," "));
         }
@@ -88,6 +95,9 @@ public class MainScene {
 
         Button newChat = new Button("New Chat");
         leftSidebar.getChildren().add(0, newChat);
+        newChat.setPrefWidth(150);
+        newChat.setStyle("-fx-background-color: white;" +
+                "-fx-border-color: black;");
         newChat.setOnAction(event -> {
             System.out.println("Sending new chat request");
             Main.getPw().println("GetUsers§");
@@ -110,6 +120,7 @@ public class MainScene {
         chatArea.getChildren().add(chatList);
         chatList.setItems(chat);
         chatList.setPrefWidth(450);
+        chatList.setPrefHeight(470);
 
         primaryWindow.setScene(new Scene(root, primaryWindow.getWidth(), primaryWindow.getHeight()));
         if(!(Main.getCurrentChat() == null)) {
