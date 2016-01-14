@@ -52,8 +52,13 @@ public class ActiveClient {
         }
     }
 
-    public static boolean ClientLogged(String ID) {
-        return ActiveClients.contains(ID);
+    public static boolean ClientLogged(String client) {
+        for (ActiveClient activeClient : ActiveClients) {
+            if (activeClient.getID().equals(client)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
