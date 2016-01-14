@@ -66,7 +66,7 @@ public class MainScene {
         chatIDs = FXCollections.observableArrayList();
         chats.setItems(chatIDs);
         for (int i = 0; i < Main.chatIDs.size(); i++) {
-            chatIDs.add(Main.chatNames.get(i));
+            chatIDs.add(Main.chatNames.get(i).replaceAll("§"," "));
         }
 
         chatInput.setOnKeyPressed(event2 -> {
@@ -81,7 +81,7 @@ public class MainScene {
         chats.setOnMouseClicked(e -> {
             String chat = chats.getSelectionModel().getSelectedItems().get(0);
             setRightSide(rightSide);
-            Main.setCurrentChat(Main.chatIDs.get(Main.chatNames.indexOf(chat)));
+            Main.setCurrentChat(Main.chatIDs.get(Main.chatNames.indexOf(chat.replaceAll(" ","§"))));
 
             addAllMessages();
         });
