@@ -218,11 +218,11 @@ public class Main extends Application {
                 socket.shutdownOutput();
                 socket.shutdownInput();
                 socket.close();
+
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
-
-
+            System.exit(0);
         });
         primaryWindow.setScene(new Scene(loginScene, 600, 475));
         //root.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
