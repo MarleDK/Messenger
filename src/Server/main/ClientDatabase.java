@@ -37,13 +37,15 @@ public class ClientDatabase {
 
     public static void newClient(String ID, String password){
         File file = new File("serverdatabase/client/" + ID + ".txt");
-
+        System.out.println("Creating new client");
         try{
             FileWriter outFile = new FileWriter(file, true);
             PrintWriter out = new PrintWriter(outFile);
 
             file.createNewFile();
+            System.out.println("File has been created");
             out.println(password);
+            System.out.println("Should have written password:"+password);
         } catch (IOException e) {
             e.printStackTrace();
         }

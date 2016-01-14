@@ -105,6 +105,7 @@ public class ClientConnectionThread extends Thread {
                         try {
                             if(input.charAt(index) == '§'){
                                 System.out.println("Username built");
+                                index++;
                                 break;
                             }
                             username += input.charAt(index);
@@ -118,20 +119,21 @@ public class ClientConnectionThread extends Thread {
                     }
                     System.out.println(username);
                     Thread.sleep(1);
-                    while (true) {
+                    for(index=index ; index<input.length(); index++) {
+                        System.out.println(input.charAt(index));
                         try {
                             if(input.charAt(index) == '§'){
                                 break;
                             }
                             password += input.charAt(index);
-                            index++;
+                            System.out.println(password);
 
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                             break;
                         }
                     }
-                    System.out.println(password);
+                    System.out.println("password is: "+password);
                     if(ClientDatabase.hasClient(username)){
                         pw.println("UsernameTaken§");
                         pw.flush();
