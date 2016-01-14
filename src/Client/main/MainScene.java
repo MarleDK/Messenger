@@ -56,6 +56,11 @@ public class MainScene {
 
         Button submitChat = new Button("Send");
         chatBottom.getChildren().add(1, submitChat);
+        submitChat.setStyle("-fx-background-color: white;" +
+                "-fx-border-color: black;");
+        submitChat.setMinWidth(70);
+
+        chatInput.setPrefWidth(450);
 
         ListView<String> chats = new ListView<>();
         chatIDs = FXCollections.observableArrayList();
