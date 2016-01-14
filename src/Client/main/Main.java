@@ -318,14 +318,27 @@ public class Main extends Application {
     public static MainScene getMainScene(){return mainScene;}
 
     public static void setServerAdr(String serverAdress) {
-        if(socket.isClosed()) {
+        try {
+            if (socket.isClosed()) {
+                serverAdr = serverAdress;
+                try {
+                    socket = new Socket(serverAdr, serverPort);
+                    pw = new PrintWriter(socket.getOutputStream());
+                    br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                } catch (java.io.IOException ex) {
+                    System.out.println("No connection to server! Is it running?");
+                }
+            }
+        }
+        catch (java.lang.NullPointerException ex) {
             serverAdr = serverAdress;
             try {
                 socket = new Socket(serverAdr, serverPort);
                 pw = new PrintWriter(socket.getOutputStream());
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            } catch (java.io.IOException ex) {
+            } catch (java.io.IOException e) {
                 System.out.println("No connection to server! Is it running?");
             }
         }
