@@ -19,17 +19,15 @@ import universalClasses.Message;
 import java.util.ArrayList;
 
 public class MainScene {
-    private ObservableList<HBox> chat;
-    private ObservableList<String> chatIDs;
-    private Stage window;
-    private VBox chatArea;
-    private GridPane rightSide2;
-    private GridPane rightSide;
-    private TextField chatInput;
-    private ListView<HBox> chatList;
+    private final ObservableList<HBox> chat;
+    //public static String chatNames;
+    private final ObservableList<String> chatIDs;
+    private final VBox chatArea;
+    private final GridPane rightSide2;
+    private final GridPane rightSide;
+    private final TextField chatInput;
 
     public MainScene(Stage primaryWindow) {
-        window = primaryWindow;
 
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
@@ -89,6 +87,7 @@ public class MainScene {
         chats.setOnMouseClicked(e -> {
             String chat = chats.getSelectionModel().getSelectedItems().get(0);
             setRightSide(rightSide);
+            System.out.println(Main.chatIDs.get(Main.chatNames.indexOf(chat.replaceAll(" ","§"))));
             Main.setCurrentChat(Main.chatIDs.get(Main.chatNames.indexOf(chat.replaceAll(" ","§"))));
 
             addAllMessages();
@@ -112,12 +111,10 @@ public class MainScene {
 
 
 
-        submitChat.setOnAction(event1 -> {
-            this.submitChat();
-        });
+        submitChat.setOnAction(event1 -> this.submitChat());
 
 
-        chatList = new ListView<>();
+        ListView<HBox> chatList = new ListView<>();
         chatArea.getChildren().add(chatList);
         chatList.setItems(chat);
         chatList.setPrefWidth(450);
@@ -129,16 +126,15 @@ public class MainScene {
         }
     }
 
-    public void addAllMessages(){
+    private void addAllMessages(){
         ArrayList<Message> messages = Main.getMessagesFromCurrentChat();
         System.out.println("adding messages");
         chat.clear();
-        if (!messages.isEmpty() && messages.get(0) == null) {
+        if (!(messages != null && messages.isEmpty()) && (messages != null ? messages.get(0) : null) == null) {
+            assert messages != null;
             messages.remove(0);
         }
-        for (Message message : messages) {
-            addMessage(message);
-        }
+        messages.forEach(this::addMessage);
     }
 
     public void addMessage(Message message){

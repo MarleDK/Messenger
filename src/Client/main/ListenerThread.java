@@ -10,15 +10,9 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class ListenerThread extends Thread {
-    public boolean threadOK;
     private Socket socket;
-    //private PrintWriter pw;
     private BufferedReader br;
-    private boolean done;
     private String input;
-    private String ChatID;
-    private String Clients;
-    private String message;
 
     public ListenerThread(Socket socket) {
         try {
@@ -28,9 +22,8 @@ public class ListenerThread extends Thread {
             br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
 
-            this.threadOK = true;
         } catch (Exception ex) {
-            this.threadOK = false;
+            System.out.println("Error creating socket on ListenerThread");
         }
     }
 

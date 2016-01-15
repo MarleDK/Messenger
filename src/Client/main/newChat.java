@@ -6,15 +6,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 
 public class newChat {
-    private static VBox userListVBox;
 
     private static ListView<String> users;
     private static ListView<String> chatUsers;
-
-    private static int indexChatUser;
+    private static String buildChatNames;
 
     public static void makeChat(String clients){
 
@@ -40,7 +37,7 @@ public class newChat {
         ObservableList<String> useritems = FXCollections.observableArrayList ();
         users.setItems(useritems);
         users.setPrefHeight(448-cancelbtn.getHeight());
-        users.setStyle("-fx-border-color: black;");
+        // users.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
         chatUsers = new ListView<>();
@@ -64,13 +61,16 @@ public class newChat {
         submitbtn.setOnAction(e -> {
             if (!chatitems.isEmpty()) {
                 System.out.print("NewChat§" + Main.getUserID() + "§");
-
                 Main.getPw().print("NewChat§" + Main.getUserID() + "§");
+                buildChatNames = Main.getUserID() + "§";
                 for (int i = 0; i < chatUsers.getItems().size(); i++) {
                     if (!chatUsers.getItems().get(i).equals("null")) {
+                        buildChatNames += chatUsers.getItems().get(i) + "§";
                         Main.getPw().print(chatUsers.getItems().get(i) + "§");
                     }
                 }
+                System.out.println("buildChatNames:" + buildChatNames);
+                Main.chatNames.add(buildChatNames.replaceAll("§"," "));
                 System.out.println();
                 Main.getPw().println();
                 Main.getPw().flush();
@@ -86,7 +86,6 @@ public class newChat {
         NewChatScene.add(submitbtn,1,1);
 
         String client ="";
-        indexChatUser = 0;
         for(int i=0; i < clients.length(); i++) {
             if (clients.charAt(i) != '§') {
                 client += clients.charAt(i);
@@ -94,7 +93,6 @@ public class newChat {
                 System.out.println(client);
                 useritems.add(client);
                 client = "";
-                indexChatUser ++;
             }
         }
         useritems.remove(Main.getUserID());

@@ -24,11 +24,9 @@ public class Main extends Application {
     private static Socket socket;
     private static TextField loginPassInputText;
     private static TextField loginUserInputText;
-    public static ArrayList<String> chatIDs = new ArrayList<>();
-    public static ArrayList<String> chatNames = new ArrayList<>();
-    public static ArrayList<ArrayList<Message>> chatlogs;
-    private static String serverAdr = "";
-    private static int serverPort = 1302;
+    public static final ArrayList<String> chatIDs = new ArrayList<>();
+    public static final ArrayList<String> chatNames = new ArrayList<>();
+    private static ArrayList<ArrayList<Message>> chatlogs;
     private static PrintWriter pw;
     private static BufferedReader br;
     private static Stage primaryWindow;
@@ -202,7 +200,7 @@ public class Main extends Application {
                 socket.close();
 
             } catch (Exception e1) {
-                e1.printStackTrace();
+                System.out.println("Error: Connection is already closed!");
             }
             System.exit(0);
         });
@@ -216,7 +214,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static void getLogFromServer() throws IOException {
+    private static void getLogFromServer() throws IOException {
         System.out.println("Venter på type...");
         String input = br.readLine();
         if (input.startsWith("ChatLogs§")) {
@@ -289,23 +287,24 @@ public class Main extends Application {
         return userID;
     }
 
-    public static Socket getSocket() {
+    private static Socket getSocket() {
         return socket;
     }
 
     public static void newChat(String ID) {
-        currentChat = ID;
         chatIDs.add(ID);
         chatlogs.add(new ArrayList<>());
-        mainScene.addChat(ID);
+        System.out.println("Finalizing new chat..." + chatIDs.get(chatNames.size()-1));
+        setCurrentChat(chatIDs.get(chatNames.size()-1));
+        mainScene.addChat(chatNames.get(chatNames.size()-1));
         //
     }
 
-    public static Stage getPrimaryWindow() {
+    private static Stage getPrimaryWindow() {
         return primaryWindow;
     }
 
-    public static BufferedReader getBr() {
+    private static BufferedReader getBr() {
         return br;
     }
 
@@ -313,13 +312,15 @@ public class Main extends Application {
         return pw;
     }
 
-    public static void setUserID(String userID) {
+    private static void setUserID(String userID) {
         Main.userID = userID;
     }
 
     public static MainScene getMainScene(){return mainScene;}
 
-    public static void setServerAdr(String serverAdress) {
+    private static void setServerAdr(String serverAdress) {
+        String serverAdr;
+        int serverPort = 1302;
         try {
             if (socket.isClosed()) {
                 serverAdr = serverAdress;
