@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class TimeStamp implements Comparable{
-    private int sec;
+    private final int sec;
     private int min;
     private int hour;
     private int day;
