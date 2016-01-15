@@ -292,10 +292,10 @@ public class Main extends Application {
     }
 
     public static void newChat(String ID) {
-        chatIDs.add(ID);
+        chatIDs.add(ID.substring(0,17));
         chatlogs.add(new ArrayList<>());
+        chatNames.add(ID.substring(18));
         System.out.println("Finalizing new chat..." + chatIDs.get(chatNames.size()-1));
-        setCurrentChat(chatIDs.get(chatNames.size()-1));
         mainScene.addChat(chatNames.get(chatNames.size()-1));
         //
     }

@@ -31,7 +31,7 @@ public class MainScene {
 
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(0,0,0,0));
+        root.setPadding(new Insets(0, 0, 0, 0));
         root.setStyle("-fx-background-color: white");
 
         VBox leftSidebar = new VBox();
@@ -39,7 +39,7 @@ public class MainScene {
         leftSidebar.setPrefWidth(150);
 
         rightSide2 = new GridPane();
-        root.add(rightSide2,1,0);
+        root.add(rightSide2, 1, 0);
 
         rightSide = new GridPane();
         rightSide2.add(rightSide, 0, 0);
@@ -71,12 +71,10 @@ public class MainScene {
         chats.setItems(chatIDs);
         chats.setStyle("-fx-border-color: black");
         chats.setPrefHeight(448);
-        for (int i = 0; i < Main.chatIDs.size(); i++) {
-            chatIDs.add(Main.chatNames.get(i).replaceAll("§"," "));
-        }
+
 
         chatInput.setOnKeyPressed(event2 -> {
-            if(event2.getCode() == KeyCode.ENTER){
+            if (event2.getCode() == KeyCode.ENTER) {
                 this.submitChat();
             }
         });
@@ -87,8 +85,9 @@ public class MainScene {
         chats.setOnMouseClicked(e -> {
             String chat = chats.getSelectionModel().getSelectedItems().get(0);
             setRightSide(rightSide);
-            System.out.println(Main.chatIDs.get(Main.chatNames.indexOf(chat.replaceAll(" ","§"))));
-            Main.setCurrentChat(Main.chatIDs.get(Main.chatNames.indexOf(chat.replaceAll(" ","§"))));
+            System.out.println();
+            System.out.println(Main.chatIDs.get(chatIDs.indexOf(chat)));
+            Main.setCurrentChat(Main.chatIDs.get(chatIDs.indexOf(chat)));
 
             addAllMessages();
         });
@@ -107,8 +106,7 @@ public class MainScene {
 
         chat = FXCollections.observableArrayList();
         setRightSide(rightSide);
-        System.out.println("current chat " +Main.getCurrentChat());
-
+        System.out.println("current chat " + Main.getCurrentChat());
 
 
         submitChat.setOnAction(event1 -> this.submitChat());
@@ -121,12 +119,15 @@ public class MainScene {
         chatList.setPrefHeight(470);
 
         primaryWindow.setScene(new Scene(root, primaryWindow.getWidth(), primaryWindow.getHeight()));
-        if(!(Main.getCurrentChat() == null)) {
+        if (!(Main.getCurrentChat() == null)) {
             addAllMessages();
+        }
+        for (int i = 0; i < Main.chatNames.size(); i++) {
+            addChat(Main.chatNames.get(i));
         }
     }
 
-    private void addAllMessages(){
+    private void addAllMessages() {
         ArrayList<Message> messages = Main.getMessagesFromCurrentChat();
         System.out.println("adding messages");
         chat.clear();
@@ -137,9 +138,9 @@ public class MainScene {
         messages.forEach(this::addMessage);
     }
 
-    public void addMessage(Message message){
+    public void addMessage(Message message) {
         System.out.println(message);
-        Text field = new Text(message.afsenderID +":\n"+ message.text);
+        Text field = new Text(message.afsenderID + ":\n" + message.text);
         HBox hbox = new HBox();
         chat.add(hbox);
         if (message.afsenderID.equals(Main.getUserID())) {
@@ -158,9 +159,23 @@ public class MainScene {
         hbox.setMaxWidth(chatArea.getWidth());
     }
 
-    public void addChat(String ID){
-        chatIDs.add(ID);
+    public void addChat(String ID) {
+        System.out.println("ChatID før user er fjernet "+ID);
+        System.out.println(Main.getUserID());
+        ID.replace((Main.getUserID()+"§"), " ");
+        System.out.println("ChatID efter user er fjernet "+ID);
+        int j = 0;
+        while (true) {
+            System.out.println("adding chats"+j);
+            if (!(chatIDs.contains(ID.replaceAll("§", " ") + " " + j))) {
+                chatIDs.add(ID.replaceAll("§", " ") + " " + j);
+                break;
+            }
+            j++;
+        }
     }
+
+
 
     public void setRightSide(GridPane rightSide) {
         this.rightSide2.getChildren().setAll(rightSide);
@@ -170,7 +185,7 @@ public class MainScene {
         this.rightSide2.getChildren().setAll(rightSide);
     }
 
-    private void submitChat(){
+    private void submitChat() {
         if (!chatInput.getText().isEmpty()) {
             Message message = new Message(Main.getCurrentChat(), Main.getUserID(), chatInput.getText());
             Main.addMessage(message);

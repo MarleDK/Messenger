@@ -234,12 +234,14 @@ public class ClientConnectionThread extends Thread {
                 // TYPE
                 // Clients
                 // END
-                String clientInput = ChatDatabase.makeChat(input);
-                pw.println("NewChat§" + clientInput);
-                pw.flush();
+                String clientInput = ChatDatabase.makeChat(input)+"§";
+                pw.print("NewChat§" + clientInput);
                 System.out.println("Sending to inform other clients....");
                 ArrayList<String> Clients;
                 Clients = ChatDatabase.getClients(clientInput);
+                for (String client: Clients) {
+                    clientInput += client+"§";
+                }
                 ArrayList<Socket> Sockets = new ArrayList<>();
                 if (Clients != null) {
                     Clients.remove(this.ClientID);
